@@ -13,15 +13,17 @@ extern int SPACE;
 //Function
 void display_col(coord_t* pcol){
     for(int i=0; i< NUM_COL; i++){
-        for(int j=0;j<lines_col(pcol[i]);j++){
-            for(int k=1; k< HEIGHT;k++){
-                if( k == (pcol[i].y) ){
-                    k+=HOLE_HEIGHT;
+        if(pcol[i].len >0){
+            for(int j=0;j<pcol[i].len;j++){
+                for(int k=1; k< HEIGHT;k++){
+                    if( k == (pcol[i].y) ){
+                        k+=HOLE_HEIGHT;
+                    }
+                    mvaddch(k,(pcol[i].x)+j,'*');
                 }
-                mvaddch(k,(pcol[i].x)+j,'*');
-            }
             
-        }  
-        mvprintw(0, 0, "Floppy bird"); 
+            }  
+        }   
     }
+    mvprintw(0, 0, "Floppy bird"); 
 }

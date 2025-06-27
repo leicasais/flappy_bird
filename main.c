@@ -21,12 +21,8 @@ int main(void)
     srand(time(NULL));     //plant the seed for rand()
 
     //signal(SIGWINCH, handle_winch);
-    getmaxyx(stdscr, HEIGHT, WIDTH);  // first read of the scren dimations (dinamic)
-    HOLE_HEIGHT=HEIGHT/3;               //Height of the hole
-    COL_WIDTH=WIDTH/15;
-    SPACE=HEIGHT/2;
-    NUM_COL=WIDTH/(COL_WIDTH+SPACE);    //Num of columns
-
+    getmaxyx(stdscr, HEIGHT, WIDTH);  // first read of the scren dimations (dinamic)  
+    set_parameters();
 
     //var
     column = malloc(sizeof(coord_t) * NUM_COL);
@@ -38,6 +34,7 @@ int main(void)
     {
         //Update game logic
         col_mov(column);
+
         //Update display
         erase(); 
         display_col(column);

@@ -1,10 +1,14 @@
 #ifndef BACKEND_H
 #define BACKEND_H
 
+    //MACROS
+    #define OUTSIDE -1000
+
     //Structs
     typedef struct{ //Origin in (1,1)    
         int x;      //Saves where are the holes begin in coord x
         int y;      //Saves where are the holes begin in coord y
+        int len; //Saves the length of the column
 
     }coord_t;
 
@@ -15,7 +19,7 @@
     void col_mov(coord_t* pcol);//Changes the coord x in each col per frame
     void handle_winch(int sig);
     int update_screen_dimensions();
-
+    void set_parameters(void); //Set default values for the game, like hole size 
 
 #endif
 
