@@ -1,6 +1,15 @@
 #include "frontend.h"
 #include "backend.h"
 
+//Global var from main.c
+extern int WIDTH;
+extern int HEIGHT;
+extern int HOLE_HEIGHT;
+extern int NUM_COL;
+extern int COL_WIDTH;
+extern int SPACE;
+
+
 //Function
 void display_col(coord_t* pcol){
     for(int i=0; i< NUM_COL; i++){
@@ -13,6 +22,6 @@ void display_col(coord_t* pcol){
             }
             
         }  
-        mvprintw(0, 0, "Columna 0: ancho = %d", lines_col(pcol[i])); 
+        mvprintw(0, 0, "Floppy bird"); 
     }
 }

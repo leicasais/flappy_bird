@@ -1,14 +1,6 @@
 #ifndef BACKEND_H
 #define BACKEND_H
 
-    //Macros
-    #define WIDTH 40       // width screen game parameters
-    #define HEIGHT 20      // height screen game parameters
-    #define COL_WIDTH 3     //width of columns 
-    #define SPACE 3         //spaces between col
-    #define HOLE_HEIGHT HEIGHT/3 //Height of the hole
-    #define NUM_COL WIDTH/(COL_WIDTH+SPACE) ////Num of columns
-
     //Structs
     typedef struct{ //Origin in (1,1)    
         int x;      //Saves where are the holes begin in coord x
@@ -21,6 +13,9 @@
     int rand_hole(void);
     int lines_col(coord_t pcol);//Rerturns the number of lines shown in the screen in a Col
     void col_mov(coord_t* pcol);//Changes the coord x in each col per frame
+    void handle_winch(int sig);
+    int update_screen_dimensions();
+
 
 #endif
 
@@ -30,6 +25,7 @@
     #include <stdio.h>
     #include <stdlib.h>
     #include <ncurses.h>
+    #include <signal.h>     //for screen changing size
     #include <time.h>
     #include <unistd.h>  // usleep()
 #endif

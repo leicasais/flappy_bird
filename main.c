@@ -1,6 +1,14 @@
 #include "backend.h"
 #include "frontend.h"
 //Variables Globales
+int WIDTH;
+int HEIGHT;
+int HOLE_HEIGHT;
+int NUM_COL;
+int COL_WIDTH;
+int SPACE;
+
+coord_t* column;
 
 int main(void)
 {
@@ -12,12 +20,20 @@ int main(void)
     timeout(20);           // `getch()` waits in ms.Calc FPS: (t[ms]*10^-3)^-1. 50 FPS
     srand(time(NULL));     //plant the seed for rand()
 
+    //signal(SIGWINCH, handle_winch);
+    getmaxyx(stdscr, HEIGHT, WIDTH);  // first read of the scren dimations (dinamic)
+    HOLE_HEIGHT=HEIGHT/3;               //Height of the hole
+    COL_WIDTH=WIDTH/15;
+    SPACE=HEIGHT/2;
+    NUM_COL=WIDTH/(COL_WIDTH+SPACE);    //Num of columns
+
+
     //var
-    coord_t column[NUM_COL];
+    column = malloc(sizeof(coord_t) * NUM_COL);
     coord_t bird; //init bird
 
     //main program
-    init(column, &bird);
+    init(column, &bird); 
     while (1)
     {
         //Update game logic
@@ -27,10 +43,11 @@ int main(void)
         display_col(column);
         refresh();
         usleep(333333);     //3 FPS
+
         
     }
     
-    
+    free(column);
     endwin(); // exits ncurses mode, returns control to the terminal
     return 0;
 }
