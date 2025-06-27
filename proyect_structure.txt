@@ -2,7 +2,7 @@
 
 Backend)
     1) Int var
-    2) Movement Function (Walls)
+    2) Movement Function (Walls) -> Lei 
         -()
     3) Movement of the Bird -> Agustin
     4) Colision 
