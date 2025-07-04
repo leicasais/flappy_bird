@@ -7,7 +7,7 @@ Initialize screen and game window (ncurses, etc.)
 Call init(pcol, pbird) → initialize bird & column positions
  |
  v
-Call main_menue() → Show main menu
+Call main_menu() → Show main menu
  |         \
  |          --> Exit game (if user chooses to quit)
  v
@@ -18,13 +18,13 @@ Game loop starts
  |                                            |
  |  Check for user input                      |
  |     └─> If pause key pressed:              |
- |           Call pause_menue()               |
+ |           Call pause_menu()                |
  |           └─> Resume / Exit                |
  |                                            |
  |  Call Bird_mov(pbird)                      |
  |  Call col_mov(pcol)                        |
  |                                            |
- |  Call Colision(pcol, pbird)                |
+ |  Call Collision(pcol, pbird)               |
  |     └─> If collision:                      |
  |           Go to Game Over / Main Menu      |
  |                                            |
@@ -37,7 +37,7 @@ Game loop starts
  └────────────────────────────────────────────┘
  |
  v
-Call main_menue() again (after game over or pause exit)
+Call main_menu() again (after game over or pause exit)
  |
  v
 Repeat or Exit

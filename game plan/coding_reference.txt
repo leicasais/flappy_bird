@@ -1,0 +1,56 @@
+// --------------------STRUCTS-----------------------------------
+
+typedef struct {
+    int x;  // Horizontal position
+    int y;  // Vertical position (top of the column or bird)
+    int len; // Length of the solid part (for columns only)
+} coord_t;
+// coord_t is used for representing the position and size of either a bird or a column.
+
+typedef struct {
+    int score;
+    int lives;
+    int high_score;
+    int state;  // Could represent current menu selection or game state
+} menu_t;
+// menu_t stores game-related data like score, remaining lives, high score, and menu state.
+
+
+// --------------------FUNCTIONS-------------------------------
+
+Backend:
+
+void init(coord_t* pcol, coord_t* pbird, menu_t* pmenu);
+// Initializes all the variables of the game at the beginning of the program.
+
+void col_mov(coord_t* pcol);
+// Changes the x-coordinate of each column per frame and resets the hole position each time the column reappears on the screen.
+
+void bird_mov(coord_t* pbird);
+// Updates the bird's position depending on whether a key was pressed, and if so, which key was pressed.
+
+char collision(coord_t* pcol, coord_t* pbird);
+// Returns 1 if the bird's position will collide with a column in the next frame; otherwise, returns 0.
+
+void data_track(menu_t* pmenu);
+// Updates game statistics such as score and lives.
+
+int main_menu(void);
+// Displays the main menu and returns a code based on the player’s selection (e.g., start, exit).
+
+int pause_menu(void);
+// Displays the pause menu and returns a code based on the player’s selection (e.g., continue, quit).
+
+Frontend:
+
+void display_col(coord_t* pcol);
+// Renders the columns on the screen based on their coordinates and hole positions.
+
+void display_bird(coord_t* pbird);
+// Renders the bird on the screen using its current coordinates.
+
+void display_main_menu(void);
+// Displays the main menu with available options when the game starts or ends.
+
+void display_pause_menu(void);
+// Displays the pause menu when the game is paused.
