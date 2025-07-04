@@ -1,0 +1,18 @@
+Main.c
+ ├── includes → frontend.h
+ ├── includes → backend.h
+ ├── calls    → Frontend.c
+ └── calls    → Backend.c
+
+Frontend.c
+ ├── includes → frontend.h
+ └── calls    → Backend.c
+
+Backend.c
+ └── includes → backend.h
+
+frontend.h
+ └── included by → Main.c, Frontend.c
+
+backend.h
+ └── included by → Main.c, Backend.c
