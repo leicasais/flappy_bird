@@ -12,8 +12,8 @@
 
     }column_t;
     typedef struct{
-        int x;
         int y;
+        float vel_y;
     }bird_t;
 
     //Prototipos 
@@ -24,6 +24,10 @@
     void handle_winch(int sig);
     int update_screen_dimensions();
     void set_parameters(void); //Set default values for the game, like hole size 
+    void bird_init(bird_t *bird, float y0); //Inicialize the position of the bird
+    void bird_update(bird_t *b, float dt); //Update the bird velocity
+    void bird_jump(bird_t *b); //Scan a "jump"
+
 
 #endif
 
