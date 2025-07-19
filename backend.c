@@ -22,8 +22,8 @@ void set_parameters(void){          //Redefine globals
     JUMP_VEL = -1.0f;               //Default Value
 }
 
-void init(column_t* pcol, bird_t *bird){
-
+void init(column_t* pcol, bird_t *bird, menu_t *menue){
+//Column init
     int aux_x=0; 
     int i;
     for(i=0; i<(WIDTH/(COL_WIDTH+SPACE));i++){
@@ -36,9 +36,14 @@ void init(column_t* pcol, bird_t *bird){
         pcol[j].x=OUTSIDE;
         pcol[j].len=0;
     }
+//Bird init
     bird->x= SPACE/2;
     bird->y= 3+(rand()%(WIDTH/2-2));//inicialite the position bird
     bird->vel_y = 0;
+//Menue init
+    menue->lives=3;
+    menue->score=0;
+    menue->state= MAIN_MENU;
 }
 
 //Column funcions
@@ -107,4 +112,11 @@ char collision(column_t* pcol, bird_t* pbird){
     }
 }
 
+//Menue funtions
+
+
+
+void data_track(menu_t* pmenu){     // Updates game statistics such as score and lives.
+
+} 
     

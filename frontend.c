@@ -35,3 +35,4 @@ void display_bird(bird_t * bird){
     int col = (int)(bird->x + 0.5f);
     mvaddch(row,col,'^');
 }
+void display_main_menue()
