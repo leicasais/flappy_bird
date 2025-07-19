@@ -20,7 +20,8 @@ int main(void)
     noecho();   
     keypad(stdscr, TRUE);
     curs_set(FALSE);        // Oculta el cursor
-    nodelay(stdscr, TRUE);        // `getch()` waits in ms.Calc FPS: (t[ms]*10^-3)^-1. 50 FPS
+    nodelay(stdscr, TRUE);        
+    timeout(16);           // `getch()` waits in ms.Calc FPS: (t[ms]*10^-3)^-1. 50 FPS
     srand(time(NULL));     //plant the seed for rand()
 
     //signal(SIGWINCH, handle_winch);
@@ -30,33 +31,69 @@ int main(void)
     //var
     column = malloc(sizeof(column_t) * NUM_COL);
     bird_t bird; //init bird
+    menu_t menu;
+    int frame=0;    //Counts the frames since the last column update
 
     /*###############################################
     
                         MAIN PROGRAM
 
     ###############################################*/
-    init(column,&bird); 
+    init(column,&bird, &menu);
+    
     while (1)
     {
-        //Update game logic
-        col_mov(column);
+        frame++;
         int ch = getch();
-        if (ch == ' ') {
-            bird_jump(&bird);
+        //MENU
+        if(menu.state==MAIN_MENU){
+            int selection=0;
+            while(1){
+                main_menu(ch, &menu, &selection);
+                display_main_menu(selection);
+                if (menu.state!=MAIN_MENU){
+                    break;
+                }
+                ch = getch();    
+            }
         }
-        else if (ch == 'q') {
-            break;  // por si quieres salir con 'q'
+        else if(menu.state==PAUSE){//Pasa lo mismo que para main menu por que todavia no setie el modo menu de pausa, despues hay que cambiarlo
+            int selection=0;
+            while(1){
+                main_menu(ch, &menu, &selection);
+                display_main_menu(selection);
+                if (menu.state!=MAIN_MENU){
+                    break;
+                }
+                ch = getch();    
+            }
         }
-        bird_mov(&bird);
+        else if(menu.state==RUNING){
+            //Update game logic
+            if(frame==4){
+                col_mov(column);
+                frame=0;
+            }
+            
+            if (ch == ' ') {
+                bird_jump(&bird);
+            }
+            else if (ch == 'q') {
+                menu.state=PAUSE;  
+            }
+            bird_mov(&bird);
 
 
-        //Update display
-        erase(); 
-        display_col(column);
-        display_bird(&bird);
-        refresh();
-        timeout(20);     //3 FPS
+            //Update display
+            erase(); 
+            display_col(column);
+            display_bird(&bird);
+            refresh();
+        }
+        else if(menu.state== EXIT){
+            break;
+        } 
+        
         
     }
     

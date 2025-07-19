@@ -35,4 +35,18 @@ void display_bird(bird_t * bird){
     int col = (int)(bird->x + 0.5f);
     mvaddch(row,col,'^');
 }
-void display_main_menue()
+void display_main_menu( int selection){
+    const char *opciones[] = {
+        "START",
+        "EXIT"
+    };
+    clear();
+    mvprintw(1, 5, "=== FLAPPY MAIN MENU ===");
+    for (int i = 0; i < NUM_OPTIONS_MAIN; i++) {
+        if (i == selection) attron(A_REVERSE);
+        mvprintw(3 + i, 7, "%s", opciones[i]);
+        if (i == selection) attroff(A_REVERSE);
+    }
+
+    refresh();
+}

@@ -22,7 +22,7 @@ void set_parameters(void){          //Redefine globals
     JUMP_VEL = -0.05f;               //Default Value
 }
 
-void init(column_t* pcol, bird_t *bird, menu_t *menue){
+void init(column_t* pcol, bird_t *bird, menu_t *menu){
 //Column init
     int aux_x=0; 
     int i;
@@ -41,9 +41,9 @@ void init(column_t* pcol, bird_t *bird, menu_t *menue){
     bird->y= 3+(rand()%(HEIGHT/2-2));//inicialite the position bird
     bird->vel_y = 0;
 //Menue init
-    menue->lives=3;
-    menue->score=0;
-    menue->state= MAIN_MENU;
+    menu->lives=3;
+    menu->score=0;
+    menu->state= MAIN_MENU;
 }
 
 //Column funcions
@@ -75,7 +75,7 @@ void col_mov(column_t* pcol){
 
 
 int rand_hole(void){ //returns a random coord y for the begining of the hole        
-    return rand() % (LINES - HOLE_HEIGHT - 1) + 1;
+    return rand() % (HEIGHT - HOLE_HEIGHT - 1) + 1;
 }
 
 
@@ -117,9 +117,31 @@ char collision(column_t* pcol, bird_t* pbird){
     }
 }
 
+
 //Menue funtions
 
-
+void main_menu(int key, menu_t *menu, int *selection){
+    
+    switch (key) {
+            case KEY_UP:
+                (*selection)--;
+                if((*selection)<0){
+                    (*selection)=(NUM_OPTIONS_MAIN-1);
+                }
+                break;
+            case KEY_DOWN:
+                (*selection)++;
+                if((*selection)==NUM_OPTIONS_MAIN){
+                    *selection=0;
+                }
+                break;
+            case '\n':
+                switch (*selection) {
+                    case 0: menu->state= RUNING;break;
+                    case 1: menu->state= EXIT; break;
+                }
+    }
+}
 
 void data_track(menu_t* pmenu){     // Updates game statistics such as score and lives.
 
