@@ -7,6 +7,8 @@ int HOLE_HEIGHT;
 int NUM_COL;
 int COL_WIDTH;
 int SPACE;
+float GRAVITY;   
+float JUMP_VEL;   
 
 coord_t* column;
 

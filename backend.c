@@ -8,7 +8,8 @@ extern int NUM_COL;
 extern coord_t* column;
 extern int COL_WIDTH;
 extern int SPACE;
-
+extern float GRAVITY;
+extern float JUMP_VEL;
 
 //Functions
 
@@ -61,12 +62,20 @@ void col_mov(coord_t* pcol){
 int rand_hole(void){ //returns a random coord y for the begining of the hole        
     return rand() % (LINES - HOLE_HEIGHT - 1) + 1;
 }
+
 //Redefine globals
+
 void set_parameters(void){
     HOLE_HEIGHT = HEIGHT / 3; //Default value
     COL_WIDTH = WIDTH / 15; //Default value
     SPACE = HEIGHT / 2; //Default value
     NUM_COL = WIDTH / COL_WIDTH; //Default value
+    GRAVITY = 25.0f; //Default Value
+    JUMP_VEL = -8.0f; //Default Value
+}
+
+void bird_mov(coord_t bird){
+ 
 }
 
 /*Update screen size fun- NOT WORKING
