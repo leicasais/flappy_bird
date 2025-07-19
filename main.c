@@ -1,16 +1,17 @@
 #include "backend.h"
 #include "frontend.h"
 //Variables Globales
-int WIDTH;
-int HEIGHT;
-int HOLE_HEIGHT;
-int NUM_COL;
-int COL_WIDTH;
-int SPACE;
+int WIDTH;              //Stores the WIDTH of the screen
+int HEIGHT;             //Stores the HEIGHT of the screen
+int HOLE_HEIGHT;        //Stores the Height of the holes
+int NUM_COL;            //Stores the number of columns including the ones OUTSIDE the screen
+int COL_WIDTH;          //Stores the WIDTH of the columns
+int SPACE;              //Stores the space between the columns
 float GRAVITY;   
 float JUMP_VEL;   
 
-column_t* column;
+column_t* column;       //stores all directions of the columns, they are not in order
+
 
 int main(void)
 {

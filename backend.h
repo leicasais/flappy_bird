@@ -8,24 +8,24 @@
     typedef struct{ //Origin in (1,1)    
         int x;      //Saves where are the holes begin in coord x
         int y;      //Saves where are the holes begin in coord y
-        int len; //Saves the length of the column
+        int len;    //Saves the length of the column
 
     }column_t;
+
     typedef struct{
         int y;
         float vel_y;
+        int x;
     }bird_t;
 
     //Prototipos 
-    void init(column_t* pcol,bird_t * bird);// INicialisation of the var
-    int rand_hole(void);
-    int lines_col(column_t pcol);//Rerturns the number of lines shown in the screen in a Col
-    void col_mov(column_t* pcol);//Changes the coord x in each col per frame
-    void handle_winch(int sig);
-    int update_screen_dimensions();
-    void set_parameters(void); //Set default values for the game, like hole size 
-    void bird_update(bird_t *b, float dt); //Update the bird velocity
-    void bird_jump(bird_t *b); //Scan a "jump"
+    void init(column_t* pcol, bird_t *bird);             // INicialisation of the var
+    int rand_hole(void);                                //Inicialices a random position y for the hole
+    char collision(column_t* pcol, bird_t* pbird);      // Returns 1 if the bird's position will collide with a column in the next frame; otherwise, returns 0.
+    void col_mov(column_t* pcol);                       //Changes the coord x in each col per frame
+    void set_parameters(void);                          //Set default values for the game, like hole size 
+    void bird_update(bird_t *b, float dt);              //Update the bird velocity
+    void bird_jump(bird_t *b);                          //Scan a "jump"
 
 
 #endif
