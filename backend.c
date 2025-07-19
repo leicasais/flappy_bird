@@ -11,9 +11,18 @@ extern int SPACE;
 extern float GRAVITY;
 extern float JUMP_VEL;
 
-//Functions
+//Inicialisations and parameters functions
 
-void init(column_t* pcol){
+void set_parameters(void){          //Redefine globals
+    HOLE_HEIGHT = HEIGHT / 3;       //Default value
+    COL_WIDTH = WIDTH / 15;         //Default value
+    SPACE = HEIGHT / 2;             //Default value
+    NUM_COL = WIDTH / COL_WIDTH;    //Default value
+    GRAVITY = 2;                    //Default Value
+    JUMP_VEL = -1.0f;               //Default Value
+}
+
+void init(column_t* pcol, bird_t *bird){
 
     int aux_x=0; 
     int i;
@@ -27,7 +36,12 @@ void init(column_t* pcol){
         pcol[j].x=OUTSIDE;
         pcol[j].len=0;
     }
+    bird->x= SPACE/2;
+    bird->y= 3+(rand()%(WIDTH/2-2));//inicialite the position bird
+    bird->vel_y = 0;
 }
+
+//Column funcions
 
 void col_mov(column_t* pcol){
     for(int i=0; i<NUM_COL; i++){
@@ -59,22 +73,8 @@ int rand_hole(void){ //returns a random coord y for the begining of the hole
     return rand() % (LINES - HOLE_HEIGHT - 1) + 1;
 }
 
-//Redefine globals
 
-void set_parameters(void){
-    HOLE_HEIGHT = HEIGHT / 3; //Default value
-    COL_WIDTH = WIDTH / 15; //Default value
-    SPACE = HEIGHT / 2; //Default value
-    NUM_COL = WIDTH / COL_WIDTH; //Default value
-    GRAVITY = 2; //Default Value
-    JUMP_VEL = -1.0f; //Default Value
-}
-
-void bird_init(bird_t *bird) { //inicialite the position bird
-    bird->y= 3+(rand()%(WIDTH/2-2));
-    bird->vel_y = 0;
-}
-
+//Bird funcions
 void bird_mov(bird_t* bird){
     bird->vel_y += GRAVITY;
     bird->y   += bird->vel_y;
@@ -91,57 +91,20 @@ void bird_mov(bird_t* bird){
     }
 }
 
+char collision(column_t* pcol, bird_t* pbird){
+    column_t intersection_col = {.x=OUTSIDE};
 
-
-/*Update screen size fun- NOT WORKING
-
-int update_screen_dimensions() {
-    getmaxyx(stdscr, HEIGHT, WIDTH);
-
-    if (HEIGHT < 30 || WIDTH < 30) {
-        endwin();
-        perror("The screen is too small");
-        exit(1);
-        return -1;
-    }
-
-    int new_col = WIDTH / COL_WIDTH;
-
-    coord_t* pnew_column = realloc(column, new_col * sizeof(coord_t));
-    if (pnew_column == NULL) {
-        endwin();
-        perror("Error al realocar columnas");
-        exit(1);
-    }
-
-    // Inicializar nuevas columnas si se agrandó
-    if(NUM_COL < new_col) {
-        for (int i = NUM_COL; i < new_col; i++) {
-            pnew_column[i].x = pnew_column[i-1].x + COL_WIDTH + SPACE; // Set outside for new columns
-            pnew_column[i].len = COL_WIDTH; // No length initially
-            pnew_column[i].y = rand_hole();
+    for (int i=0; i<NUM_COL;i++){
+        if((pbird->x >= pcol[i].x ) && (pbird->x < (pcol[i].x + COL_WIDTH))){//Gives the column that is in the corrd x of the bird 
+            intersection_col=pcol[i];
         }
+    }
+    if(intersection_col.x != OUTSIDE && (!((pbird->y >= intersection_col.y) && (pbird->y < (intersection_col.y + HOLE_HEIGHT))))){ //if there is a column that has the same coord x as the bird and the coord y is not the same as the ones in the hole
+        return 1; //the bird collides
     }
     else{
-        // If the number of columns decreased, we can keep the existing ones
-        for (int i = new_col; i < NUM_COL; i++) {
-            pnew_column[i].x = OUTSIDE; // Set outside for removed columns
-            pnew_column[i].len = 0; // No length for removed columns
-        }
+        return 0;
     }
-    set_parameters(); // Update parameters based on new dimensions
-    column = pnew_column;// Update global pointer
-
-    return 1;
 }
-
-
-void handle_winch(int sig) {
-    endwin();
-    refresh();
-    clear();
-    update_screen_dimensions();
-}
-*/    
 
     
