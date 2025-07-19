@@ -8,7 +8,7 @@ int NUM_COL;
 int COL_WIDTH;
 int SPACE;
 
-coord_t* column;
+column_t* column;
 
 int main(void)
 {
@@ -25,8 +25,8 @@ int main(void)
     set_parameters();
 
     //var
-    column = malloc(sizeof(coord_t) * NUM_COL);
-    coord_t bird; //init bird
+    column = malloc(sizeof(column_t) * NUM_COL);
+    bird_t bird; //init bird
 
     //main program
     init(column, &bird); 

@@ -2,16 +2,18 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "name": "C/C++ Runner: Debug Session",
+      "name": "Debug Flappy",
       "type": "cppdbg",
       "request": "launch",
+      "program": "${workspaceFolder}/flappy_bird",
       "args": [],
       "stopAtEntry": false,
+      "cwd": "${workspaceFolder}",
+      "environment": [],
       "externalConsole": false,
-      "cwd": "/home/leila/Documents/coil/flappy_bird",
-      "program": "/home/leila/Documents/coil/flappy_bird/build/Debug/outDebug",
       "MIMode": "gdb",
-      "miDebuggerPath": "gdb",
+      "miDebuggerPath": "/usr/bin/gdb",
+      "preLaunchTask": "build flappy",
       "setupCommands": [
         {
           "description": "Enable pretty-printing for gdb",

@@ -1,0 +1,24 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "build flappy",
+      "type": "shell",
+      "command": "gcc",
+      "args": [
+        "-g",
+        "main.c",
+        "backend.c",
+        "frontend.c",
+        "-o",
+        "flappy_bird",
+        "-lncurses"
+      ],
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      },
+      "problemMatcher": ["$gcc"]
+    }
+  ]
+}

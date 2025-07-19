@@ -5,14 +5,14 @@ extern int WIDTH;
 extern int HEIGHT;
 extern int HOLE_HEIGHT;
 extern int NUM_COL;
-extern coord_t* column;
+extern column_t* column;
 extern int COL_WIDTH;
 extern int SPACE;
 
 
 //Functions
 
-void init(coord_t* pcol, coord_t* pbird){
+void init(column_t* pcol, bird_t* pbird){
 
     int aux_x=0; 
     int i;
@@ -32,7 +32,7 @@ void init(coord_t* pcol, coord_t* pbird){
 
 }
 
-void col_mov(coord_t* pcol){
+void col_mov(column_t* pcol){
     for(int i=0; i<NUM_COL; i++){
         if(pcol[i].len){
             (pcol[i].x)--;
@@ -44,7 +44,7 @@ void col_mov(coord_t* pcol){
             }
         }
         else{//0 lines in the next column
-            coord_t next_coord= i==0 ? pcol[NUM_COL-1]: pcol[i-1];
+            column_t next_coord= i==0 ? pcol[NUM_COL-1]: pcol[i-1];
             if(next_coord.x==OUTSIDE || (((next_coord.len)+next_coord.x) >= WIDTH-SPACE) ){
                 pcol[i].x=OUTSIDE;
             }

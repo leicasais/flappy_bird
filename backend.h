@@ -10,13 +10,17 @@
         int y;      //Saves where are the holes begin in coord y
         int len; //Saves the length of the column
 
-    }coord_t;
+    }column_t;
+    typedef struct{
+        int x;
+        int y;
+    }bird_t;
 
     //Prototipos 
-    void init(coord_t* pcol, coord_t* pbird);// INicialisation of the var
+    void init(column_t* pcol, bird_t* pbird);// INicialisation of the var
     int rand_hole(void);
-    int lines_col(coord_t pcol);//Rerturns the number of lines shown in the screen in a Col
-    void col_mov(coord_t* pcol);//Changes the coord x in each col per frame
+    int lines_col(column_t pcol);//Rerturns the number of lines shown in the screen in a Col
+    void col_mov(column_t* pcol);//Changes the coord x in each col per frame
     void handle_winch(int sig);
     int update_screen_dimensions();
     void set_parameters(void); //Set default values for the game, like hole size 

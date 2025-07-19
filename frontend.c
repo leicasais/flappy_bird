@@ -11,7 +11,7 @@ extern int SPACE;
 
 
 //Function
-void display_col(coord_t* pcol){
+void display_col(column_t* pcol){
     for(int i=0; i< NUM_COL; i++){
         if(pcol[i].len >0){
             for(int j=0;j<pcol[i].len;j++){
