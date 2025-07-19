@@ -74,8 +74,21 @@ void set_parameters(void){
     JUMP_VEL = -8.0f; //Default Value
 }
 
-void bird_mov(coord_t bird){
- 
+
+char collision(column_t* pcol, bird_t* pbird){
+    column_t intersection_col = {.x=OUTSIDE};
+
+    for (int i=0; i<NUM_COL;i++){
+        if((pbird->x >= pcol[i].x ) && (pbird->x < (pcol[i].x + COL_WIDTH))){//Gives the column that is in the corrd x of the bird 
+            intersection_col=pcol[i];
+        }
+    }
+    if(intersection_col.x != OUTSIDE && (!((pbird->y >= intersection_col.y) && (pbird->y < (intersection_col.y + HOLE_HEIGHT))))){ //if there is a column that has the same coord x as the bird and the coord y is not the same as the ones in the hole
+        return 1; //the bird collides
+    }
+    else{
+        return 0;
+    }
 }
 
 /*Update screen size fun- NOT WORKING
