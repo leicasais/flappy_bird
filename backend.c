@@ -13,7 +13,7 @@ extern float JUMP_VEL;
 
 //Functions
 
-void init(column_t* pcol){
+void init(column_t* pcol,bird_t* bird){
 
     int aux_x=0; 
     int i;
@@ -27,6 +27,8 @@ void init(column_t* pcol){
         pcol[j].x=OUTSIDE;
         pcol[j].len=0;
     }
+    bird->y= 3+(rand()%(WIDTH/2-2));
+    bird->vel_y = 0;
 }
 
 void col_mov(column_t* pcol){
@@ -67,12 +69,7 @@ void set_parameters(void){
     SPACE = HEIGHT / 2; //Default value
     NUM_COL = WIDTH / COL_WIDTH; //Default value
     GRAVITY = 2; //Default Value
-    JUMP_VEL = -1.0f; //Default Value
-}
-
-void bird_init(bird_t *bird) { //inicialite the position bird
-    bird->y= 3+(rand()%(WIDTH/2-2));
-    bird->vel_y = 0;
+    JUMP_VEL = -1; //Default Value
 }
 
 void bird_mov(bird_t* bird){

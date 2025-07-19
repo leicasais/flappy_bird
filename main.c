@@ -31,7 +31,7 @@ int main(void)
     bird_t bird; //init bird
 
     //main program
-    init(column, &bird); 
+    init(column,&bird); 
     while (1)
     {
         //Update game logic
