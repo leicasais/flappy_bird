@@ -4,4 +4,6 @@
 
     //Prototipes
     void display_col(column_t* pcol);
+    void display_bird(bird_t * bird);
+    
 #endif

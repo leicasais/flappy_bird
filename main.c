@@ -42,7 +42,6 @@ int main(void)
         display_col(column);
         refresh();
         usleep(333333);     //3 FPS
-
         
     }
     

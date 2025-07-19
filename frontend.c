@@ -8,6 +8,8 @@ extern int HOLE_HEIGHT;
 extern int NUM_COL;
 extern int COL_WIDTH;
 extern int SPACE;
+extern float GRAVITY;
+extern float JUMP_VEL;   
 
 
 //Function
@@ -26,4 +28,10 @@ void display_col(column_t* pcol){
         }   
     }
     mvprintw(0, 0, "Floppy bird"); 
+}
+
+void display_bird(bird_t * bird){
+    int row = (int)(bird->y + 0.5f);
+    int col = (int)(bird->x + 0.5f);
+    mvaddch(row,col,'^');
 }
