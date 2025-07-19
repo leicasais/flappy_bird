@@ -56,7 +56,7 @@ int main(void)
         display_col(column);
         display_bird(&bird);
         refresh();
-        timeout(12);     //3 FPS
+        timeout(20);     //3 FPS
         
     }
     

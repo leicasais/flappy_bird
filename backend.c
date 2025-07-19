@@ -18,8 +18,8 @@ void set_parameters(void){          //Redefine globals
     COL_WIDTH = WIDTH / 15;         //Default value
     SPACE = HEIGHT / 2;             //Default value
     NUM_COL = WIDTH / COL_WIDTH;    //Default value
-    GRAVITY = 1.0f;                 //Default Value
-    JUMP_VEL = -5.0f;               //Default Value
+    GRAVITY = 0.25f;                 //Default Value
+    JUMP_VEL = -0.05f;               //Default Value
 }
 
 void init(column_t* pcol, bird_t *bird, menu_t *menue){
