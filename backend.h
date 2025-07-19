@@ -1,7 +1,11 @@
 #ifndef BACKEND_H
 #define BACKEND_H
 
-    //MACROS
+    /*#########################################
+
+                        MACROS
+
+    #########################################*/
     #define OUTSIDE -1000
     #define MAIN_MENU -1
     #define RUNING -2
@@ -12,7 +16,11 @@
     #define GAME_OVER -7
 
 
-    //Structs
+    /*#########################################
+
+                        Structs
+
+    #########################################*/
     typedef struct{ //Origin in (1,1)    
         int x;      //Saves where are the holes begin in coord x
         int y;      //Saves where are the holes begin in coord y
@@ -35,8 +43,12 @@
 
 
 
-    //Prototipos 
-    void init(column_t* pcol, bird_t *bird);             // INicialisation of the var
+    /*#########################################
+
+                        Functions
+
+    #########################################*/
+    void init(column_t* pcol, bird_t *bird);             // Inicialisation of the var
     int rand_hole(void);                                //Inicialices a random position y for the hole
     char collision(column_t* pcol, bird_t* pbird);      // Returns 1 if the bird's position will collide with a column in the next frame; otherwise, returns 0.
     void col_mov(column_t* pcol);                       //Changes the coord x in each col per frame
