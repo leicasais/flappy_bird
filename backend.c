@@ -13,7 +13,7 @@ extern float JUMP_VEL;
 
 //Functions
 
-void init(column_t* pcol, bird_t* pbird){
+void init(column_t* pcol){
 
     int aux_x=0; 
     int i;
@@ -27,10 +27,6 @@ void init(column_t* pcol, bird_t* pbird){
         pcol[j].x=OUTSIDE;
         pcol[j].len=0;
     }
-    // Calc of random value with max and min: min + rand() % (max - min + 1);
-    pbird->x=3+(rand()%(SPACE/2-2));
-    pbird->y= 3+(rand()%(WIDTH/2-2));
-
 }
 
 void col_mov(column_t* pcol){
@@ -70,26 +66,32 @@ void set_parameters(void){
     COL_WIDTH = WIDTH / 15; //Default value
     SPACE = HEIGHT / 2; //Default value
     NUM_COL = WIDTH / COL_WIDTH; //Default value
-    GRAVITY = 25.0f; //Default Value
-    JUMP_VEL = -8.0f; //Default Value
+    GRAVITY = 2; //Default Value
+    JUMP_VEL = -1.0f; //Default Value
+}
+
+void bird_init(bird_t *bird) { //inicialite the position bird
+    bird->y= 3+(rand()%(WIDTH/2-2));
+    bird->vel_y = 0;
+}
+
+void bird_mov(bird_t* bird){
+    bird->vel_y += GRAVITY;
+    bird->y   += bird->vel_y;
+
+    // Don't allow to the bird go so low
+    if (bird->y > HEIGHT) {
+        bird->y = HEIGHT;
+        bird->vel_y = 0;
+    }
+    // Don't allow to the bird go so high
+    if (bird->y < 0) {
+        bird->y = 0;
+        bird->vel_y = 0;
+    }
 }
 
 
-char collision(column_t* pcol, bird_t* pbird){
-    column_t intersection_col = {.x=OUTSIDE};
-
-    for (int i=0; i<NUM_COL;i++){
-        if((pbird->x >= pcol[i].x ) && (pbird->x < (pcol[i].x + COL_WIDTH))){//Gives the column that is in the corrd x of the bird 
-            intersection_col=pcol[i];
-        }
-    }
-    if(intersection_col.x != OUTSIDE && (!((pbird->y >= intersection_col.y) && (pbird->y < (intersection_col.y + HOLE_HEIGHT))))){ //if there is a column that has the same coord x as the bird and the coord y is not the same as the ones in the hole
-        return 1; //the bird collides
-    }
-    else{
-        return 0;
-    }
-}
 
 /*Update screen size fun- NOT WORKING
 
