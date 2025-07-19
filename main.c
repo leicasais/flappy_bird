@@ -20,7 +20,7 @@ int main(void)
     noecho();   
     keypad(stdscr, TRUE);
     curs_set(FALSE);        // Oculta el cursor
-    timeout(20);           // `getch()` waits in ms.Calc FPS: (t[ms]*10^-3)^-1. 50 FPS
+    nodelay(stdscr, TRUE);        // `getch()` waits in ms.Calc FPS: (t[ms]*10^-3)^-1. 50 FPS
     srand(time(NULL));     //plant the seed for rand()
 
     //signal(SIGWINCH, handle_winch);
@@ -31,18 +31,32 @@ int main(void)
     column = malloc(sizeof(column_t) * NUM_COL);
     bird_t bird; //init bird
 
-    //main program
+    /*###############################################
+    
+                        MAIN PROGRAM
+
+    ###############################################*/
     init(column,&bird); 
     while (1)
     {
         //Update game logic
         col_mov(column);
+        int ch = getch();
+        if (ch == ' ') {
+            bird_jump(&bird);
+        }
+        else if (ch == 'q') {
+            break;  // por si quieres salir con 'q'
+        }
+        bird_mov(&bird);
+
 
         //Update display
         erase(); 
         display_col(column);
+        display_bird(&bird);
         refresh();
-        usleep(333333);     //3 FPS
+        timeout(12);     //3 FPS
         
     }
     

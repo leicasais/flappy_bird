@@ -24,7 +24,7 @@
     char collision(column_t* pcol, bird_t* pbird);      // Returns 1 if the bird's position will collide with a column in the next frame; otherwise, returns 0.
     void col_mov(column_t* pcol);                       //Changes the coord x in each col per frame
     void set_parameters(void);                          //Set default values for the game, like hole size 
-    void bird_update(bird_t *b, float dt);              //Update the bird velocity
+    void bird_mov(bird_t *b);              //Update the bird velocity
     void bird_jump(bird_t *b);                          //Scan a "jump"
 
 

@@ -18,8 +18,8 @@ void set_parameters(void){          //Redefine globals
     COL_WIDTH = WIDTH / 15;         //Default value
     SPACE = HEIGHT / 2;             //Default value
     NUM_COL = WIDTH / COL_WIDTH;    //Default value
-    GRAVITY = 2;                    //Default Value
-    JUMP_VEL = -1.0f;               //Default Value
+    GRAVITY = 1.0f;                 //Default Value
+    JUMP_VEL = -5.0f;               //Default Value
 }
 
 void init(column_t* pcol, bird_t *bird){
@@ -37,7 +37,7 @@ void init(column_t* pcol, bird_t *bird){
         pcol[j].len=0;
     }
     bird->x= SPACE/2;
-    bird->y= 3+(rand()%(WIDTH/2-2));//inicialite the position bird
+    bird->y= 3+(rand()%(HEIGHT/2-2));//inicialite the position bird
     bird->vel_y = 0;
 }
 
@@ -76,8 +76,8 @@ int rand_hole(void){ //returns a random coord y for the begining of the hole
 
 //Bird funcions
 void bird_mov(bird_t* bird){
+    bird->y     += bird->vel_y;
     bird->vel_y += GRAVITY;
-    bird->y   += bird->vel_y;
 
     // Don't allow to the bird go so low
     if (bird->y > HEIGHT) {
@@ -90,6 +90,11 @@ void bird_mov(bird_t* bird){
         bird->vel_y = 0;
     }
 }
+// Detect a Jump and change de bird velocity
+void bird_jump(bird_t* bird) {
+    bird->vel_y = JUMP_VEL;
+}
+
 
 char collision(column_t* pcol, bird_t* pbird){
     column_t intersection_col = {.x=OUTSIDE};
