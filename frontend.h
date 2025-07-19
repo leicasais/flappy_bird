@@ -3,5 +3,5 @@
 #define FRONTEND_H
 
     //Prototipes
-    void display_col(coord_t* pcol);
+    void display_col(column_t* pcol);
 #endif

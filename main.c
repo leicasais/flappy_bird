@@ -8,7 +8,7 @@ int NUM_COL;
 int COL_WIDTH;
 int SPACE;
 
-coord_t* column;
+column_t* column;
 
 int main(void)
 {
@@ -21,18 +21,18 @@ int main(void)
     srand(time(NULL));     //plant the seed for rand()
 
     //signal(SIGWINCH, handle_winch);
-    getmaxyx(stdscr, HEIGHT, WIDTH);  // first read of the scren dimations (dinamic)  
-    set_parameters();
+    signal(SIGWINCH, handle_winch);
+    set_parameters(HEIGHT, WIDTH);
 
     //var
-    column = malloc(sizeof(coord_t) * NUM_COL);
-    coord_t bird; //init bird
+    column = malloc(sizeof(column_t) * NUM_COL);
 
     //main program
-    init(column, &bird); 
+    init(column); 
     while (1)
     {
         //Update game logic
+        getmaxyx(stdscr, HEIGHT, WIDTH);  // first read of the scren dimentions (dinamic)  
         col_mov(column);
 
         //Update display
