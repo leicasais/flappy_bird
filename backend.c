@@ -1,8 +1,8 @@
 #include "backend.h"
 
 //Global var from main.c
-extern int WIDTH;
-extern int HEIGHT;
+extern int GAME_WIDTH;
+extern int GAME_HEIGHT;
 extern int HOLE_HEIGHT;
 extern int NUM_COL;
 extern column_t* column;
@@ -14,10 +14,10 @@ extern float JUMP_VEL;
 //Inicialisations and parameters functions
 
 void set_parameters(void){          //Redefine globals
-    HOLE_HEIGHT = HEIGHT / 3;       //Default value
-    COL_WIDTH = WIDTH / 15;         //Default value
-    SPACE = HEIGHT / 2;             //Default value
-    NUM_COL = WIDTH / COL_WIDTH;    //Default value
+    HOLE_HEIGHT = GAME_HEIGHT / 3;       //Default value
+    COL_WIDTH = GAME_WIDTH / 15;         //Default value
+    SPACE = GAME_HEIGHT / 2;             //Default value
+    NUM_COL = GAME_WIDTH / COL_WIDTH;    //Default value
     GRAVITY = 0.25f;                 //Default Value
     JUMP_VEL = -0.05f;               //Default Value
 }
@@ -26,7 +26,7 @@ void init(column_t* pcol, bird_t *bird, menu_t *menu){
 //Column init
     int aux_x=0; 
     int i;
-    for(i=0; i<(WIDTH/(COL_WIDTH+SPACE));i++){
+    for(i=0; i<(GAME_WIDTH/(COL_WIDTH+SPACE));i++){
         aux_x+=SPACE+COL_WIDTH;  
         pcol[i].x=aux_x;  //Sets the coordinate x of each point of the column
         pcol[i].y=rand_hole();
@@ -38,7 +38,7 @@ void init(column_t* pcol, bird_t *bird, menu_t *menu){
     }
 //Bird init
     bird->x= SPACE/2;
-    bird->y= 3+(rand()%(HEIGHT/2-2));//inicialite the position bird
+    bird->y= 3+(rand()%(GAME_HEIGHT/2-2));//inicialite the position bird
     bird->vel_y = 0;
 //Menue init
     menu->lives=3;
@@ -55,17 +55,17 @@ void col_mov(column_t* pcol){
             if(pcol[i].x < COL_WIDTH && pcol[i].x>=0){
                 (pcol[i].len)--; //Update the length of the column
             }
-            else if(pcol[i].x<WIDTH && pcol[i].x>(WIDTH-COL_WIDTH)){
+            else if(pcol[i].x<GAME_WIDTH && pcol[i].x>(GAME_WIDTH-COL_WIDTH)){
                 (pcol[i].len)++; //Update the length of the column
             }
         }
         else{//0 lines in the next column
             column_t next_coord= i==0 ? pcol[NUM_COL-1]: pcol[i-1];
-            if(next_coord.x==OUTSIDE || (((next_coord.len)+next_coord.x) >= WIDTH-SPACE) ){
+            if(next_coord.x==OUTSIDE || (((next_coord.len)+next_coord.x) >= GAME_WIDTH-SPACE) ){
                 pcol[i].x=OUTSIDE;
             }
             else{
-                pcol[i].x= WIDTH-1;
+                pcol[i].x= GAME_WIDTH-1;
                 pcol[i].y= rand_hole();
                 pcol[i].len=1; //Reset the length of the column
             }
@@ -75,7 +75,7 @@ void col_mov(column_t* pcol){
 
 
 int rand_hole(void){ //returns a random coord y for the begining of the hole        
-    return rand() % (HEIGHT - HOLE_HEIGHT - 1) + 1;
+    return rand() % (GAME_HEIGHT - HOLE_HEIGHT - 1) + 1;
 }
 
 
@@ -85,8 +85,8 @@ void bird_mov(bird_t* bird){
     bird->vel_y += GRAVITY;
 
     // Don't allow to the bird go so low
-    if (bird->y > HEIGHT) {
-        bird->y = HEIGHT;
+    if (bird->y > GAME_HEIGHT) {
+        bird->y = GAME_HEIGHT;
         bird->vel_y = 0;
     }
     // Don't allow to the bird go so high

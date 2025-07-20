@@ -1,8 +1,8 @@
 #include "backend.h"
 #include "frontend.h"
 //Variables Globales
-int WIDTH;              //Stores the WIDTH of the screen
-int HEIGHT;             //Stores the HEIGHT of the screen
+int GAME_WIDTH;              //Stores the WIDTH of the screen
+int GAME_HEIGHT;             //Stores the HEIGHT of the screen
 int HOLE_HEIGHT;        //Stores the Height of the holes
 int NUM_COL;            //Stores the number of columns including the ones OUTSIDE the screen
 int COL_WIDTH;          //Stores the WIDTH of the columns
@@ -25,7 +25,7 @@ int main(void)
     srand(time(NULL));     //plant the seed for rand()
 
     //signal(SIGWINCH, handle_winch);
-    getmaxyx(stdscr, HEIGHT, WIDTH);  // first read of the scren dimations (dinamic)  
+    getmaxyx(stdscr, GAME_HEIGHT, GAME_WIDTH);  // first read of the scren dimations (dinamic)  
     set_parameters();
 
     //var
@@ -63,7 +63,7 @@ int main(void)
             while(1){
                 main_menu(ch, &menu, &selection);
                 display_main_menu(selection);
-                if (menu.state!=MAIN_MENU){
+                if (menu.state!=PAUSE){
                     break;
                 }
                 ch = getch();    
@@ -80,7 +80,7 @@ int main(void)
                 bird_jump(&bird);
             }
             else if (ch == 'q') {
-                menu.state=PAUSE;  
+                menu.state=PAUSE; 
             }
             bird_mov(&bird);
 

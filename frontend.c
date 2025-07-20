@@ -2,8 +2,8 @@
 #include "backend.h"
 
 //Global var from main.c
-extern int WIDTH;
-extern int HEIGHT;
+extern int GAME_WIDTH;
+extern int GAME_HEIGHT;
 extern int HOLE_HEIGHT;
 extern int NUM_COL;
 extern int COL_WIDTH;
@@ -17,7 +17,7 @@ void display_col(column_t* pcol){
     for(int i=0; i< NUM_COL; i++){
         if(pcol[i].len >0){
             for(int j=0;j<pcol[i].len;j++){
-                for(int k=1; k< HEIGHT;k++){
+                for(int k=1; k< GAME_HEIGHT;k++){
                     if( k == (pcol[i].y) ){
                         k+=HOLE_HEIGHT;
                     }
@@ -42,6 +42,22 @@ void display_main_menu( int selection){
     };
     clear();
     mvprintw(1, 5, "=== FLAPPY MAIN MENU ===");
+    for (int i = 0; i < NUM_OPTIONS_MAIN; i++) {
+        if (i == selection) attron(A_REVERSE);
+        mvprintw(3 + i, 7, "%s", opciones[i]);
+        if (i == selection) attroff(A_REVERSE);
+    }
+
+    refresh();
+}
+void display_pause(int selection){
+    const char *opciones[] = {
+        "CONTINUE",
+        "EXIT",
+        "RESTART"
+    };
+    clear();
+    mvprintw(1, 5, "=== FLAPPY PAUSE MENU ===");
     for (int i = 0; i < NUM_OPTIONS_MAIN; i++) {
         if (i == selection) attron(A_REVERSE);
         mvprintw(3 + i, 7, "%s", opciones[i]);
