@@ -137,8 +137,10 @@ void main_menu(int key, menu_t *menu, int *selection){
                 break;
             case '\n':
                 switch (*selection) {
-                    case 0: menu->state= RUNING;break;
-                    case 1: menu->state= EXIT; break;
+                    case 0: menu->state= RUNING;
+                    break;
+                    case 1: menu->state= EXIT; 
+                    break;
                 }
     }
 }

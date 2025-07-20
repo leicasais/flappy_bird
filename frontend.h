@@ -6,5 +6,5 @@
     void display_col(column_t* pcol);
     void display_bird(bird_t * bird);
     void display_main_menu(int selection);
-    
+
 #endif
