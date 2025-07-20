@@ -45,7 +45,7 @@ int main(void)
     {
         frame++;
         int ch = getch();
-        int height = HEIGHT;
+        int height = GAME_HEIGHT;
         //MENU
         if(menu.state==MAIN_MENU){
             int selection=0;
@@ -90,10 +90,10 @@ int main(void)
             display_col(column);
             display_bird(&bird);
             refresh();
-            if(height!=HEIGHT){
+            if(height!=GAME_HEIGHT){
                 set_parameters();
             }
-            
+
         }
         else if(menu.state== EXIT){
             break;
