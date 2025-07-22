@@ -8,14 +8,19 @@
     //Macros for the main/game flow
     #define MS_BTW_FRAMES 16
     #define VEL_COL 4       //numb of frames until the next mov of col
+    #define MIN_GAME_HEIGHT 8
+    #define MIN_GAME_WIDTH 8 
 
     #define OUTSIDE -1000
     
     #define NUM_OPTIONS_MAIN 2 
+    #define NUM_OPTIONS_GAME_OVER 3
+    #define NUM_OPTIONS_PAUSE 4
+
     #define MAIN_MENU 1
     #define RUNING 2
     #define PAUSE 3
-    #define RESUME 4
+    #define CONTINUE 4
     #define EXIT 5
     #define RESTART 6
     #define GAME_OVER 7
@@ -61,8 +66,9 @@
     void set_parameters(void);                          //Set default values for the game, like hole size 
     void bird_mov(bird_t* bird, int ch);              //Update the bird velocity
     void main_menu(int key, menu_t *menu, int *selection);                                // Displays the main menu and returns a code based on the player’s selection (e.g., start, exit).
-
-
+    void game_over_menu(int key, menu_t *menu, int *selection);
+    void colition_update(menu_t* pmenu);
+    void pause_menu(int key, menu_t *menu, int *selection);
 #endif
 
 //std libs and ncurses

@@ -27,7 +27,12 @@ void display_col(column_t* pcol){
             }  
         }   
     }
-    mvprintw(0, 0, "Floppy bird"); 
+}
+void display_upper_line(int lives) {
+    mvprintw(0, 0, "Lives: ");
+    for (int i = 0; i < lives; i++) {
+        printw(" <3 "); // harts
+    }
 }
 
 void display_bird(bird_t * bird, int ch){
@@ -46,6 +51,30 @@ void display_bird(bird_t * bird, int ch){
         }
     
 }
+
+void display_resurecting_bird(bird_t * bird, int ch){
+    static int up=0;
+    static int time=0;
+    if(ch==' '){
+        up=!up;
+    }
+    if(time<10){
+        if(up){
+            mvaddch(bird->y,bird->x,'o');
+        }
+        else{
+            mvaddch(bird->y,bird->x,'-');
+        }
+    }
+    if(time<20){
+        time++;
+    }
+    else{
+        time=0;
+    }  
+    
+}
+
 void display_main_menu( int selection){
     const char *opciones[] = {
         "START",
@@ -54,23 +83,43 @@ void display_main_menu( int selection){
     clear();
     const char title[]="=== FLAPPY MAIN MENU ===";
     mvprintw(1, (GAME_WIDTH-strlen(title))/2, &(title[0]));
+    mvprintw(2,0, "To pause the game press the key 'q'");
     for (int i = 0; i < NUM_OPTIONS_MAIN; i++) {
+        if (i == selection) attron(A_REVERSE);
+        mvprintw(5 + i, 7, "%s", opciones[i]);
+        if (i == selection) attroff(A_REVERSE);
+    }
+    refresh();
+}
+void display_game_over_menu( int selection){
+    const char *opciones[] = {
+        "TRY AGAIN !!",
+        "Go to main menu",
+        "EXIT :("
+    };
+    clear();
+    const char title[]=" GAME OVER °¬°";
+    mvprintw(1, (GAME_WIDTH-strlen(title))/2, &(title[0]));
+    for (int i = 0; i < NUM_OPTIONS_GAME_OVER; i++) {
         if (i == selection) attron(A_REVERSE);
         mvprintw(3 + i, 7, "%s", opciones[i]);
         if (i == selection) attroff(A_REVERSE);
     }
-
     refresh();
 }
-void display_pause(int selection){
+void display_pause_menu(int selection){
     const char *opciones[] = {
         "CONTINUE",
-        "EXIT",
-        "RESTART"
+        "RESTART",
+        "Go to main menu",
+        "EXIT :("
+        
+        
     };
     clear();
-    mvprintw(1, 5, "=== FLAPPY PAUSE MENU ===");
-    for (int i = 0; i < NUM_OPTIONS_MAIN; i++) {
+    const char title[]="**** FLAPPY PAUSE MENU, Take a break ****";
+    mvprintw(1, (GAME_WIDTH-strlen(title))/2, &(title[0]));
+    for (int i = 0; i < NUM_OPTIONS_PAUSE; i++) {
         if (i == selection) attron(A_REVERSE);
         mvprintw(3 + i, 7, "%s", opciones[i]);
         if (i == selection) attroff(A_REVERSE);

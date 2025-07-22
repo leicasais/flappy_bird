@@ -25,76 +25,96 @@ int main(void)
     srand(time(NULL));     //plant the seed for rand()
 
     //signal(SIGWINCH, handle_winch);
+    
+    int frame=0;    //Counts the frames since the last column update
+    int reboot_time=0;
     getmaxyx(stdscr, GAME_HEIGHT, GAME_WIDTH);  // first read of the scren dimations (dinamic)  
     set_parameters();
-
-    //var
     column = malloc(sizeof(column_t) * NUM_COL);
     bird_t bird; //init bird
-    menu_t menu;
-    int frame=0;    //Counts the frames since the last column update
+    menu_t menu ={.state=MAIN_MENU};
 
     /*###############################################
-    
                         MAIN PROGRAM
-
     ###############################################*/
-    init(column,&bird, &menu);
     
     while (1)
     {
         frame++;
         int ch = getch();
+        int selection=0;
         //MENU
-        if(menu.state==MAIN_MENU){
-            int selection=0;
-            while(1){
-                main_menu(ch, &menu, &selection);
-                display_main_menu(selection);
-                if (menu.state!=MAIN_MENU){
-                    break;
-                }
-                ch = getch();    
-            }
-        }
-        else if(menu.state==PAUSE){//Pasa lo mismo que para main menu por que todavia no setie el modo menu de pausa, despues hay que cambiarlo
-            int selection=0;
-            while(1){
-                main_menu(ch, &menu, &selection);
-                display_main_menu(selection);
-                if (menu.state!=PAUSE){
-                    break;
-                }
-                ch = getch();    
-            }
-        }
-        else if(menu.state==RUNING){
-            //Update game logic
-            if(frame==VEL_COL){
-                col_mov(column);
+        switch (menu.state){
+            case RESTART:
+                init(column,&bird, &menu);
+                menu.state=RUNING;
                 frame=0;
-            }
-            
-            else if (ch == 'q') {
-                menu.state=PAUSE; 
-            }
-            bird_mov(&bird, ch);
+                reboot_time=0;
+                break;
+            case MAIN_MENU:
+                selection=0;
+                while(menu.state == MAIN_MENU){
+                    main_menu(ch, &menu, &selection);
+                    display_main_menu(selection);
+                    ch = getch();    
+                }
+                break;
+            case PAUSE:
+                selection=0;
+                while(menu.state == PAUSE){
+                    pause_menu(ch, &menu, &selection);
+                    display_pause_menu(selection);
+                    ch = getch();    
+                }
+                break;
+            case GAME_OVER:
+                selection=0;
+                while(menu.state == GAME_OVER){
+                    game_over_menu(ch, &menu, &selection);
+                    display_game_over_menu(selection);
+                    ch = getch();
+                    
+                }
+                break;
+            case RUNING:
+                erase();
+                if (ch == 'q') {
+                    menu.state=PAUSE; 
+                }
+                //Update game logic
+                if(frame==VEL_COL){
+                    col_mov(column);
+                    frame=0;
+                }
+                bird_mov(&bird, ch);
+                //Divide cases in resurrection mode, die, playing normally
+                if(collision(column, &bird) && !reboot_time){
+                    colition_update(&menu);
+                    reboot_time=1;
+                }
+                else if(reboot_time > 0 && reboot_time < (MS_BTW_FRAMES * VEL_COL*2)){
+                    reboot_time++;
+                    // show resurrection animation
+                    display_resurecting_bird(&bird, ch); // animación con parpadeo
 
-
-            //Update display
-            erase(); 
-            display_col(column);
-            display_bird(&bird, ch);
-            refresh();
-
+                }
+                else{
+                    reboot_time = 0;  // Terminó el modo resurrección
+                //Update display
+                    display_bird(&bird, ch);
+                }
+                display_upper_line(menu.lives);  
+                display_col(column);
+                refresh();
+                break;
+                
+            default:
+                break;
         }
-        else if(menu.state== EXIT){
+        if(menu.state==EXIT){
             break;
-        } 
-        
-        
+        }         
     }
-    
     free(column);
     endwin(); // exits ncurses mode, returns control to the terminal
     return 0;

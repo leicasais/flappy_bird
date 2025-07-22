@@ -52,8 +52,8 @@ void init(column_t* pcol, bird_t *bird, menu_t *menu){
 //Menue init
     menu->lives=3;
     menu->score=0;
-    menu->state= MAIN_MENU;
 }
+
 
 //Column funcions
 
@@ -112,13 +112,15 @@ void bird_mov(bird_t* bird, int ch){
 
 char collision(column_t* pcol, bird_t* pbird){
     column_t intersection_col = {.x=OUTSIDE};
-
+    
     for (int i=0; i<NUM_COL;i++){
         if((pbird->x >= pcol[i].x ) && (pbird->x < (pcol[i].x + COL_WIDTH))){//Gives the column that is in the corrd x of the bird 
-            intersection_col=pcol[i];
+            if(intersection_col.x == OUTSIDE || (intersection_col.x > (pcol[i].x)) ){//Only takes the column that is nearer the bird
+                intersection_col=pcol[i];
+            }
         }
     }
-    if(intersection_col.x != OUTSIDE && (!((pbird->y >= intersection_col.y) && (pbird->y < (intersection_col.y + HOLE_HEIGHT))))){ //if there is a column that has the same coord x as the bird and the coord y is not the same as the ones in the hole
+    if(intersection_col.x != OUTSIDE && (!(((int)(pbird->y) >= intersection_col.y) && ((int)(pbird->y) < (intersection_col.y + HOLE_HEIGHT)))) ){ //if there is a column that has the same coord x as the bird and the coord y is not the same as the ones in the hole
         return 1; //the bird collides
     }
     else{
@@ -146,15 +148,72 @@ void main_menu(int key, menu_t *menu, int *selection){
                 break;
             case '\n':
                 switch (*selection) {
-                    case 0: menu->state= RUNING;
+                    case 0: menu->state= RESTART;
                     break;
                     case 1: menu->state= EXIT; 
                     break;
                 }
     }
 }
+void pause_menu(int key, menu_t *menu, int *selection){
+    
+    switch (key) {
+            case KEY_UP:
+                (*selection)--;
+                if((*selection)<0){
+                    (*selection)=(NUM_OPTIONS_PAUSE-1);
+                }
+                break;
+            case KEY_DOWN:
+                (*selection)++;
+                if((*selection)==NUM_OPTIONS_PAUSE){
+                    *selection=0;
+                }
+                break;
+            case '\n':
+                switch (*selection) {
+                    case 0: menu->state= RUNING;
+                    break;
+                    case 1: menu->state= RESTART; 
+                    break;
+                    case 2: menu->state= MAIN_MENU;
+                    break;
+                    case 3: menu->state= EXIT;
+                    break;
+                }
+    }
+}
 
-void data_track(menu_t* pmenu){     // Updates game statistics such as score and lives.
+void game_over_menu(int key, menu_t *menu, int *selection){
+    switch (key) {
+            case KEY_UP:
+                (*selection)--;
+                if((*selection)<0){
+                    (*selection)=(NUM_OPTIONS_GAME_OVER-1);
+                }
+                break;
+            case KEY_DOWN:
+                (*selection)++;
+                if((*selection)==NUM_OPTIONS_GAME_OVER){
+                    *selection=0;
+                }
+                break;
+            case '\n':
+                switch (*selection) {
+                    case 0: menu->state= RESTART;
+                    break;
+                    case 1: menu->state= MAIN_MENU; 
+                    break;
+                    case 2: menu->state= EXIT;
+                    break;
+                }
+    }
+}
 
+void colition_update(menu_t* pmenu){     // Updates game statistics such as score and lives.
+    pmenu->lives --;
+    if(pmenu->lives < 0){
+        pmenu->state = GAME_OVER;
+    }
 } 
     
