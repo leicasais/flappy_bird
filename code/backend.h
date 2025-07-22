@@ -40,6 +40,8 @@
 
     typedef struct{
         float y;
+        int y_top;               //Creates a hitbox for the bird with top and y_bottom
+        int y_bottom;
         float gravity_y;         //based on the terminal velocity of a small bird on each place, delta x per frame that the bird has to descend cause of the gravity 
         float delta_y;              //desplazamiento in y
         int x;

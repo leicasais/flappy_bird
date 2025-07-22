@@ -49,7 +49,9 @@ void init(column_t* pcol, bird_t *bird, menu_t *menu){
     bird->x= SPACE/2;
     bird->y= 3+(rand()%(GAME_HEIGHT/2-2));//inicialite the position bird
     bird->gravity_y = 0.004;//Despues esta opcion depende el menu pero por ahora lo dejo como si siempre estuviese en la tierra
-//Menue init
+    bird->y_top=(int)(bird->y);
+    bird->y_bottom=bird->y_top+1;
+    //Menue init
     menu->lives=3;
     menu->score=0;
 }
@@ -107,27 +109,30 @@ void bird_mov(bird_t* bird, int ch){
         bird->y = 1;
         bird->delta_y =0;
     }
+    //Update hitbox
+    bird->y_top=(int)(bird->y);
+    bird->y_bottom=bird->y_top+1;
     
 }
 
 char collision(column_t* pcol, bird_t* pbird){
-    column_t intersection_col = {.x=OUTSIDE};
-    
-    for (int i=0; i<NUM_COL;i++){
-        if((pbird->x >= pcol[i].x ) && (pbird->x < (pcol[i].x + COL_WIDTH))){//Gives the column that is in the corrd x of the bird 
-            if(intersection_col.x == OUTSIDE || (intersection_col.x > (pcol[i].x)) ){//Only takes the column that is nearer the bird
-                intersection_col=pcol[i];
+    for (int i = 0; i < NUM_COL; i++) {
+        if (pcol[i].len == 0) continue; // Saltar columnas no activas
+
+        int col_left = pcol[i].x;
+        int col_right = col_left + pcol[i].len;
+        int hole_top = pcol[i].y;
+        int hole_bottom = hole_top + HOLE_HEIGHT;
+
+        if ((pbird->x >= col_left) && (pbird->x < col_right)) {
+            // Verificar si el pájaro NO está dentro del hueco
+            if (pbird->y_bottom <= hole_top || pbird->y_top >= hole_bottom) {
+                return 1;
             }
         }
     }
-    if(intersection_col.x != OUTSIDE && (!(((int)(pbird->y) >= intersection_col.y) && ((int)(pbird->y) < (intersection_col.y + HOLE_HEIGHT)))) ){ //if there is a column that has the same coord x as the bird and the coord y is not the same as the ones in the hole
-        return 1; //the bird collides
-    }
-    else{
-        return 0;
-    }
+    return 0;
 }
-
 
 //Menue funtions
 
