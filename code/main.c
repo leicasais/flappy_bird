@@ -73,18 +73,20 @@ int main(void)
                     game_over_menu(ch, &menu, &selection);
                     display_game_over_menu(selection);
                     ch = getch();
-                    
                 }
                 break;
             case RUNING:
                 erase();
-                if (ch == 'q') {
+                if (ch == 'q' || ch == 'Q') {
                     menu.state=PAUSE; 
                 }
                 //Update game logic
-                if(frame==VEL_COL){
+                if(frame>=VEL_COL){
                     col_mov(column);
                     frame=0;
+                    if(reboot_time==0){
+                        points(column, &bird, &menu);   //Adds a point if the bird has passed a column only if in game mode
+                    }
                 }
                 bird_mov(&bird, ch);
                 //Divide cases in resurrection mode, die, playing normally
@@ -99,11 +101,11 @@ int main(void)
 
                 }
                 else{
-                    reboot_time = 0;  // Terminó el modo resurrección
-                //Update display
-                    display_bird(&bird, ch);
+                    reboot_time = 0;                //Ends the resurection mode
+                    display_bird(&bird, ch);        //Displays the normal bird mode
                 }
-                display_upper_line(menu.lives);  
+                //Update display
+                display_upper_line(menu);  
                 display_col(column);
                 refresh();
                 break;

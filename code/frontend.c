@@ -28,11 +28,14 @@ void display_col(column_t* pcol){
         }   
     }
 }
-void display_upper_line(int lives) {
+void display_upper_line(menu_t menu) {
     mvprintw(0, 0, "Lives: ");
-    for (int i = 0; i < lives; i++) {
+    for (int i = 0; i < menu.lives; i++) {
         printw(" <3 "); // harts
     }
+    char str[20];
+    sprintf(str, "Score: %d", menu.score);  // Convierte el número en texto
+    mvprintw(0, GAME_WIDTH-strlen(str)-1, "%s", str);
 }
 
 void display_bird(bird_t * bird, int ch){
@@ -113,8 +116,6 @@ void display_pause_menu(int selection){
         "RESTART",
         "Go to main menu",
         "EXIT :("
-        
-        
     };
     clear();
     const char title[]="**** FLAPPY PAUSE MENU, Take a break ****";

@@ -134,6 +134,17 @@ char collision(column_t* pcol, bird_t* pbird){
     return 0;
 }
 
+void points(column_t* pcol, bird_t* pbird, menu_t* menu){
+    for (int i=0; i < NUM_COL; i++){
+        if (pcol[i].len == 0) continue; // Saltar columnas no activas
+        int col_right = pcol[i].x + pcol[i].len;
+
+        if (pbird->x == col_right+1){
+           menu->score++;
+        }
+    }
+}
+
 //Menue funtions
 
 void main_menu(int key, menu_t *menu, int *selection){

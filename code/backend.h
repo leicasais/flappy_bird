@@ -57,10 +57,9 @@
 
 
     /*#########################################
-
                         Functions
-
     #########################################*/
+    
     void init(column_t* pcol, bird_t *bird, menu_t *menu);             // Inicialisation of the var
     int rand_hole(void);                                //Inicialices a random position y for the hole
     char collision(column_t* pcol, bird_t* pbird);      // Returns 1 if the bird's position will collide with a column in the next frame; otherwise, returns 0.
@@ -71,6 +70,8 @@
     void game_over_menu(int key, menu_t *menu, int *selection);
     void colition_update(menu_t* pmenu);
     void pause_menu(int key, menu_t *menu, int *selection);
+    void points(column_t* pcol, bird_t* pbird, menu_t* menu);
+
 #endif
 
 //std libs and ncurses
