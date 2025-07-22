@@ -30,10 +30,21 @@ void display_col(column_t* pcol){
     mvprintw(0, 0, "Floppy bird"); 
 }
 
-void display_bird(bird_t * bird){
-    int row = (int)(bird->y + 0.5f);
-    int col = (int)(bird->x + 0.5f);
-    mvaddch(row,col,'^');
+void display_bird(bird_t * bird, int ch){
+    static int up=0;
+    if(ch==' '){
+        up=!up;
+    }
+    else if(bird->delta_y>0){
+        mvaddch(bird->y,bird->x,'~');
+    }
+    else if(up){
+            mvaddch(bird->y,bird->x,'v');
+        }
+        else{
+            mvaddch(bird->y,bird->x,'^');
+        }
+    
 }
 void display_main_menu( int selection){
     const char *opciones[] = {
@@ -41,7 +52,8 @@ void display_main_menu( int selection){
         "EXIT"
     };
     clear();
-    mvprintw(1, 5, "=== FLAPPY MAIN MENU ===");
+    const char title[]="=== FLAPPY MAIN MENU ===";
+    mvprintw(1, (GAME_WIDTH-strlen(title))/2, &(title[0]));
     for (int i = 0; i < NUM_OPTIONS_MAIN; i++) {
         if (i == selection) attron(A_REVERSE);
         mvprintw(3 + i, 7, "%s", opciones[i]);

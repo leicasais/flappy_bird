@@ -21,7 +21,7 @@ int main(void)
     keypad(stdscr, TRUE);
     curs_set(FALSE);        // Oculta el cursor
     nodelay(stdscr, TRUE);        
-    timeout(16);           // `getch()` waits in ms.Calc FPS: (t[ms]*10^-3)^-1. 50 FPS
+    timeout(MS_BTW_FRAMES);           // `getch()` waits in ms.Calc FPS: (t[ms]*10^-3)^-1. 50 FPS
     srand(time(NULL));     //plant the seed for rand()
 
     //signal(SIGWINCH, handle_winch);
@@ -70,24 +70,21 @@ int main(void)
         }
         else if(menu.state==RUNING){
             //Update game logic
-            if(frame==4){
+            if(frame==VEL_COL){
                 col_mov(column);
                 frame=0;
             }
             
-            if (ch == ' ') {
-                bird_jump(&bird);
-            }
             else if (ch == 'q') {
                 menu.state=PAUSE; 
             }
-            bird_mov(&bird);
+            bird_mov(&bird, ch);
 
 
             //Update display
             erase(); 
             display_col(column);
-            display_bird(&bird);
+            display_bird(&bird, ch);
             refresh();
 
         }

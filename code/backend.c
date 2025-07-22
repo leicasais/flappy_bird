@@ -8,8 +8,6 @@ extern int NUM_COL;
 extern column_t* column;
 extern int COL_WIDTH;
 extern int SPACE;
-extern float GRAVITY;
-extern float JUMP_VEL;
 
 //Inicialisations and parameters functions
 
@@ -18,8 +16,6 @@ void set_parameters(void){          //Redefine globals
     COL_WIDTH = GAME_WIDTH / 15;         //Default value
     SPACE = GAME_HEIGHT;             //Default value
     NUM_COL = GAME_WIDTH / COL_WIDTH;    //Default value
-    GRAVITY = 0.25f;                 //Default Value
-    JUMP_VEL = -0.05f;               //Default Value
 }
 
 void init(column_t* pcol, bird_t *bird, menu_t *menu){
@@ -52,7 +48,7 @@ void init(column_t* pcol, bird_t *bird, menu_t *menu){
 //Bird init
     bird->x= SPACE/2;
     bird->y= 3+(rand()%(GAME_HEIGHT/2-2));//inicialite the position bird
-    bird->vel_y = 0;
+    bird->gravity_y = 0.004;//Despues esta opcion depende el menu pero por ahora lo dejo como si siempre estuviese en la tierra
 //Menue init
     menu->lives=3;
     menu->score=0;
@@ -94,26 +90,25 @@ int rand_hole(void){ //returns a random coord y for the begining of the hole
 
 
 //Bird funcions
-void bird_mov(bird_t* bird){
-    bird->y     += bird->vel_y;
-    bird->vel_y += GRAVITY;
-
-    // Don't allow to the bird go so low
-    if (bird->y > GAME_HEIGHT) {
-        bird->y = GAME_HEIGHT;
-        bird->vel_y = 0;
+void bird_mov(bird_t* bird, int ch){
+    float jump_displacement=-0.1; //how far the bird would jump without gravity
+    if(ch == ' '){
+        bird->delta_y= jump_displacement;
     }
-    // Don't allow to the bird go so high
-    if (bird->y < 0) {
-        bird->y = 0;
-        bird->vel_y = 0;
-    }
-}
-// Detect a Jump and change de bird velocity
-void bird_jump(bird_t* bird) {
-    bird->vel_y = JUMP_VEL;
-}
+    bird->delta_y +=bird->gravity_y;
+    bird->y+=bird->delta_y;
 
+    // Don't allow the bird going out of the screen 
+    if (bird->y > (GAME_HEIGHT-1)) {
+        bird->y = GAME_HEIGHT-1;
+        bird->delta_y=0;
+    }
+    else if (bird->y < 1) {
+        bird->y = 1;
+        bird->delta_y =0;
+    }
+    
+}
 
 char collision(column_t* pcol, bird_t* pbird){
     column_t intersection_col = {.x=OUTSIDE};

@@ -2,10 +2,13 @@
 #define BACKEND_H
 
     /*#########################################
-
                         MACROS
-
     #########################################*/
+
+    //Macros for the main/game flow
+    #define MS_BTW_FRAMES 16
+    #define VEL_COL 4       //numb of frames until the next mov of col
+
     #define OUTSIDE -1000
     
     #define NUM_OPTIONS_MAIN 2 
@@ -20,10 +23,9 @@
 
 
     /*#########################################
-
                         Structs
-
     #########################################*/
+
     typedef struct{ //Origin in (1,1)    
         int x;      //Saves where are the holes begin in coord x
         int y;      //Saves where are the holes begin in coord y
@@ -32,8 +34,9 @@
     }column_t;
 
     typedef struct{
-        int y;
-        float vel_y;
+        float y;
+        float gravity_y;         //based on the terminal velocity of a small bird on each place, delta x per frame that the bird has to descend cause of the gravity 
+        float delta_y;              //desplazamiento in y
         int x;
     }bird_t;
 
@@ -56,8 +59,7 @@
     char collision(column_t* pcol, bird_t* pbird);      // Returns 1 if the bird's position will collide with a column in the next frame; otherwise, returns 0.
     void col_mov(column_t* pcol);                       //Changes the coord x in each col per frame
     void set_parameters(void);                          //Set default values for the game, like hole size 
-    void bird_mov(bird_t *b);              //Update the bird velocity
-    void bird_jump(bird_t *b);                          //Scan a "jump"
+    void bird_mov(bird_t* bird, int ch);              //Update the bird velocity
     void main_menu(int key, menu_t *menu, int *selection);                                // Displays the main menu and returns a code based on the player’s selection (e.g., start, exit).
 
 
@@ -68,6 +70,7 @@
 #define EXTERN_LIBS_H
     #include <stdio.h>
     #include <stdlib.h>
+    #include <string.h>
     #include <ncurses.h>
     #include <signal.h>     //for screen changing size
     #include <time.h>
