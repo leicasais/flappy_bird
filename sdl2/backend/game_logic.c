@@ -55,16 +55,18 @@ void score_init(menu_t * pmenu){
         printf("Error");
     }
     else{
-        for(int i=0;i<MAX_SCORES && (fscanf(f, "%d", pmenu->high_score[i]) == 1);i++);
+        for(int i=0;i<MAX_SCORES && (fscanf(f, "%d",&pmenu->high_score[i]) == 1);i++);
         fclose(f);
     }
 }
 
 void score_update(menu_t * pmenu, int new_score){
-    int cont,temp=0;
-    for(int i=0; i<MAX_SCORES && new_score>=pmenu->high_score[i-1];i++){
-        cont=i;
+    int cont=0;
+    for (int i=0; i<MAX_SCORES && cont==0; i++) {
+        if (new_score >= pmenu->high_score[i]) {
+        cont = i;
     }
+}
     for(int i=MAX_SCORES-1; i>cont;i--){
         pmenu->high_score[i]=pmenu->high_score[i-1];
     }
