@@ -1,0 +1,3 @@
+/home/leila/Documents/COIL/flappy_bird/sdl2/build/CMakeFiles/flappy_bird.dir
+/home/leila/Documents/COIL/flappy_bird/sdl2/build/CMakeFiles/edit_cache.dir
+/home/leila/Documents/COIL/flappy_bird/sdl2/build/CMakeFiles/rebuild_cache.dir

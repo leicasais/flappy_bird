@@ -1,0 +1,22 @@
+Created by Mantis
+original game:
+http://www.newgrounds.com/portal/view/646556
+
+--------
+
+
+player single cell size: (x: 15, y: 16)
+
+animations are here:
+ 	//addAnimation(name, frames, fps, loop);
+ 	addAnimation("idle", [0], 0, false);
+ 	addAnimation("moveOnGround", [0, 1, 0, 2], 20, true);
+ 	addAnimation("wallTouch", [3, 4, 5], 50, false);
+ 	addAnimation("midair", [ 0, 6, 6, 7], 20, false);
+
+Player_Genclops.png has an extra animation: addAnimation("shoot", [8], 0, false);
+
+
+Player_Flame2.png has a glow image embeded to
+it because glow was lagging behind in Flixel when seperated.
+I included an embedded and vanilla versions depending on your game engine.
