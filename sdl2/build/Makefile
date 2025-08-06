@@ -225,30 +225,6 @@ backend/init_fun.c.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/flappy_bird.dir/build.make CMakeFiles/flappy_bird.dir/backend/init_fun.c.s
 .PHONY : backend/init_fun.c.s
 
-backend/input.o: backend/input.c.o
-.PHONY : backend/input.o
-
-# target to build an object file
-backend/input.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/flappy_bird.dir/build.make CMakeFiles/flappy_bird.dir/backend/input.c.o
-.PHONY : backend/input.c.o
-
-backend/input.i: backend/input.c.i
-.PHONY : backend/input.i
-
-# target to preprocess a source file
-backend/input.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/flappy_bird.dir/build.make CMakeFiles/flappy_bird.dir/backend/input.c.i
-.PHONY : backend/input.c.i
-
-backend/input.s: backend/input.c.s
-.PHONY : backend/input.s
-
-# target to generate assembly for a file
-backend/input.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/flappy_bird.dir/build.make CMakeFiles/flappy_bird.dir/backend/input.c.s
-.PHONY : backend/input.c.s
-
 frontend/frontend.o: frontend/frontend.c.o
 .PHONY : frontend/frontend.o
 
@@ -272,30 +248,6 @@ frontend/frontend.s: frontend/frontend.c.s
 frontend/frontend.c.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/flappy_bird.dir/build.make CMakeFiles/flappy_bird.dir/frontend/frontend.c.s
 .PHONY : frontend/frontend.c.s
-
-frontend/windows.o: frontend/windows.c.o
-.PHONY : frontend/windows.o
-
-# target to build an object file
-frontend/windows.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/flappy_bird.dir/build.make CMakeFiles/flappy_bird.dir/frontend/windows.c.o
-.PHONY : frontend/windows.c.o
-
-frontend/windows.i: frontend/windows.c.i
-.PHONY : frontend/windows.i
-
-# target to preprocess a source file
-frontend/windows.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/flappy_bird.dir/build.make CMakeFiles/flappy_bird.dir/frontend/windows.c.i
-.PHONY : frontend/windows.c.i
-
-frontend/windows.s: frontend/windows.c.s
-.PHONY : frontend/windows.s
-
-# target to generate assembly for a file
-frontend/windows.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/flappy_bird.dir/build.make CMakeFiles/flappy_bird.dir/frontend/windows.c.s
-.PHONY : frontend/windows.c.s
 
 main.o: main.c.o
 .PHONY : main.o
@@ -342,15 +294,9 @@ help:
 	@echo "... backend/init_fun.o"
 	@echo "... backend/init_fun.i"
 	@echo "... backend/init_fun.s"
-	@echo "... backend/input.o"
-	@echo "... backend/input.i"
-	@echo "... backend/input.s"
 	@echo "... frontend/frontend.o"
 	@echo "... frontend/frontend.i"
 	@echo "... frontend/frontend.s"
-	@echo "... frontend/windows.o"
-	@echo "... frontend/windows.i"
-	@echo "... frontend/windows.s"
 	@echo "... main.o"
 	@echo "... main.i"
 	@echo "... main.s"

@@ -22,13 +22,11 @@ include_directories(
 # Source files, specify each doc and if its in a file
 set(SOURCES
     main.c
-    backend/input.c
     backend/bird_fun.c
     backend/column_fun.c
     backend/game_logic.c
     backend/init_fun.c
     frontend/frontend.c
-    frontend/windows.c
 )
 
 # Build the executable

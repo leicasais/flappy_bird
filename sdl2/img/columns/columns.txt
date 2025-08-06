@@ -1,1 +1,3 @@
-col_body -> 32x64 px
+	    WxH
+col_body -> 32x64 px >> 512x1024 px
+col_top -> 36x16 px >> 576x256 px

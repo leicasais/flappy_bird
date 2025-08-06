@@ -59,16 +59,21 @@
         int x;      //Saves where are the holes begin in coord x
         int y;      //Saves where are the holes begin in coord y
         int len;    //Saves the length of the column
+        SDL_Texture *texture_col_top;      //pointer to img of the top of the column/pipe
+        SDL_Texture *texture_col_bottom;   // idem but the bottom
+        int trim;                          //cut of the bottom_col
+        int current_frame;
+        Uint32 last_frame_time;
 
     }column_t;
 
     typedef struct{
         int y_top;               //Creates a hitbox for the bird with top and y_bottom
         int y_bottom;
-        float gravity_y;         //based on the terminal velocity of a small bird on each place, delta x per frame that the bird has to descend cause of the gravity 
-        float delta_y;              //desplazamiento in y
         int x_top;
         int x_bottom;
+        float gravity_y;         //based on the terminal velocity of a small bird on each place, delta x per frame that the bird has to descend cause of the gravity 
+        float vel_y;
         SDL_Texture *texture;       //saves the bird skin
         int current_frame;
         Uint32 last_frame_time;
@@ -92,7 +97,7 @@
     void init(column_t* pcol, bird_t *bird, menu_t *menu, app_t *app);             // Inicialisation of the var
     void initSDL(app_t *app);
     void set_parameters(void);                          //Set default values for the game, like hole size 
-    void cleanupSDL(app_t *app);
+    void cleanupSDL(app_t *app, bird_t *bird, column_t *column);
     SDL_Texture *loadTexture(char *filename, app_t *app);           //takes a file path (e.g., "bird.png") and returns an SDL_Texture * that you can later render to the screen
 
 
@@ -102,7 +107,8 @@
   
     //bird_fun.c
     void update_bird_animation(bird_t *bird);
-    void bird_mov(bird_t* bird, int ch);              //Update the bird velocity
+    void bird_jump(bird_t* bird);
+    void bird_fall(bird_t* bird);              //Update the bird velocity
 
     //game_logic.c
     char collision(column_t* pcol, bird_t* pbird);      // Returns 1 if the bird's position will collide with a column in the next frame; otherwise, returns 0.

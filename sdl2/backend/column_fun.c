@@ -4,10 +4,13 @@
 extern int GAME_WIDTH;
 extern int GAME_HEIGHT;
 extern int HOLE_HEIGHT;
+extern int COL_BOTTOM_WIDTH;
+extern int COL_TOP_HIGH;            
 extern int NUM_COL;
 extern column_t* column;
 extern int COL_WIDTH;
 extern int SPACE;
+extern int BIRD_SCALE;
 
 
 //Column funcions
@@ -20,7 +23,7 @@ void col_mov(column_t* pcol){
                 (pcol[i].len)--; //Update the length of the column
                 (pcol[i].x)=0;
             }
-            else if(pcol[i].len>=1 && pcol[i].len<COL_WIDTH){//Case the column is entering the screen from the right
+            else if(pcol[i].len>=1 && pcol[i].len<=COL_WIDTH){//Case the column is entering the screen from the right
                 (pcol[i].len)++; //Update the length of the column
             }
         }
@@ -40,5 +43,5 @@ void col_mov(column_t* pcol){
 
 
 int rand_hole(void){ //returns a random coord y for the begining of the hole        
-    return rand() % (GAME_HEIGHT - HOLE_HEIGHT - 1) + 1;
+    return (COL_TOP_HIGH - 1)+ rand() % (GAME_HEIGHT -2*COL_TOP_HIGH + 1);
 }

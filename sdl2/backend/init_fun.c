@@ -4,18 +4,23 @@
 extern int GAME_WIDTH;
 extern int GAME_HEIGHT;
 extern int HOLE_HEIGHT;
+extern int COL_BOTTOM_WIDTH;
+extern int COL_TOP_HIGH;            
 extern int NUM_COL;
 extern column_t* column;
 extern int COL_WIDTH;
 extern int SPACE;
 extern int BIRD_SCALE;
 
+
 //Inicialisations and parameters functions
 
 void set_parameters(void){          //Redefine globals
     HOLE_HEIGHT = GAME_HEIGHT / 3;       //Default value
-    COL_WIDTH = GAME_WIDTH / 15;         //Default value
-    SPACE = GAME_HEIGHT;             //Default value
+    COL_WIDTH = GAME_WIDTH / 10;         //Default value
+    COL_BOTTOM_WIDTH = COL_WIDTH-40;
+    COL_TOP_HIGH = HOLE_HEIGHT/4;
+    SPACE = GAME_HEIGHT/2;             //Default value
     NUM_COL = GAME_WIDTH / COL_WIDTH;    //Default value
 }
 
@@ -27,7 +32,7 @@ void init_parameters(void){
 }
 
 void init(column_t* pcol, bird_t *bird, menu_t *menu, app_t *app){  
-    //Column init
+//Column init
     int aux_x=0; 
     int i;
     for(i=0; i<((GAME_WIDTH/(COL_WIDTH+SPACE)) -1);i++){
@@ -52,17 +57,24 @@ void init(column_t* pcol, bird_t *bird, menu_t *menu, app_t *app){
         pcol[j].x=OUTSIDE;
         pcol[j].len=0;
     }
+    //column textures
+    for(int i=0; i<NUM_COL; i++){
+        column[i].texture_col_top = loadTexture("/home/leila/Documents/COIL/flappy_bird/sdl2/img/columns/col_top.png", app);
+        column[i].texture_col_bottom = loadTexture("/home/leila/Documents/COIL/flappy_bird/sdl2/img/columns/Col_bottom.png", app);
+        column[i].trim=0;
+    }
 
 //Bird init
     bird->x_top= SPACE/2 + ( (HITBOX_X*BIRD_SCALE) /2);
     bird->x_bottom= bird->x_top+(HITBOX_X*BIRD_SCALE);
 
     float y= 3+(rand()%( GAME_HEIGHT-(3+((HITBOX_Y*BIRD_SCALE)/2))));//inicialite the position bird
-    bird->gravity_y = 0.004;//Despues esta opcion depende el menu pero por ahora lo dejo como si siempre estuviese en la tierra
+    bird->gravity_y = 0.4;//Despues esta opcion depende el menu pero por ahora lo dejo como si siempre estuviese en la tierra
     bird->y_top=(int)y;
     bird->y_bottom=bird->y_top+(HITBOX_Y*BIRD_SCALE);
 
-    bird->texture= loadTexture("/home/leila/Documents/COIL/flappy_bird/sdl2/img/birds/Player_Red5.png", app);
+    //bird texture
+    bird->texture= loadTexture("/home/leila/Documents/COIL/flappy_bird/sdl2/img/birds/Player_Rainbow.png", app);
     bird->current_frame=0;
     bird->last_frame_time = SDL_GetTicks();
 
@@ -106,8 +118,8 @@ void initSDL(app_t *app)
     int imgFlags = IMG_INIT_PNG | IMG_INIT_JPG;     //ctivates the ability to load .png and .jpg files
     if ((IMG_Init(imgFlags) & imgFlags) != imgFlags) {
         printf("Failed to init SDL_image: %s\n", IMG_GetError());
-        exit(1);
-}
+        exit(1);    
+    }
 
 }
 
@@ -119,7 +131,7 @@ SDL_Texture* loadTexture(char *filename, app_t *app){
 }
 
 //exit fun
-void cleanupSDL(app_t *app){
+void cleanupSDL(app_t *app, bird_t *bird, column_t *column){
     if (app->renderer != NULL) {    //frees the app renderer
         SDL_DestroyRenderer(app->renderer);
         app->renderer = NULL;
@@ -129,7 +141,14 @@ void cleanupSDL(app_t *app){
         SDL_DestroyWindow(app->window);
         app->window = NULL;
     }
-
+    //  Destroy textures
+    SDL_DestroyTexture(bird->texture);
+    for(int i=0; i<NUM_COL; i++){
+        SDL_DestroyTexture(column[i].texture_col_top);
+        SDL_DestroyTexture(column[i].texture_col_bottom);
+    }
+    
+    //Close libraries
     IMG_Quit();
-    SDL_Quit();     //closes SDL
+    SDL_Quit(); 
 }

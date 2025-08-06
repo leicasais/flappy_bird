@@ -4,11 +4,13 @@
 extern int GAME_WIDTH;
 extern int GAME_HEIGHT;
 extern int HOLE_HEIGHT;
+extern int COL_BOTTOM_WIDTH;
+extern int COL_TOP_HIGH;            
 extern int NUM_COL;
 extern column_t* column;
 extern int COL_WIDTH;
 extern int SPACE;
-
+extern int BIRD_SCALE;
 
 //Bird funcions
 void update_bird_animation(bird_t *bird){
@@ -21,27 +23,26 @@ void update_bird_animation(bird_t *bird){
     }
 
 }
-/*
-bird_mov(bird_t* bird, int ch){
+void bird_jump(bird_t* bird){
     float jump_displacement=-0.1; //how far the bird would jump without gravity
-    if(ch == ' '){
-        bird->delta_y= jump_displacement;
-    }
-    bird->delta_y +=bird->gravity_y;
-    bird->y+=bird->delta_y;
+    bird->y_top+= jump_displacement;
+    bird->y_bottom+= jump_displacement;
+}
+void bird_fall(bird_t* bird){
+    bird->vel_y += bird->gravity_y;
+    bird->y_top +=bird->vel_y;        //the bird suffers the efect of gravity with and without the jump
+    bird->y_bottom+=bird->vel_y;
 
     // Don't allow the bird going out of the screen 
-    if (bird->y > (GAME_HEIGHT-1)) {
-        bird->y = GAME_HEIGHT-1;
-        bird->delta_y=0;
+    if (bird->y_bottom > (GAME_HEIGHT-1)) {
+        bird->y_bottom = GAME_HEIGHT-1;
+        bird->y_top = GAME_HEIGHT-1-(HITBOX_Y*BIRD_SCALE);
+        bird->vel_y = 0;
     }
-    else if (bird->y < 1) {
-        bird->y = 1;
-        bird->delta_y =0;
+    else if (bird->y_top < 1) {
+        bird->y_top = 1;
+        bird->y_bottom =(HITBOX_Y*BIRD_SCALE)+1;
+        bird->vel_y = 0;
     }
-    //Update hitbox
-    bird->y_top=(int)(bird->y);
-    bird->y_bottom=bird->y_top+1;
-    
 }
-*/
+
