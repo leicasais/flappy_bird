@@ -50,4 +50,42 @@ void colition_update(menu_t* pmenu){     // Updates game statistics such as scor
         pmenu->state = GAME_OVER;
     }
 }
-    */
+*/
+
+void score_init(menu_t * pmenu){
+    FILE * f;
+    f=fopen("scores.txt","r");
+    if(f==NULL){
+        printf("Error");
+    }
+    else{
+        for(int i=0;i<MAX_SCORES && (fscanf(f, "%d",&pmenu->high_score[i]) == 1);i++);
+        fclose(f);
+    }
+}
+
+void score_update(menu_t * pmenu, int new_score){
+    int cont=0;
+    for (int i=0; i<MAX_SCORES && cont==0; i++) {
+        if (new_score >= pmenu->high_score[i]) {
+        cont = i;
+    }
+}
+    for(int i=MAX_SCORES-1; i>cont;i--){
+        pmenu->high_score[i]=pmenu->high_score[i-1];
+    }
+    pmenu->high_score[cont]=new_score;
+}   
+
+void score_save(menu_t *pmenu){
+    FILE *f = fopen("scores.txt", "w");
+    if (f == NULL) {
+        printf("error");
+    }
+    else{
+        for(int i=0; i<MAX_SCORES; i++) {
+            fprintf(f,"%d\n",pmenu->high_score[i]);
+        }
+        fclose(f);
+    }
+}

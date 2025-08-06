@@ -42,6 +42,7 @@
     #define EXIT 5
     #define RESTART 6
     #define GAME_OVER 7
+    #define MAX_SCORES 10
 
 
 
@@ -82,7 +83,7 @@
     typedef struct {    // menu_t stores game-related data like score, remaining lives, high score, and menu state.
         int score;
         int lives;
-        int high_score;
+        int high_score[MAX_SCORES];
         int state;  // Could represent current menu selection or game state
     } menu_t;
 
