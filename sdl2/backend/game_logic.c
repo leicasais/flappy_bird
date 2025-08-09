@@ -74,7 +74,9 @@ void score_update(menu_t * pmenu, int new_score){
     for(int i=MAX_SCORES-1; i>cont;i--){
         pmenu->high_score[i]=pmenu->high_score[i-1];
     }
-    pmenu->high_score[cont]=new_score;
+    if(cont){
+        pmenu->high_score[cont]=new_score;
+    }
 }   
 
 void score_save(menu_t *pmenu){
@@ -88,4 +90,47 @@ void score_save(menu_t *pmenu){
         }
         fclose(f);
     }
+}
+
+void game_reset(column_t* pcol, bird_t *bird, menu_t *menu){
+    // *** columnas: igual que en init(), pero sin crear texturas ***
+    int aux_x = 0; 
+    int i;
+    for(i = 0; i < ((GAME_WIDTH/(COL_WIDTH+SPACE)) - 1); i++){
+        aux_x += SPACE + COL_WIDTH;  
+        pcol[i].x = aux_x;
+        pcol[i].y = rand_hole();
+        pcol[i].len = COL_WIDTH;
+        pcol[i].trim = 0;
+    }
+    if (GAME_WIDTH % (COL_WIDTH+SPACE)) {
+        int space_left = GAME_WIDTH - (COL_WIDTH + SPACE) * (i + 1);
+        pcol[i].x = aux_x + SPACE + COL_WIDTH;
+        pcol[i].y = rand_hole();
+        pcol[i].len = (space_left < COL_WIDTH) ? space_left : COL_WIDTH;
+        pcol[i].trim = 0;
+        i++;
+    }
+    for (int j = i; j < NUM_COL; j++){
+        pcol[j].x = OUTSIDE;
+        pcol[j].len = 0;
+        pcol[j].trim = 0;
+    }
+
+    // *** pájaro: igual que en init(), pero sin crear textura ***
+    bird->x_top    = SPACE/2 + ((HITBOX_X * BIRD_SCALE) / 2);
+    bird->x_bottom = bird->x_top + (HITBOX_X * BIRD_SCALE);
+
+    float y = 3 + (rand() % (GAME_HEIGHT - (3 + ((HITBOX_Y * BIRD_SCALE) / 2))));
+    bird->gravity_y = 0.4f;
+    bird->vel_y = 0.0f;
+    bird->y_top = (int)y;
+    bird->y_bottom = bird->y_top + (HITBOX_Y * BIRD_SCALE);
+    bird->current_frame = 0;
+    bird->last_frame_time = SDL_GetTicks();
+
+    // *** menú / score ***
+    menu->score = 0;
+    menu->lives = 3;
+    menu->selected = 0;
 }

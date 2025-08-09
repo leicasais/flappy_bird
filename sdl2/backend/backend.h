@@ -20,7 +20,7 @@
 
     //Macros for the main/game flow
     #define MS_BTW_FRAMES 16
-    #define VEL_COL 4       //numb of frames until the next mov of col
+    #define VEL_COL 4
     #define MIN_GAME_HEIGHT 8
     #define MIN_GAME_WIDTH 8 
 
@@ -44,8 +44,6 @@
     #define GAME_OVER 7
     #define MAX_SCORES 10
 
-
-
     /*#########################################
                         Structs
     #########################################*/
@@ -53,41 +51,38 @@
     typedef struct{
         SDL_Renderer *renderer;
         SDL_Window *window;
-    } app_t;
+    }app_t;
     
-
     typedef struct{ //Origin in (1,1)    
-        int x;      //Saves where are the holes begin in coord x
-        int y;      //Saves where are the holes begin in coord y
-        int len;    //Saves the length of the column
-        SDL_Texture *texture_col_top;      //pointer to img of the top of the column/pipe
-        SDL_Texture *texture_col_bottom;   // idem but the bottom
-        int trim;                          //cut of the bottom_col
+        int x;
+        int y;
+        int len;
+        SDL_Texture *texture_col_top;
+        SDL_Texture *texture_col_bottom;
+        int trim;
         int current_frame;
         Uint32 last_frame_time;
-
     }column_t;
 
     typedef struct{
-        int y_top;               //Creates a hitbox for the bird with top and y_bottom
-        int y_bottom;
-        int x_top;
-        int x_bottom;
-        float gravity_y;         //based on the terminal velocity of a small bird on each place, delta x per frame that the bird has to descend cause of the gravity 
+        float y_top;
+        float y_bottom; //CAMBIE TODO A FLOAT, GUARDA!!! REVISALO BIEN
+        float x_top;
+        float x_bottom;
+        float gravity_y;
         float vel_y;
-        SDL_Texture *texture;       //saves the bird skin
+        SDL_Texture *texture;
         int current_frame;
         Uint32 last_frame_time;
     }bird_t;
 
-    typedef struct {    // menu_t stores game-related data like score, remaining lives, high score, and menu state.
+    typedef struct {
         int score;
         int lives;
         int high_score[MAX_SCORES];
-        int state;  // Could represent current menu selection or game state
+        int state;          // MAIN_MENU, RUNING, PAUSE, GAME_OVER, etc.
+        int selected;       // índice de opción actualmente seleccionada en el menú activo
     } menu_t;
-
-
 
     /*#########################################
                         Functions
@@ -95,29 +90,41 @@
     
     //init_fun.c
     void init_parameters(void);
-    void init(column_t* pcol, bird_t *bird, menu_t *menu, app_t *app);             // Inicialisation of the var
+    void init(column_t* pcol, bird_t *bird, menu_t *menu, app_t *app);
     void initSDL(app_t *app);
-    void set_parameters(void);                          //Set default values for the game, like hole size 
+    void set_parameters(void);
     void cleanupSDL(app_t *app, bird_t *bird, column_t *column);
-    SDL_Texture *loadTexture(char *filename, app_t *app);           //takes a file path (e.g., "bird.png") and returns an SDL_Texture * that you can later render to the screen
+    SDL_Texture *loadTexture(char *filename, app_t *app);
 
+    // *** NUEVO: reset "rápido" sin recargar texturas ***
+    void game_reset(column_t* pcol, bird_t *bird, menu_t *menu);
 
     //column_fun.c
-    int rand_hole(void);                                //Inicialices a random position y for the hole
-    void col_mov(column_t* pcol);                       //Changes the coord x in each col per frame
+    int rand_hole(void);
+    void col_mov(column_t* pcol);
   
     //bird_fun.c
     void update_bird_animation(bird_t *bird);
     void bird_jump(bird_t* bird);
-    void bird_fall(bird_t* bird);              //Update the bird velocity
+    void bird_fall(bird_t* bird);
 
     //game_logic.c
-    char collision(column_t* pcol, bird_t* pbird);      // Returns 1 if the bird's position will collide with a column in the next frame; otherwise, returns 0.
+    char collision(column_t* pcol, bird_t* pbird);
     void colition_update(menu_t* pmenu);
     void points(column_t* pcol, bird_t* pbird, menu_t* menu);
+    void score_init(menu_t *pmenu);
+    void score_update(menu_t *pmenu, int new_score);
+    void score_save(menu_t *pmenu);
+    void game_reset(column_t* pcol, bird_t *bird, menu_t *menu);
+
+    //menu.c
+    void menu_init(menu_t *menu);
+    void menu_set_state(menu_t *menu, int state);
+    void menu_next_option(menu_t *menu);
+    void menu_prev_option(menu_t *menu);
+    void menu_activate_selected(menu_t *menu, column_t *cols, bird_t *bird, app_t *app);
 
     //input.c
     void window_input(void);
 
 #endif
-

@@ -1,5 +1,6 @@
-#include "backend.h"
-#include "frontend.h"
+#include "backend/backend.h"
+#include "frontend/frontend.h"
+
 //Variables Globales
 int GAME_WIDTH;              //Stores the WIDTH of the screen
 int GAME_HEIGHT;             //Stores the HEIGHT of the screen
