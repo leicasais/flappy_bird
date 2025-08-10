@@ -3,9 +3,8 @@
 //Global var from main.c
 extern int GAME_WIDTH;
 extern int GAME_HEIGHT;
-extern int HOLE_HEIGHT;
-extern int COL_BOTTOM_WIDTH;
-extern int COL_TOP_HIGH;            
+extern int TILE_HIGHT;
+extern int HOLE_HEIGHT;           
 extern int NUM_COL;
 extern column_t* column;
 extern int COL_WIDTH;
@@ -42,6 +41,6 @@ void col_mov(column_t* pcol){
 }
 
 
-int rand_hole(void){ //returns a random coord y for the begining of the hole        
-    return (COL_TOP_HIGH - 1)+ rand() % (GAME_HEIGHT -2*COL_TOP_HIGH + 1);
+int rand_hole(void){ //returns a random coord y for the begining of the hole  OBS-> min + rand() % (max - min + 1);      
+    return (TILE_HIGHT+2+HOLE_HEIGHT)+ rand() % (GAME_HEIGHT -(TILE_HIGHT+1+HOLE_HEIGHT));
 }

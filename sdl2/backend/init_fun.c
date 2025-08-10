@@ -3,9 +3,8 @@
 //Global var from main.c
 extern int GAME_WIDTH;
 extern int GAME_HEIGHT;
-extern int HOLE_HEIGHT;
-extern int COL_BOTTOM_WIDTH;
-extern int COL_TOP_HIGH;            
+extern int TILE_HIGHT;
+extern int HOLE_HEIGHT;        
 extern int NUM_COL;
 extern column_t* column;
 extern int COL_WIDTH;
@@ -15,13 +14,12 @@ extern int BIRD_SCALE;
 
 //Inicialisations and parameters functions
 
-void set_parameters(void){          //Redefine globals
-    HOLE_HEIGHT = GAME_HEIGHT / 3;       //Default value
-    COL_WIDTH = GAME_WIDTH / 10;         //Default value
-    COL_BOTTOM_WIDTH = COL_WIDTH-40;
-    COL_TOP_HIGH = HOLE_HEIGHT/4;
-    SPACE = GAME_HEIGHT/2;             //Default value
-    NUM_COL = GAME_WIDTH / COL_WIDTH;    //Default value
+void set_parameters(void){          //Redefine globals dependidng on the screen size 
+    HOLE_HEIGHT = GAME_HEIGHT / 3;       
+    COL_WIDTH = GAME_WIDTH / 10;         
+    SPACE = GAME_HEIGHT/2;             
+    NUM_COL = GAME_WIDTH / COL_WIDTH;    
+    TILE_HIGHT = GAME_HEIGHT /9;
 }
 
 void init_parameters(void){
@@ -31,7 +29,7 @@ void init_parameters(void){
     set_parameters();
 }
 
-void init(column_t* pcol, bird_t *bird, menu_t *menu, app_t *app){  
+void init(column_t* pcol, bird_t *bird, menu_t *menu, app_t *app, background_t *background){  
 //Column init
     int aux_x=0; 
     int i;
@@ -59,10 +57,11 @@ void init(column_t* pcol, bird_t *bird, menu_t *menu, app_t *app){
     }
     //column textures
     for(int i=0; i<NUM_COL; i++){
-        column[i].texture_col_top = loadTexture("../img/columns/col_top.png", app);
-        column[i].texture_col_bottom = loadTexture("../img/columns/Col_bottom.png", app);
+        column[i].texture = loadTexture("../img/columns/Col_bottom.png", app);
         column[i].trim=0;
     }
+    //Bakground textures 
+    background->tile_tex = loadTexture("../img/background/tile.png", app);
 
 //Bird init
     bird->x_top= SPACE/2 + ( (HITBOX_X*BIRD_SCALE) /2);
@@ -131,7 +130,7 @@ SDL_Texture* loadTexture(char *filename, app_t *app){
 }
 
 //exit fun
-void cleanupSDL(app_t *app, bird_t *bird, column_t *column){
+void cleanupSDL(app_t *app, bird_t *bird, column_t *column, background_t *background){
     if (app->renderer != NULL) {    //frees the app renderer
         SDL_DestroyRenderer(app->renderer);
         app->renderer = NULL;
@@ -144,8 +143,8 @@ void cleanupSDL(app_t *app, bird_t *bird, column_t *column){
     //  Destroy textures
     SDL_DestroyTexture(bird->texture);
     for(int i=0; i<NUM_COL; i++){
-        SDL_DestroyTexture(column[i].texture_col_top);
-        SDL_DestroyTexture(column[i].texture_col_bottom);
+        SDL_DestroyTexture(column[i].texture);
+        SDL_DestroyTexture(background->tile_tex);
     }
     
     //Close libraries

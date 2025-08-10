@@ -53,12 +53,15 @@
         SDL_Window *window;
     }app_t;
     
+    typedef struct{
+        SDL_Texture *tile_tex;
+    }background_t;
+
     typedef struct{ //Origin in (1,1)    
         int x;
         int y;
         int len;
-        SDL_Texture *texture_col_top;
-        SDL_Texture *texture_col_bottom;
+        SDL_Texture *texture;
         int trim;
         int current_frame;
         Uint32 last_frame_time;
@@ -90,10 +93,9 @@
     
     //init_fun.c
     void init_parameters(void);
-    void init(column_t* pcol, bird_t *bird, menu_t *menu, app_t *app);
-    void initSDL(app_t *app);
+    void init(column_t* pcol, bird_t *bird, menu_t *menu, app_t *app, background_t *background);    void initSDL(app_t *app);
     void set_parameters(void);
-    void cleanupSDL(app_t *app, bird_t *bird, column_t *column);
+    void cleanupSDL(app_t *app, bird_t *bird, column_t *column, background_t *background);
     SDL_Texture *loadTexture(char *filename, app_t *app);
 
     // *** NUEVO: reset "rápido" sin recargar texturas ***

@@ -5,8 +5,7 @@
 extern int GAME_WIDTH;
 extern int GAME_HEIGHT;
 extern int HOLE_HEIGHT;
-extern int COL_BOTTOM_WIDTH;
-extern int COL_TOP_HIGH;            
+extern int TILE_HIGHT;
 extern int NUM_COL;
 extern column_t* column;
 extern int COL_WIDTH;

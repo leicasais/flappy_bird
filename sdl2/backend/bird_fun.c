@@ -3,9 +3,8 @@
 //Global var from main.c
 extern int GAME_WIDTH;
 extern int GAME_HEIGHT;
-extern int HOLE_HEIGHT;
-extern int COL_BOTTOM_WIDTH;
-extern int COL_TOP_HIGH;            
+extern int TILE_HIGHT;
+extern int HOLE_HEIGHT;         
 extern int NUM_COL;
 extern column_t* column;
 extern int COL_WIDTH;
@@ -39,7 +38,7 @@ void bird_fall(bird_t* bird){
         bird->y_top = GAME_HEIGHT-1-(HITBOX_Y*BIRD_SCALE);
         bird->vel_y = 0;
     }
-    else if (bird->y_top < 1) {
+    else if (bird->y_top < (1+TILE_HIGHT)) {
         bird->y_top = 1;
         bird->y_bottom =(HITBOX_Y*BIRD_SCALE)+1;
         bird->vel_y = 0;
