@@ -221,4 +221,5 @@ CMakeFiles/flappy_bird.dir/main.c.o: \
  /usr/include/x86_64-linux-gnu/bits/getopt_posix.h \
  /usr/include/x86_64-linux-gnu/bits/getopt_core.h \
  /usr/include/x86_64-linux-gnu/bits/unistd_ext.h \
- /home/leila/Documents/COIL/flappy_bird/sdl2/frontend/frontend.h
+ /home/leila/Documents/COIL/flappy_bird/sdl2/frontend/frontend.h \
+ /home/leila/Documents/COIL/flappy_bird/sdl2/backend/backend.h

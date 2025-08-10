@@ -59,8 +59,8 @@ void init(column_t* pcol, bird_t *bird, menu_t *menu, app_t *app){
     }
     //column textures
     for(int i=0; i<NUM_COL; i++){
-        column[i].texture_col_top = loadTexture("/home/leila/Documents/COIL/flappy_bird/sdl2/img/columns/col_top.png", app);
-        column[i].texture_col_bottom = loadTexture("/home/leila/Documents/COIL/flappy_bird/sdl2/img/columns/Col_bottom.png", app);
+        column[i].texture_col_top = loadTexture("../img/columns/col_top.png", app);
+        column[i].texture_col_bottom = loadTexture("../img/columns/Col_bottom.png", app);
         column[i].trim=0;
     }
 
@@ -74,7 +74,7 @@ void init(column_t* pcol, bird_t *bird, menu_t *menu, app_t *app){
     bird->y_bottom=bird->y_top+(HITBOX_Y*BIRD_SCALE);
 
     //bird texture
-    bird->texture= loadTexture("/home/leila/Documents/COIL/flappy_bird/sdl2/img/birds/Player_Rainbow.png", app);
+    bird->texture= loadTexture("../img/birds/Player_Rainbow.png", app);
     bird->current_frame=0;
     bird->last_frame_time = SDL_GetTicks();
 
