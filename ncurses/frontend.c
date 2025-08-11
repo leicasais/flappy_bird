@@ -13,7 +13,7 @@ extern float JUMP_VEL;
 
 
 //Function
-void display_col(column_t* pcol){
+void draw_col(column_t* pcol){
     for(int i=0; i< NUM_COL; i++){
         if(pcol[i].len >0){
             for(int j=0;j<pcol[i].len;j++){
@@ -38,7 +38,7 @@ void display_upper_line(menu_t menu) {
     mvprintw(0, GAME_WIDTH-strlen(str)-1, "%s", str);
 }
 
-void display_bird(bird_t * bird, int ch){
+void draw_bird(bird_t * bird, int ch){
     static int up=0;
     if(ch==' '){
         up=!up;

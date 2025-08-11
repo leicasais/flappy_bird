@@ -13,6 +13,7 @@ include_directories(
 # SDL2
 find_package(SDL2 REQUIRED)
 find_package(SDL2_image REQUIRED)
+find_package(SDL2_ttf REQUIRED)
 
 include_directories(
     ${SDL2_INCLUDE_DIRS}
@@ -34,3 +35,4 @@ add_executable(flappy_bird ${SOURCES})
 
 # Link SDL2
 target_link_libraries(flappy_bird ${SDL2_LIBRARIES} SDL2_image)
+target_link_libraries(flappy_bird ${SDL2_LIBRARIES} SDL2_image SDL2_ttf)

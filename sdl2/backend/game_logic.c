@@ -10,22 +10,21 @@ extern int NUM_COL;
 extern column_t* column;
 extern int COL_WIDTH;
 extern int SPACE;
-extern int BIRD_SCALE;
 
 
-/*
+
 char collision(column_t* pcol, bird_t* pbird){
     for (int i = 0; i < NUM_COL; i++) {
-        if (pcol[i].len == 0) continue; // Saltar columnas no activas
+        if (pcol[i].x == OUTSIDE) continue; // Saltar columnas no activas
 
         int col_left = pcol[i].x;
         int col_right = col_left + pcol[i].len;
         int hole_top = pcol[i].y;
         int hole_bottom = hole_top + HOLE_HEIGHT;
 
-        if ((pbird->x >= col_left) && (pbird->x < col_right)) {
+        if ((pbird->x_r >= col_left) && (pbird->x_l <= col_right)) {
             // Verificar si el pájaro NO está dentro del hueco
-            if (pbird->y_bottom <= hole_top || pbird->y_top >= hole_bottom) {
+            if (pbird->y_bottom >= hole_bottom || pbird->y_top <= hole_top) {
                 return 1;
             }
         }
@@ -38,20 +37,37 @@ void points(column_t* pcol, bird_t* pbird, menu_t* menu){
         if (pcol[i].len == 0) continue; // Saltar columnas no activas
         int col_right = pcol[i].x + pcol[i].len;
 
-        if (pbird->x == col_right+1){
+        if (pbird->x_l == col_right+1){
            menu->score++;
         }
     }
 }
+/*void hud_update_score(app_t* app, TTF_Font* font, SDL_Color color,int score, SDL_Texture** out_tex, int* out_w, int* out_h) {
+    static int last = -1;
+    if (score == last && *out_tex) return;  //canges the number only if there was a change in the score
+    last = score;
 
+    if (*out_tex) { SDL_DestroyTexture(*out_tex); *out_tex = NULL; }
+
+    char buf[32]; snprintf(buf, sizeof(buf), "%d", score);
+    SDL_Surface* surf = TTF_RenderUTF8_Solid(font, buf, color); // bordes “duros”
+    if (!surf) { SDL_Log("TTF_Render FAIL: %s", TTF_GetError()); return; }
+
+    *out_tex = SDL_CreateTextureFromSurface(app->renderer, surf);
+    *out_w = surf->w;
+    *out_h = surf->h;
+    SDL_FreeSurface(surf);
+    SDL_SetTextureBlendMode(*out_tex, SDL_BLENDMODE_BLEND);
+}
+*/
+/*
 void colition_update(menu_t* pmenu){     // Updates game statistics such as score and lives.
     pmenu->lives --;
-    if(pmenu->lives < 0){
+    if(pmenu->lives < 1){
         pmenu->state = GAME_OVER;
     }
 }
 */
-
 void score_init(menu_t * pmenu){
     FILE * f;
     f=fopen("scores.txt","r");
@@ -118,14 +134,14 @@ void game_reset(column_t* pcol, bird_t *bird, menu_t *menu){
     }
 
     // *** pájaro: igual que en init(), pero sin crear textura ***
-    bird->x_top    = SPACE/2 + ((HITBOX_X * BIRD_SCALE) / 2);
-    bird->x_bottom = bird->x_top + (HITBOX_X * BIRD_SCALE);
+    bird->x_l    = SPACE/2 + ((HITBOX_X * bird->scale) / 2);
+    bird->x_r = bird->x_l + (HITBOX_X * bird->scale);
 
-    float y = 3 + (rand() % (GAME_HEIGHT - (3 + ((HITBOX_Y * BIRD_SCALE) / 2))));
+    float y = 3 + (rand() % (GAME_HEIGHT - (3 + ((HITBOX_Y * bird->scale) / 2))));
     bird->gravity_y = 0.4f;
     bird->vel_y = 0.0f;
     bird->y_top = (int)y;
-    bird->y_bottom = bird->y_top + (HITBOX_Y * BIRD_SCALE);
+    bird->y_bottom = bird->y_top + (HITBOX_Y * bird->scale);
     bird->current_frame = 0;
     bird->last_frame_time = SDL_GetTicks();
 

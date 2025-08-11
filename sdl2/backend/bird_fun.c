@@ -9,7 +9,6 @@ extern int NUM_COL;
 extern column_t* column;
 extern int COL_WIDTH;
 extern int SPACE;
-extern int BIRD_SCALE;
 
 //Bird funcions
 void update_bird_animation(bird_t *bird){
@@ -33,14 +32,14 @@ void bird_fall(bird_t* bird){
     bird->y_bottom+=bird->vel_y;
 
     // Don't allow the bird going out of the screen 
-    if (bird->y_bottom > (GAME_HEIGHT-1)) {
-        bird->y_bottom = GAME_HEIGHT-1;
-        bird->y_top = GAME_HEIGHT-1-(HITBOX_Y*BIRD_SCALE);
+    if (bird->y_bottom > (GAME_HEIGHT-1-TILE_HIGHT)) {
+        bird->y_bottom = (GAME_HEIGHT-TILE_HIGHT)-1;
+        bird->y_top = (GAME_HEIGHT-TILE_HIGHT)-1-(HITBOX_Y*(bird->scale));
         bird->vel_y = 0;
     }
-    else if (bird->y_top < (1+TILE_HIGHT)) {
+    else if (bird->y_top < 0) {
         bird->y_top = 1;
-        bird->y_bottom =(HITBOX_Y*BIRD_SCALE)+1;
+        bird->y_bottom =(HITBOX_Y*(bird->scale))+1;
         bird->vel_y = 0;
     }
 }

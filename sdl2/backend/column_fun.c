@@ -9,7 +9,6 @@ extern int NUM_COL;
 extern column_t* column;
 extern int COL_WIDTH;
 extern int SPACE;
-extern int BIRD_SCALE;
 
 
 //Column funcions
@@ -42,5 +41,13 @@ void col_mov(column_t* pcol){
 
 
 int rand_hole(void){ //returns a random coord y for the begining of the hole  OBS-> min + rand() % (max - min + 1);      
-    return (TILE_HIGHT+2+HOLE_HEIGHT)+ rand() % (GAME_HEIGHT -(TILE_HIGHT+1+HOLE_HEIGHT));
+    const int margin_top = 2;  // lo que quieras dejar libre arriba
+    int minY = margin_top;
+    int maxY = GAME_HEIGHT - TILE_HIGHT - HOLE_HEIGHT - 1; // límite correcto
+
+    if (maxY < minY) {
+        // agujero imposible de colocar: ajustá HOLE_HEIGHT o márgenes
+        maxY = minY;
+    }
+    return minY + rand() % (maxY - minY + 1); // rango [minY, maxY]
 }

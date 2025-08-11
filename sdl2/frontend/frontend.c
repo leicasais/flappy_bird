@@ -10,16 +10,15 @@ extern int NUM_COL;
 extern column_t* column;
 extern int COL_WIDTH;
 extern int SPACE;
-extern int BIRD_SCALE;
 
 //windows
 void prepareScene(app_t *app)   //Prepares a clean background for drawing the next frame.
 {
-    SDL_SetRenderDrawColor(app->renderer,185, 207, 238, 255);   //Sets the color that SDL will use when clearing or drawing, SDL_SetRenderDrawColor(app.renderer, R, G, B, A); A: opacidad (255 ultra opaco)
+    SDL_SetRenderDrawColor(app->renderer,106, 138, 153, 255);   //Sets the color that SDL will use when clearing or drawing, SDL_SetRenderDrawColor(app.renderer, R, G, B, A); A: opacidad (255 ultra opaco)
     SDL_RenderClear(app->renderer);         //Clears the screen with the color just set. erease the previous frame
 }
 
-void display_bird(bird_t *bird, app_t *app){
+void draw_bird(bird_t *bird, app_t *app){
     int fly_frames[] = {0, 6, 6, 7};
     //&srcRect the position and size in pixeles that you want to cut off the img
     SDL_Rect scr_rect;
@@ -30,60 +29,71 @@ void display_bird(bird_t *bird, app_t *app){
     scr_rect.h = HITBOX_Y;
 
     // &destRect sets the size of the cut img and where to plaice it in the screen
-    SDL_Rect dest_rect = {.x=bird->x_top, .y=bird->y_top, .w= (bird->x_bottom - bird->x_top), .h= bird->y_bottom - bird->y_top} ; 
+    SDL_Rect dest_rect = {.x=bird->x_l, .y=bird->y_top, .w= (bird->x_r - bird->x_l), .h= bird->y_bottom - bird->y_top} ; 
     SDL_RenderCopy(app->renderer, bird->texture, &scr_rect, &dest_rect);       // Copies a part of a texture (src_rect) and draws it in the screen using the active render
 
 
 
 }
 
+// sin estirar en vertical: repite la textura en bloques y recorta el último si hace falta.
+static void draw_tiled_segment(SDL_Renderer *r, SDL_Texture *tex, int x, int src_x, int y, int w, int src_w, int h)
+{
+    if (h <= 0 || w <= 0 || !tex) return;
 
-//Function
+    int texW, texH;
+    SDL_QueryTexture(tex, NULL, NULL, &texW, &texH);
 
-void display_col(column_t* pcol, app_t *app){
-    SDL_Rect dest_bottom_up;
-    SDL_Rect dest_bottom_down;
-    SDL_Rect dest_top_up;
-    SDL_Rect dest_top_down;
-    int tex_bottom_w, tex_bottom_h, tex_top_h,tex_top_w; 
+    int drawn = 0;
+    while (drawn < h) {
+        int chunk = (h - drawn < texH) ? (h - drawn) : texH;
+
+        SDL_Rect src = {src_x, 0, src_w, chunk};        // recorto solo lo que entra
+        SDL_Rect dst = {x, y + drawn, w, chunk};   // mismo alto que src -> sin estirar verticalmente
+        SDL_RenderCopy(r, tex, &src, &dst);
+
+        drawn += chunk;
+    }
+}
+void draw_col(column_t* pcol, app_t *app){
+
     for(int i=0; i< NUM_COL; i++){
-            if (COL_WIDTH > pcol[i].len) {
-                if (pcol[i].trim < COL_BOTTOM_WIDTH) {
-                    pcol[i].trim++;
+            int src_x;
+            int px_per_len;
+            if(pcol[i].x != OUTSIDE){
+                px_per_len= (COL_PX_W/COL_WIDTH)* (pcol[i].len);
+                SDL_Rect src_rect = {.y =0, .h =COL_PX_H, .w=px_per_len};
+                if(pcol[i].x==0 ){
+                    src_x= COL_PX_W-(px_per_len);
                 }
-            } else {
-                pcol[i].trim = 0; // reset cuando está a ancho completo
+                else{
+                    src_x=0;
+                }
+
+                //Displays the top of the column of the sup part
+                int up_x=pcol[i].x;
+                int up_y=0;
+                int up_w=COL_WIDTH-(COL_WIDTH-pcol[i].len);
+                int up_h=pcol[i].y;
+                draw_tiled_segment(app->renderer, pcol[i].texture_up, up_x,src_x, up_y, up_w,px_per_len, up_h);
+
+                //Displays the bottom of the column of the inferior part
+                int down_x=pcol[i].x;
+                int down_y=pcol[i].y + HOLE_HEIGHT;
+                int down_w=COL_WIDTH-(COL_WIDTH-pcol[i].len);
+                int down_h = (GAME_HEIGHT-TILE_HIGHT-1) - (pcol[i].y + HOLE_HEIGHT);
+                draw_tiled_segment(app->renderer, pcol[i].texture_down, down_x,src_x, down_y, down_w,px_per_len , down_h);
             }
-            //Displays the top of the column of the sup part
-            dest_top_up.x=pcol[i].x;
-            dest_top_up.y=pcol[i].y-COL_TOP_HIGH;
-            dest_top_up.w=COL_WIDTH-(COL_WIDTH-pcol[i].len);
-            dest_top_up.h=COL_TOP_HIGH ;
-            SDL_RenderCopy(app->renderer, pcol[i].texture_col_top, NULL, &dest_top_up);
-            
-            //Displays the bottom of the column of the sup part
-            dest_bottom_up.x=pcol[i].x-((COL_BOTTOM_WIDTH-COL_WIDTH)/2);
-            dest_bottom_up.y=0;
-            dest_bottom_up.w=COL_BOTTOM_WIDTH - pcol[i].trim ;   
-            dest_bottom_up.h=pcol[i].y-COL_TOP_HIGH;
-            SDL_RenderCopy(app->renderer, pcol[i].texture_col_bottom, NULL, &dest_bottom_up);
-
-            //Displays the top of the column of the inferior part
-            dest_top_down.x=pcol[i].x;
-            dest_top_down.y=pcol[i].y + HOLE_HEIGHT;
-            dest_top_down.w=COL_WIDTH-(COL_WIDTH-pcol[i].len);
-            dest_top_down.h=COL_TOP_HIGH;
-            SDL_RenderCopy(app->renderer, pcol[i].texture_col_top, NULL, &dest_top_down);
-
-            //Displays the bottom of the column of the inferior part
-            dest_bottom_down.x=pcol[i].x-((COL_BOTTOM_WIDTH-COL_WIDTH)/2);
-            dest_bottom_down.y=pcol[i].y + HOLE_HEIGHT + COL_TOP_HIGH;
-            dest_bottom_down.w=COL_BOTTOM_WIDTH - pcol[i].trim;
-            dest_bottom_down.h = GAME_HEIGHT - (pcol[i].y + HOLE_HEIGHT + COL_TOP_HIGH);
-            SDL_RenderCopy(app->renderer, pcol[i].texture_col_bottom, NULL, &dest_bottom_down);
         
            
     }
+}
+
+
+void draw_background(background_t *background, app_t *app){
+    SDL_Rect dest_tile = {.x = 0, .y= GAME_HEIGHT-TILE_HIGHT-1, .w= GAME_WIDTH, .h = TILE_HIGHT};
+    SDL_RenderCopy(app->renderer, background->tile_tex, NULL, &dest_tile);
+    
 }
 /*void display_upper_line(menu_t menu) {
     mvprintw(0, 0, "Lives: ");

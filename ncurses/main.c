@@ -102,11 +102,11 @@ int main(void)
                 }
                 else{
                     reboot_time = 0;                //Ends the resurection mode
-                    display_bird(&bird, ch);        //Displays the normal bird mode
+                    draw_bird(&bird, ch);        //Displays the normal bird mode
                 }
                 //Update display
                 display_upper_line(menu);  
-                display_col(column);
+                draw_col(column);
                 refresh();
                 break;
                 

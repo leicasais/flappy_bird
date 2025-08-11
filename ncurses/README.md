@@ -28,3 +28,8 @@ make
 ### SDL2_image
 Linux (Ubuntu/Debian):
 sudo apt install libsdl2-image-dev
+
+### SDL2_TTF.H
+Linux (Ubuntu/Debian):
+sudo apt-get update
+sudo apt-get install libsdl2-ttf-dev

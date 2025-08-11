@@ -6,7 +6,7 @@
     #include <string.h>
     #include <SDL2/SDL.h>
     #include <SDL2/SDL_image.h>
-    #include <signal.h>     //for screen changing size
+    #include <SDL2/SDL_ttf.h>
     #include <time.h>
     #include <unistd.h>  // usleep()
 #endif
@@ -26,6 +26,8 @@
 
     //macros for the columns
     #define OUTSIDE -1000
+    #define COL_PX_H 1024
+    #define COL_PX_W 256
 
     //macros birds
     #define HITBOX_X 15
@@ -42,6 +44,7 @@
     #define EXIT 5
     #define RESTART 6
     #define GAME_OVER 7
+    #define BEGINING 8
     #define MAX_SCORES 10
 
     /*#########################################
@@ -51,6 +54,10 @@
     typedef struct{
         SDL_Renderer *renderer;
         SDL_Window *window;
+        TTF_Font    *font;
+        SDL_Texture *score_tex;
+        int          score_w, score_h;
+        SDL_Color    score_color;
     }app_t;
     
     typedef struct{
@@ -61,7 +68,8 @@
         int x;
         int y;
         int len;
-        SDL_Texture *texture;
+        SDL_Texture *texture_down;
+        SDL_Texture *texture_up;
         int trim;
         int current_frame;
         Uint32 last_frame_time;
@@ -70,10 +78,11 @@
     typedef struct{
         float y_top;
         float y_bottom; //CAMBIE TODO A FLOAT, GUARDA!!! REVISALO BIEN
-        float x_top;
-        float x_bottom;
+        float x_l;
+        float x_r;
         float gravity_y;
         float vel_y;
+        int scale;
         SDL_Texture *texture;
         int current_frame;
         Uint32 last_frame_time;
