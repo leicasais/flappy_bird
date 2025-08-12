@@ -54,7 +54,7 @@ void points(column_t* pcol, bird_t* pbird, menu_t* menu){
     if (!surf) { SDL_Log("TTF_Render FAIL: %s", TTF_GetError()); return; }
 
     *out_tex = SDL_CreateTextureFromSurface(app->renderer, surf);
-    *out_w = surf->w;
+    *out_w = surf ->w;
     *out_h = surf->h;
     SDL_FreeSurface(surf);
     SDL_SetTextureBlendMode(*out_tex, SDL_BLENDMODE_BLEND);
