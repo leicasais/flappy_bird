@@ -61,10 +61,10 @@ void init(column_t* pcol, bird_t *bird, menu_t *menu, app_t *app, background_t *
         column[i].trim=0;
     }
 
-//Bakground textures 
+    //Bakground textures 
     background->tile_tex = loadTexture("../img/background/Tile.png", app);
 
-//Bird init
+    //Bird init
     bird->scale =3;
     bird->x_l= SPACE/2 + ( (HITBOX_X*(bird->scale)) /2);
     bird->x_r= bird->x_l+(HITBOX_X*(bird->scale));
@@ -79,7 +79,7 @@ void init(column_t* pcol, bird_t *bird, menu_t *menu, app_t *app, background_t *
     bird->current_frame=0;
     bird->last_frame_time = SDL_GetTicks();
 
-//points letters init
+    //points letters init
     app->font = TTF_OpenFont("../img/fonts/Jersey15-Regular.ttf", 16); // tamaño “físico” en px
     if (!app->font) {
         SDL_Log("OpenFont FAIL: %s", TTF_GetError());
@@ -90,28 +90,25 @@ void init(column_t* pcol, bird_t *bird, menu_t *menu, app_t *app, background_t *
     app->score_w = app->score_h = 0;
     app->score_color = (SDL_Color){ 20, 20, 20, 255 }; // gris oscuro
 
-//Menue init
+    //Menue init
     menu->lives=3;
     menu->score=0;
 }
 
-void initSDL(app_t *app)
-{
+void initSDL(app_t *app){
     //init windows
     int rendererFlags, windowFlags;
     rendererFlags = SDL_RENDERER_ACCELERATED;   //tells SDL to use hardware acceleration for the renderer (faster graphics performance via GPU).
     windowFlags = 0;
 
-    if (SDL_Init(SDL_INIT_VIDEO) < 0)
-    {
+    if (SDL_Init(SDL_INIT_VIDEO) < 0){
         printf("Couldn't initialize SDL: %s\n", SDL_GetError());
         exit(1);
     }
 
     app->window = SDL_CreateWindow("Floppy bird", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, GAME_WIDTH, GAME_HEIGHT, windowFlags);       //SDL_WINDOWPOS_UNDEFINED tells SDL to let the OS position the window wherever it likes
 
-    if (!(app->window))
-    {
+    if (!(app->window)){
         printf("Failed to open %d x %d window: %s\n", GAME_WIDTH, GAME_HEIGHT, SDL_GetError());
         exit(1);
     }
@@ -120,8 +117,7 @@ void initSDL(app_t *app)
 
     app->renderer = SDL_CreateRenderer(app->window, -1, rendererFlags);       //Attached to app.window, -1: SDL picks the best rendering driver
 
-    if (!(app->renderer))
-    {
+    if (!(app->renderer)){
         printf("Failed to create renderer: %s\n", SDL_GetError());
         exit(1);
     }
@@ -163,8 +159,12 @@ void cleanupSDL(app_t *app, bird_t *bird, column_t *column, background_t *backgr
         app->window = NULL;
     }
     //  Destroy textures
-    if (app->score_tex) SDL_DestroyTexture(app->score_tex);
-    if (app->font) { TTF_CloseFont(app->font); app->font = NULL; }
+    if (app->score_tex) { 
+        SDL_DestroyTexture(app->score_tex);
+    }
+    if (app->font) { 
+        TTF_CloseFont(app->font); app->font = NULL; 
+    }
     SDL_DestroyTexture(bird->texture);
     SDL_DestroyTexture(background->tile_tex);
     for(int i=0; i<NUM_COL; i++){

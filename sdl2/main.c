@@ -1,100 +1,110 @@
-#include "backend/backend.h"
-#include "frontend/frontend.h"
+#include "backend.h"
+#include "frontend.h"
 
 //Variables Globales
-int GAME_WIDTH;              //Stores the WIDTH of the screen
-int GAME_HEIGHT;             //Stores the HEIGHT of the screen
-int TILE_HIGHT;          //stores the HEIGHT of the tile
-int HOLE_HEIGHT;        //Stores the Height of the holes
-int NUM_COL;            //Stores the number of columns including the ones OUTSIDE the screen
-int COL_WIDTH;          //Stores the WIDTH of the columns
-int SPACE;              //Stores the space between the columns
+int GAME_WIDTH;
+int GAME_HEIGHT;
+int TILE_HIGHT;
+int HOLE_HEIGHT;
+int NUM_COL;
+int COL_WIDTH;
+int SPACE;
 
-column_t* column;       //stores all directions of the columns, they are not in order
-
+column_t* column;
 
 int main(void){
-    bird_t bird; //init bird
-    menu_t menu ={.state=BEGINING}; //TEMPORARY BEHAVIOR !! CHAGE IT TO MAIN_MENU
+    bird_t bird;
+    menu_t menu;
     app_t app;
     background_t background;
-    init_parameters();      //iniialices the first parameters that are needed to inicialice the obj 
+
+    init_parameters();
     column = malloc(sizeof(column_t) * NUM_COL);
 
-    memset(&app, 0, sizeof(app));       //inicialices all the values of app in 0
+    memset(&app, 0, sizeof(app));
     initSDL(&app);
 
-    init(column, &bird, &menu, &app, &background);   //inicialices all the objects of the game
+    // Objetos y texturas (columnas, pájaro, background, fuente para HUD)
+    init(column, &bird, &menu, &app, &background);            // carga texturas, etc. :contentReference[oaicite:5]{index=5}
 
-    //game loop
-    while (1){
-        //game logic
-        prepareScene(&app);
-        SDL_Event event;    // hold events (like key presses, mouse clicks, window close, etc.)
-        Uint32 last_time = SDL_GetTicks();
-        Uint32 current_time;
-        // 2) Handle all pending events (never block the loop)
-       
-        while (SDL_PollEvent(&event)) {
-            switch (event.type) {
-                case SDL_QUIT:
-                    exit(0);
-                    break;
+    // --- Menú: estado inicial + fuente para UI del menú ---
+    menu_init(&menu);                                         // MAIN_MENU + highscores :contentReference[oaicite:6]{index=6}
 
-                case SDL_KEYDOWN:
-                if(menu.state == RUNING){
-                     // Ignore key repeats so SPACE triggers once
-                    if (event.key.repeat) break;
-                    else if (event.key.keysym.sym == SDLK_SPACE) {
-                        // Jump while running
-                        bird.vel_y = -8.0f;
-                    }
-                    break;
-                }
-                if (menu.state == BEGINING && event.key.keysym.sym == SDLK_SPACE) {
-                        // Start the game from the "Press SPACE" screen
-                        menu.state = RUNING;
-                }
+    int running = 1;
+    while (running){
+        SDL_Event event;
+        while (SDL_PollEvent(&event)){
+            if (event.type == SDL_QUIT){ 
+                running = 0; 
+                break; 
             }
-        }
-
-        // 3) Update game logic at a fixed rate (can run 0..N times per frame)
-            switch (menu.state) {
+            if (event.type == SDL_KEYDOWN && event.key.repeat == 0){
+                switch (menu.state){
                 case MAIN_MENU:
-                    // TODO: animate menu or handle inputs if needed
-                    break;
-
-                case BEGINING:
-                    // Idle pre-start animation (e.g., bird flapping)
-                    update_bird_animation(&bird);
+                    if (event.key.keysym.sym == SDLK_UP){      
+                        menu_prev_option(&menu);
+                    }
+                    else if (event.key.keysym.sym == SDLK_DOWN){  
+                        menu_next_option(&menu);
+                    }
+                    else if (event.key.keysym.sym == SDLK_RETURN || event.key.keysym.sym == SDLK_KP_ENTER){
+                        // Play o Salir
+                        menu_activate_selected(&menu, column, &bird, &app);
+                        if (menu.state == EXIT){
+                            running = 0;
+                        } 
+                        else if (event.key.keysym.sym == SDLK_ESCAPE){
+                            running = 0;
+                        }
+                    }
                     break;
 
                 case RUNING:
-                    // Continuous updates: columns, gravity, animation, collisions, score, etc.
-                    col_mov(column);
-                    bird_fall(&bird);
-                    update_bird_animation(&bird);
-
-                    if (collision(column, &bird)) {
-                        // TODO: change to GAME_OVER, subtract life, etc.
-                        exit(0);// temporary behavior
+                    if (event.key.keysym.sym == SDLK_SPACE){
+                        bird.vel_y = -8.0f; // salto
+                    } 
+                    else if (event.key.keysym.sym == SDLK_ESCAPE){
+                        // si querés: volver al menú con ESC
+                        menu_set_state(&menu, MAIN_MENU);
                     }
+                    break;
+
+                case EXIT:
+                    running = 0;
                     break;
 
                 default:
                     break;
+                }
             }
+        }
 
-        // 4) Render exactly once per frame (background → world → HUD)
-        prepareScene(&app);                    // clear with background color
-        draw_background(&background, &app);   // draw ground/sky first
-        draw_col(column, &app);               // then world (columns)
-        draw_bird(&bird, &app);               // then player (and finally HUD if you have it)
-        SDL_RenderPresent(app.renderer);      // show the composed frame
+        // --- Update por estado ---
+        if (menu.state == RUNING){
+            col_mov(column);
+            bird_fall(&bird);
+            update_bird_animation(&bird);
+            if (collision(column, &bird)){
+                // acá podrías ir a GAME_OVER si querés; por ahora volvemos al menú
+                menu_set_state(&menu, MAIN_MENU);
+            }
+        }
 
-        // 5) If you did NOT enable VSYNC above, be nice to the CPU:
+        // --- Render ---
+        prepareScene(&app);
+        draw_background(&background, &app);
+
+        if (menu.state == MAIN_MENU) {
+            render_main_menu(&app, &menu, GAME_WIDTH, GAME_HEIGHT); // "FLAPPY" + Play/Salir
+        } 
+        else if (menu.state == RUNING) {
+            draw_col(column, &app);
+            draw_bird(&bird, &app);
+            render_game_hud(&app, &menu);
+        }
+
+        SDL_RenderPresent(app.renderer);
         SDL_Delay(16);
-        
     }
 
     free(column);

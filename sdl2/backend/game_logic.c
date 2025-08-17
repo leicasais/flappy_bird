@@ -15,7 +15,9 @@ extern int SPACE;
 
 char collision(column_t* pcol, bird_t* pbird){
     for (int i = 0; i < NUM_COL; i++) {
-        if (pcol[i].x == OUTSIDE) continue; // Saltar columnas no activas
+        if (pcol[i].x == OUTSIDE){
+            continue; // Saltar columnas no activas
+        }
 
         int col_left = pcol[i].x;
         int col_right = col_left + pcol[i].len;
@@ -34,7 +36,9 @@ char collision(column_t* pcol, bird_t* pbird){
 
 void points(column_t* pcol, bird_t* pbird, menu_t* menu){
     for (int i=0; i < NUM_COL; i++){
-        if (pcol[i].len == 0) continue; // Saltar columnas no activas
+        if (pcol[i].len == 0){
+            continue;
+        } // Saltar columnas no activas
         int col_right = pcol[i].x + pcol[i].len;
 
         if (pbird->x_l == col_right+1){
@@ -42,6 +46,7 @@ void points(column_t* pcol, bird_t* pbird, menu_t* menu){
         }
     }
 }
+
 /*void hud_update_score(app_t* app, TTF_Font* font, SDL_Color color,int score, SDL_Texture** out_tex, int* out_w, int* out_h) {
     static int last = -1;
     if (score == last && *out_tex) return;  //canges the number only if there was a change in the score
@@ -84,9 +89,9 @@ void score_update(menu_t * pmenu, int new_score){
     int cont=0;
     for (int i=0; i<MAX_SCORES && cont==0; i++) {
         if (new_score >= pmenu->high_score[i]) {
-        cont = i;
+            cont = i;
+        }
     }
-}
     for(int i=MAX_SCORES-1; i>cont;i--){
         pmenu->high_score[i]=pmenu->high_score[i-1];
     }
