@@ -41,9 +41,19 @@ void points(column_t* pcol, bird_t* pbird, menu_t* menu){
         } // Saltar columnas no activas
         int col_right = pcol[i].x + pcol[i].len;
 
-        if (pbird->x_l == col_right+1){
-           menu->score++;
+        // Cuenta la columna cuando el borde derecho quedó a la izquierda del pájaro
+        if (!pcol[i].trim && (col_right < (int)pbird->x_l)) {
+            pcol[i].trim = 1;           // marcar como contada
+            menu->score++;
+
+            // subir velocidad suavemente (con tope)
+            pcol->col_speed += SPEED_INC;
+            SDL_Log("SPEED = %.2f", pcol->col_speed);
+            if (pcol->col_speed > SPEED_MAX) {
+                pcol->col_speed = SPEED_MAX;
+            }
         }
+
     }
 }
 
@@ -65,53 +75,66 @@ void points(column_t* pcol, bird_t* pbird, menu_t* menu){
     SDL_SetTextureBlendMode(*out_tex, SDL_BLENDMODE_BLEND);
 }
 */
-/*
+
 void colition_update(menu_t* pmenu){     // Updates game statistics such as score and lives.
     pmenu->lives --;
-    if(pmenu->lives < 1){
+    if(pmenu->lives < 0){
         pmenu->state = GAME_OVER;
     }
 }
-*/
-void score_init(menu_t * pmenu){
-    FILE * f;
-    f=fopen("scores.txt","r");
-    if(f==NULL){
-        printf("Error");
+
+void score_init(menu_t *pmenu) {
+    // arranco todo en cero por si el archivo no existe o tiene menos líneas
+    for (int i = 0; i < MAX_SCORES; i++){
+        pmenu->high_score[i] = 0;
+    }
+    FILE *f = fopen("scores.txt", "r");
+    if (!f) {
+        // si no existe, lo creo con ceros y salgo
+        score_save(pmenu);
     }
     else{
-        for(int i=0;i<MAX_SCORES && (fscanf(f, "%d",&pmenu->high_score[i]) == 1);i++);
+        for(int j,i=0;i < MAX_SCORES && fscanf(f, "%d", &j) == 1;i++) {
+            pmenu->high_score[i] = j;
+        }
         fclose(f);
     }
 }
 
-void score_update(menu_t * pmenu, int new_score){
-    int cont=0;
-    for (int i=0; i<MAX_SCORES && cont==0; i++) {
-        if (new_score >= pmenu->high_score[i]) {
-            cont = i;
+int score_update(menu_t *pmenu, int new_score) {
+    // encontrar posición de inserción (orden descendente)
+    int pos = MAX_SCORES;
+    for (int i = 0; i < MAX_SCORES && pos == MAX_SCORES; i++){
+        if (new_score >= pmenu->high_score[i]){ 
+            pos = i; 
         }
     }
-    for(int i=MAX_SCORES-1; i>cont;i--){
-        pmenu->high_score[i]=pmenu->high_score[i-1];
+    if (pos == MAX_SCORES){
+        return 0;
     }
-    if(cont){
-        pmenu->high_score[cont]=new_score;
+    else{
+        // desplazar hacia abajo y colocar
+        for (int i = MAX_SCORES - 1; i > pos; i--){
+            pmenu->high_score[i] = pmenu->high_score[i-1];
+        }
+        pmenu->high_score[pos] = new_score;
+        return pos+1;
     }
-}   
+}
 
-void score_save(menu_t *pmenu){
+void score_save(menu_t *pmenu) {
     FILE *f = fopen("scores.txt", "w");
-    if (f == NULL) {
-        printf("error");
+    if (!f){
+        SDL_Log("score_save: cannot open %s", "scores.txt");
     }
     else{
-        for(int i=0; i<MAX_SCORES; i++) {
-            fprintf(f,"%d\n",pmenu->high_score[i]);
+        for(int i = 0; i < MAX_SCORES; i++){
+            fprintf(f, "%d\n", pmenu->high_score[i]);
         }
         fclose(f);
     }
 }
+
 
 void game_reset(column_t* pcol, bird_t *bird, menu_t *menu){
     // *** columnas: igual que en init(), pero sin crear texturas ***
@@ -137,6 +160,8 @@ void game_reset(column_t* pcol, bird_t *bird, menu_t *menu){
         pcol[j].len = 0;
         pcol[j].trim = 0;
     }
+    pcol->col_speed = BASE_SPEED;   // usar tu “global” guardada en column[0]
+    col_reset_scroll();
 
     // *** pájaro: igual que en init(), pero sin crear textura ***
     bird->x_l    = SPACE/2 + ((HITBOX_X * bird->scale) / 2);
@@ -154,4 +179,5 @@ void game_reset(column_t* pcol, bird_t *bird, menu_t *menu){
     menu->score = 0;
     menu->lives = 3;
     menu->selected = 0;
+    menu->last_top_pos = 0;
 }

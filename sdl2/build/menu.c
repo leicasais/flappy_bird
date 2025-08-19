@@ -15,10 +15,11 @@ static int menu_num_options(int state){
 }
 
 void menu_init(menu_t *menu){
-    menu->state    = MAIN_MENU;
-    menu->selected = 0;
-    menu->score    = 0;
-    menu->lives    = 3;
+    menu->state         = MAIN_MENU;
+    menu->selected      = 0;
+    menu->score         = 0;
+    menu->lives         = 3;
+    menu->last_top_pos  = 0;
     score_init(menu); // carga/normaliza highscores
 }
 
@@ -75,9 +76,6 @@ void menu_activate_selected(menu_t *menu, column_t *cols, bird_t *bird, app_t *a
 
         case GAME_OVER: // 0: Reintentar, 1: Menu, 2: Salir
             // guardo score ANTES de cambiar de escena
-            score_update(menu, menu->score);
-            score_save(menu);
-
             if (menu->selected == 0) {                 // Volver a jugar
                 game_reset(cols, bird, menu);
                 menu_set_state(menu, RUNING);

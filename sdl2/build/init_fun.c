@@ -36,7 +36,7 @@ void init(column_t* pcol, bird_t *bird, menu_t *menu, app_t *app, background_t *
         aux_x+=SPACE+COL_WIDTH;  
         pcol[i].x=aux_x;  //Sets the coordinate x of each point of the column
         pcol[i].y=rand_hole();
-        pcol[i].len=COL_WIDTH; //Sets the length of the column
+        pcol[i].len=COL_WIDTH;
     }
     if(GAME_WIDTH%(COL_WIDTH+SPACE)){//if GAME_WIDTH/(COL_WIDTH+SPACE) was supposed to be a float -> we have to put a 'weird case'
         int space_left=GAME_WIDTH-(COL_WIDTH+SPACE)*(i+1);//The space left after saving the last column+space in the for
@@ -54,6 +54,8 @@ void init(column_t* pcol, bird_t *bird, menu_t *menu, app_t *app, background_t *
         pcol[j].x=OUTSIDE;
         pcol[j].len=0;
     }
+    pcol->col_speed=BASE_SPEED;   // px por frame (dinámica)
+    
     //column textures
     for(int i=0; i<NUM_COL; i++){
         column[i].texture_down = loadTexture("../img/columns/Col.png", app);

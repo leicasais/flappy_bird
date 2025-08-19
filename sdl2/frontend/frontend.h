@@ -2,6 +2,15 @@
 #ifndef FRONTEND_H
 #define FRONTEND_H
 
+    // --- Layout del panel ---
+    #define PANEL_W_RATIO     0.55f   // ancho: % de la ventana
+    #define PANEL_H_RATIO     0.66f   // alto:  % de la ventana
+    #define PANEL_PAD         24      // margen interno (arriba/lados)
+    #define PANEL_BOTTOM_PAD  28      // margen inferior para opciones
+    #define OPTION_LINE_H     28      // alto de cada opción
+    #define OPTION_GAP         6      // separación entre opciones
+    #define HILIGHT_INSET     20      // sangría del destacador
+
     // Render base
     void prepareScene(app_t *app);
     void draw_bird(bird_t *bird, app_t *app);

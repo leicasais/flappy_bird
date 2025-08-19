@@ -8,7 +8,7 @@ int TILE_HIGHT;
 int HOLE_HEIGHT;
 int NUM_COL;
 int COL_WIDTH;
-int SPACE;
+int SPACE;                  // px por frame (dinámica)
 
 column_t* column;
 
@@ -104,8 +104,11 @@ int main(void){
             bird_fall(&bird);
             update_bird_animation(&bird);
             points(column, &bird, &menu);
+                
             if (collision(column, &bird)){
                 // acá podrías ir a GAME_OVER si querés; por ahora volvemos al menú
+                menu.last_top_pos = score_update(&menu,menu.score);
+                score_save(&menu);
                 menu_set_state(&menu, GAME_OVER);
             }
         }

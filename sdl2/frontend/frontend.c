@@ -55,6 +55,7 @@ static void draw_tiled_segment(SDL_Renderer *r, SDL_Texture *tex, int x, int src
         drawn += chunk;
     }
 }
+
 void draw_col(column_t* pcol, app_t *app){
     for(int i=0; i< NUM_COL; i++){
         int src_x;
@@ -62,7 +63,7 @@ void draw_col(column_t* pcol, app_t *app){
         if(pcol[i].x != OUTSIDE) {
             px_per_len= (COL_PX_W/COL_WIDTH)* (pcol[i].len);
             SDL_Rect src_rect = {.y =0, .h =COL_PX_H, .w=px_per_len};
-            if(pcol[i].x==0 ) {
+            if((int)pcol[i].x==0 ) {
                 src_x= COL_PX_W-(px_per_len);
             }
             else{
@@ -70,14 +71,14 @@ void draw_col(column_t* pcol, app_t *app){
             }
                 
             //Displays the top of the column of the sup part
-            int up_x=pcol[i].x;
+            int up_x=(int)pcol[i].x;
             int up_y=0;
             int up_w=COL_WIDTH-(COL_WIDTH-pcol[i].len);
             int up_h=pcol[i].y;
             draw_tiled_segment(app->renderer, pcol[i].texture_up, up_x,src_x, up_y, up_w,px_per_len, up_h); 
                 
             //Displays the bottom of the column of the inferior part
-            int down_x=pcol[i].x;
+            int down_x=(int)pcol[i].x;
             int down_y=pcol[i].y + HOLE_HEIGHT;
             int down_w=COL_WIDTH-(COL_WIDTH-pcol[i].len);
             int down_h = (GAME_HEIGHT-TILE_HIGHT-1) - (pcol[i].y + HOLE_HEIGHT);
@@ -95,8 +96,8 @@ void draw_background(background_t *background, app_t *app){
 // frontend.c
 void render_main_menu(app_t *app, menu_t *menu, int w, int h){
     // 1) dibujamos la tarjeta
-    const int cardW = w * 0.45;
-    const int cardH = h * 0.50;
+    const int cardW = (int)(w * PANEL_W_RATIO);
+    const int cardH = (int)(h * PANEL_H_RATIO);
     const int cardX = (w - cardW) / 2;
     const int cardY = (h - cardH) / 2;
 
@@ -170,6 +171,21 @@ void draw_text_center(SDL_Renderer* r, TTF_Font* font, const char* text, SDL_Col
     }
 }
 
+static void draw_text_left(SDL_Renderer* r, TTF_Font* font, const char* text, SDL_Color color, int x, int y, int* out_w, int* out_h) {
+    int w=0, h=0;
+    SDL_Texture* tex = make_text(r, font, text, color, &w, &h);
+    if (!tex) {
+        return;
+    }
+    SDL_Rect dst = { x, y, w, h };
+    SDL_RenderCopy(r, tex, NULL, &dst);
+    SDL_DestroyTexture(tex);
+    if (out_w) {
+        *out_w = w; if (out_h) *out_h = h;
+    }
+}
+
+
 // ===== tarjeta y lista del menú =====
 void draw_menu_list(SDL_Renderer *r, int w, int h, const char **options, int n, int selected, const char *title, const char *subtitle)
 {
@@ -194,8 +210,8 @@ void draw_menu_list(SDL_Renderer *r, int w, int h, const char **options, int n, 
 // Muestra: "GAME OVER", subtítulo con Score, y opciones: Reintentar / Salir
 void render_game_over(app_t *app, menu_t *menu, int w, int h){
     // tarjeta
-    const int cardW = w * 0.45;
-    const int cardH = h * 0.50;
+    const int cardW = (int)(w * PANEL_W_RATIO);
+    const int cardH = (int)(h * PANEL_H_RATIO);
     const int cardX = (w - cardW) / 2;
     const int cardY = (h - cardH) / 2;
 
@@ -206,7 +222,7 @@ void render_game_over(app_t *app, menu_t *menu, int w, int h){
     SDL_SetRenderDrawColor(app->renderer, 220, 220, 220, 255);
     SDL_RenderDrawRect(app->renderer, &card);
 
-    // título + subtítulo (score)
+    // título + puntaje
     int tw=0, th=0;
     SDL_Color titleCol = (SDL_Color){230,230,80,255};
     SDL_Color textCol  = (SDL_Color){240,240,240,255};
@@ -215,24 +231,61 @@ void render_game_over(app_t *app, menu_t *menu, int w, int h){
 
     char sub[64];
     snprintf(sub, sizeof(sub), "Puntaje: %d", menu->score);
-    draw_text_center(app->renderer, app->font, sub, textCol, cardX + cardW/2, cardY + 22 + th + 10, NULL, NULL);
+    draw_text_center(app->renderer, app->font, sub, textCol, cardX + cardW/2, cardY + 22 + th + 8, NULL, NULL);
 
-    // opciones
-    const char* opts[] = { "Volver a jugar", "Salir" };
-    const int n = 2;
-    const int lineH = (th ? th + 16 : 40);
-    int startY = cardY + cardH/2 - (n * lineH)/2;
+    int y = cardY + 22 + th + 8;
+    // mensaje de felicitación si entró al Top
+    if (menu->last_top_pos > 0) {
+        char congr[96];
+        snprintf(congr, sizeof(congr), "Felicitaciones, entraste al top %d!", menu->last_top_pos);
+        y += 22;
+        draw_text_center(app->renderer, app->font, congr, textCol, cardX + cardW/2, y, NULL, NULL);
+    }
 
-    for (int i = 0; i < n; ++i) {
-        int y = startY + i * lineH;
-        if (i == menu->selected) {
-            SDL_SetRenderDrawColor(app->renderer, 70, 120, 200, 180);
-            SDL_Rect hi = { cardX + 20, y - 6, cardW - 40, lineH };
+    // Título de la tabla
+    y += 28;
+    draw_text_center(app->renderer, app->font, "TOP 10", titleCol, cardX + cardW/2, y, NULL, NULL);
+
+    // lista Top 10 alineada a la izquierda
+    y += 20;
+    int listX = cardX + 40;
+    for (int i = 0; i < MAX_SCORES; ++i) {
+        char line[48];
+        snprintf(line, sizeof(line), "%2d) %d", i+1, menu->high_score[i]);
+
+        if (menu->last_top_pos == i+1) {
+            SDL_SetRenderDrawColor(app->renderer, 70, 120, 200, 120);
+            SDL_Rect hi = { cardX + 20, y - 4, cardW - 40, 20 };
             SDL_RenderFillRect(app->renderer, &hi);
         }
-        draw_text_center(app->renderer, app->font, opts[i], textCol, cardX + cardW/2, y, NULL, NULL);
+        draw_text_left(app->renderer, app->font, line, textCol, listX, y, NULL, NULL);
+        y += 20;
+    }
+
+    // opciones al pie
+    const char* opts[] = { "Volver a jugar", "Salir" };
+    const int n = 2;
+    const int lineH = OPTION_LINE_H;
+    const int gap   = OPTION_GAP;
+
+    // alto total del bloque de opciones (2 botones + separación)
+    const int optsH = n * lineH + (n - 1) * gap;
+
+    // arranque del bloque de opciones dejando un margen inferior claro
+    const int optYStart = cardY + cardH - PANEL_BOTTOM_PAD - optsH;
+
+    for (int i = 0; i < n; ++i) {
+        const int yy = optYStart + i * (lineH + gap);
+
+        if (i == menu->selected) {
+            SDL_SetRenderDrawColor(app->renderer, 70, 120, 200, 180);
+            SDL_Rect hi = { cardX + HILIGHT_INSET, yy - 6, cardW - 2*HILIGHT_INSET, lineH };
+            SDL_RenderFillRect(app->renderer, &hi);
+        }
+        draw_text_center(app->renderer, app->font, opts[i], (SDL_Color){240,240,240,255}, cardX + cardW/2, yy, NULL, NULL);
     }
 }
+
 
 
 

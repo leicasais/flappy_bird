@@ -28,6 +28,9 @@
     #define OUTSIDE -1000
     #define COL_PX_H 1024
     #define COL_PX_W 256
+    #define BASE_SPEED 2.2f   // velocidad inicial
+    #define SPEED_INC 0.06f  // cuánto sube por columna pasada
+    #define SPEED_MAX 6.0f  // techo
 
     //macros birds
     #define HITBOX_X 15
@@ -65,9 +68,10 @@
     }background_t;
 
     typedef struct{ //Origin in (1,1)    
-        int x;
-        int y;
+        float x;
+        float y;
         int len;
+        float col_speed;           // px por frame (dinámica)
         SDL_Texture *texture_down;
         SDL_Texture *texture_up;
         int trim;
@@ -94,6 +98,7 @@
         int high_score[MAX_SCORES];
         int state;          // MAIN_MENU, RUNING, PAUSE, GAME_OVER, etc.
         int selected;       // índice de opción actualmente seleccionada en el menú activo
+        int last_top_pos;
     } menu_t;
 
     /*#########################################
@@ -113,6 +118,8 @@
     //column_fun.c
     int rand_hole(void);
     void col_mov(column_t* pcol);
+    void col_reset_scroll(void);
+
   
     //bird_fun.c
     void update_bird_animation(bird_t *bird);
@@ -124,7 +131,7 @@
     void colition_update(menu_t* pmenu);
     void points(column_t* pcol, bird_t* pbird, menu_t* menu);
     void score_init(menu_t *pmenu);
-    void score_update(menu_t *pmenu, int new_score);
+    int score_update(menu_t *pmenu, int new_score);
     void score_save(menu_t *pmenu);
     void game_reset(column_t* pcol, bird_t *bird, menu_t *menu);
 
