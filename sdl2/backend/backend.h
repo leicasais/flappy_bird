@@ -35,7 +35,7 @@
     
     //macros for the menus
     #define NUM_OPTIONS_MAIN 2 
-    #define NUM_OPTIONS_GAME_OVER 3
+    #define NUM_OPTIONS_GAME_OVER 2
     #define NUM_OPTIONS_PAUSE 4
     #define MAIN_MENU 1
     #define RUNING 2

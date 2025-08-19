@@ -8,7 +8,7 @@ static int menu_num_options(int state){
         case PAUSE:      
             return NUM_OPTIONS_PAUSE;     // 0: Continuar, 1: Reiniciar, 2: Menu, 3: Salir
         case GAME_OVER:  
-            return NUM_OPTIONS_GAME_OVER; // 0: Reintentar, 1: Menu, 2: Salir
+            return NUM_OPTIONS_GAME_OVER; // 0: Reintentar, 1: Menus
         default:         
             return 0;
     }
@@ -78,12 +78,11 @@ void menu_activate_selected(menu_t *menu, column_t *cols, bird_t *bird, app_t *a
             score_update(menu, menu->score);
             score_save(menu);
 
-            if (menu->selected == 0) {
+            if (menu->selected == 0) {                 // Volver a jugar
                 game_reset(cols, bird, menu);
                 menu_set_state(menu, RUNING);
-            } else if (menu->selected == 1) {
-                menu_set_state(menu, MAIN_MENU);
-            } else {
+            } 
+            else {                                   // Salir
                 menu_set_state(menu, EXIT);
             }
             break;

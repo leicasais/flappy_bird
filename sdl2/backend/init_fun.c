@@ -149,31 +149,47 @@ SDL_Texture* loadTexture(char *filename, app_t *app){
 
 //exit fun
 void cleanupSDL(app_t *app, bird_t *bird, column_t *column, background_t *background){
-    if (app->renderer != NULL) {    //frees the app renderer
-        SDL_DestroyRenderer(app->renderer);
-        app->renderer = NULL;
-    }
-
-    if (app->window != NULL) {      //frees the window
-        SDL_DestroyWindow(app->window);
-        app->window = NULL;
-    }
-    //  Destroy textures
+    // 1) Texturas y recursos dependientes del renderer
     if (app->score_tex) { 
-        SDL_DestroyTexture(app->score_tex);
+        SDL_DestroyTexture(app->score_tex); 
+        app->score_tex = NULL;
+    }
+    if (bird->texture) { 
+        SDL_DestroyTexture(bird->texture); 
+        bird->texture = NULL; 
+    }
+    if (background->tile_tex) { 
+        SDL_DestroyTexture(background->tile_tex); 
+        background->tile_tex = NULL; 
+    }
+    for (int i = 0; i < NUM_COL; i++){
+        if (column[i].texture_down) { 
+            SDL_DestroyTexture(column[i].texture_down); 
+            column[i].texture_down = NULL; 
+        }
+        if (column[i].texture_up) { 
+            SDL_DestroyTexture(column[i].texture_up);   
+            column[i].texture_up   = NULL; 
+        }
     }
     if (app->font) { 
-        TTF_CloseFont(app->font); app->font = NULL; 
+        TTF_CloseFont(app->font); 
+        app->font = NULL; 
     }
-    SDL_DestroyTexture(bird->texture);
-    SDL_DestroyTexture(background->tile_tex);
-    for(int i=0; i<NUM_COL; i++){
-        SDL_DestroyTexture(column[i].texture_down);
-        SDL_DestroyTexture(column[i].texture_up);
+
+    // 2) Ahora sí: renderer y ventana
+    if (app->renderer) { 
+        SDL_DestroyRenderer(app->renderer); 
+        app->renderer = NULL; 
     }
-    
-    //Close libraries
+    if (app->window) { 
+        SDL_DestroyWindow(app->window);     
+        app->window   = NULL; 
+    }
+
+    // 3) Cierres de libs
     TTF_Quit();
     IMG_Quit();
-    SDL_Quit(); 
+    SDL_Quit();
 }
+

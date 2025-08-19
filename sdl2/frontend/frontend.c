@@ -28,8 +28,8 @@ void draw_bird(bird_t *bird, app_t *app){
     scr_rect.h = HITBOX_Y;
 
     // &destRect sets the size of the cut img and where to plaice it in the screen
-    SDL_Rect dest_rect = {.x=bird->x_l, .y=bird->y_top, .w= (bird->x_r - bird->x_l), .h= bird->y_bottom - bird->y_top} ; 
-    SDL_RenderCopy(app->renderer, bird->texture, &scr_rect, &dest_rect);       // Copies a part of a texture (src_rect) and draws it in the screen using the active render
+    SDL_Rect dest_rect = {.x = (int)bird->x_l, .y = (int)bird->y_top, .w = (int)(bird->x_r - bird->x_l), .h = (int)(bird->y_bottom - bird->y_top)};
+    SDL_RenderCopyEx(app->renderer, bird->texture, &scr_rect, &dest_rect, bird->vel_y*5,NULL, SDL_FLIP_NONE);       // Copies a part of a texture (src_rect) and draws it in the screen using the active render
 
 
 
@@ -190,6 +190,51 @@ void draw_menu_list(SDL_Renderer *r, int w, int h, const char **options, int n, 
     extern app_t app; // si no tenés un app global, pasá font/color por parámetro
     // Alternativa segura: reemplazá 'app.font' por el font que tengas a mano.
 }
+
+// Muestra: "GAME OVER", subtítulo con Score, y opciones: Reintentar / Salir
+void render_game_over(app_t *app, menu_t *menu, int w, int h){
+    // tarjeta
+    const int cardW = w * 0.45;
+    const int cardH = h * 0.50;
+    const int cardX = (w - cardW) / 2;
+    const int cardY = (h - cardH) / 2;
+
+    SDL_SetRenderDrawBlendMode(app->renderer, SDL_BLENDMODE_BLEND);
+    SDL_SetRenderDrawColor(app->renderer, 30, 30, 30, 200);
+    SDL_Rect card = { cardX, cardY, cardW, cardH };
+    SDL_RenderFillRect(app->renderer, &card);
+    SDL_SetRenderDrawColor(app->renderer, 220, 220, 220, 255);
+    SDL_RenderDrawRect(app->renderer, &card);
+
+    // título + subtítulo (score)
+    int tw=0, th=0;
+    SDL_Color titleCol = (SDL_Color){230,230,80,255};
+    SDL_Color textCol  = (SDL_Color){240,240,240,255};
+
+    draw_text_center(app->renderer, app->font, "GAME OVER", titleCol, cardX + cardW/2, cardY + 22, &tw, &th);
+
+    char sub[64];
+    snprintf(sub, sizeof(sub), "Puntaje: %d", menu->score);
+    draw_text_center(app->renderer, app->font, sub, textCol, cardX + cardW/2, cardY + 22 + th + 10, NULL, NULL);
+
+    // opciones
+    const char* opts[] = { "Volver a jugar", "Salir" };
+    const int n = 2;
+    const int lineH = (th ? th + 16 : 40);
+    int startY = cardY + cardH/2 - (n * lineH)/2;
+
+    for (int i = 0; i < n; ++i) {
+        int y = startY + i * lineH;
+        if (i == menu->selected) {
+            SDL_SetRenderDrawColor(app->renderer, 70, 120, 200, 180);
+            SDL_Rect hi = { cardX + 20, y - 6, cardW - 40, lineH };
+            SDL_RenderFillRect(app->renderer, &hi);
+        }
+        draw_text_center(app->renderer, app->font, opts[i], textCol, cardX + cardW/2, y, NULL, NULL);
+    }
+}
+
+
 
 
 

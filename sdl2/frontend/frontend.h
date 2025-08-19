@@ -15,5 +15,6 @@
 
     void render_main_menu(app_t *app, menu_t *menu, int w, int h);
     void render_game_hud(app_t *app, menu_t *menu);
+    void render_game_over(app_t *app, menu_t *menu, int w, int h);
 
 #endif

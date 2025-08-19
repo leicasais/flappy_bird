@@ -40,41 +40,60 @@ int main(void){
             }
             if (event.type == SDL_KEYDOWN && event.key.repeat == 0){
                 switch (menu.state){
-                case MAIN_MENU:
-                    if (event.key.keysym.sym == SDLK_UP){      
-                        menu_prev_option(&menu);
-                    }
-                    else if (event.key.keysym.sym == SDLK_DOWN){  
-                        menu_next_option(&menu);
-                    }
-                    else if (event.key.keysym.sym == SDLK_RETURN || event.key.keysym.sym == SDLK_KP_ENTER){
-                        // Play o Salir
-                        menu_activate_selected(&menu, column, &bird, &app);
-                        if (menu.state == EXIT){
-                            running = 0;
+                    case MAIN_MENU:
+                        if (event.key.keysym.sym == SDLK_UP){      
+                            menu_prev_option(&menu);
+                        }
+                        else if (event.key.keysym.sym == SDLK_DOWN){  
+                            menu_next_option(&menu);
+                        }
+                        else if (event.key.keysym.sym == SDLK_RETURN || event.key.keysym.sym == SDLK_KP_ENTER){
+                            // Play o Salir
+                            menu_activate_selected(&menu, column, &bird, &app);
+                            if (menu.state == EXIT){
+                                running = 0;
+                            } 
+                            else if (event.key.keysym.sym == SDLK_ESCAPE){
+                                running = 0;
+                            }
+                        }
+                        break;
+
+                    case RUNING:
+                        if (event.key.keysym.sym == SDLK_SPACE){
+                            bird.vel_y = -8.0f; // salto
                         } 
                         else if (event.key.keysym.sym == SDLK_ESCAPE){
+                            // si querés: volver al menú con ESC
+                            menu_set_state(&menu, MAIN_MENU);
+                        }
+                        break;
+
+                    case GAME_OVER:
+                        if (event.key.keysym.sym == SDLK_UP) {         
+                            menu_prev_option(&menu);
+                        }
+                        else if (event.key.keysym.sym == SDLK_DOWN) { 
+                            menu_next_option(&menu);
+                        }
+                        else if (event.key.keysym.sym == SDLK_RETURN ||event.key.keysym.sym == SDLK_KP_ENTER) {
+                            menu_activate_selected(&menu, column, &bird, &app);
+                            if (menu.state == EXIT) {
+                                running = 0;
+                            }
+                        } 
+                        else if (event.key.keysym.sym == SDLK_ESCAPE) {
+                            menu_set_state(&menu, EXIT);
                             running = 0;
                         }
-                    }
-                    break;
+                        break;
 
-                case RUNING:
-                    if (event.key.keysym.sym == SDLK_SPACE){
-                        bird.vel_y = -8.0f; // salto
-                    } 
-                    else if (event.key.keysym.sym == SDLK_ESCAPE){
-                        // si querés: volver al menú con ESC
-                        menu_set_state(&menu, MAIN_MENU);
-                    }
-                    break;
+                    case EXIT:
+                        running = 0;
+                        break;
 
-                case EXIT:
-                    running = 0;
-                    break;
-
-                default:
-                    break;
+                    default:
+                        break;
                 }
             }
         }
@@ -84,9 +103,10 @@ int main(void){
             col_mov(column);
             bird_fall(&bird);
             update_bird_animation(&bird);
+            points(column, &bird, &menu);
             if (collision(column, &bird)){
                 // acá podrías ir a GAME_OVER si querés; por ahora volvemos al menú
-                menu_set_state(&menu, MAIN_MENU);
+                menu_set_state(&menu, GAME_OVER);
             }
         }
 
@@ -102,12 +122,18 @@ int main(void){
             draw_bird(&bird, &app);
             render_game_hud(&app, &menu);
         }
+        else if (menu.state == GAME_OVER) {
+            // Podés dibujar el mundo “congelado” debajo si querés
+            draw_col(column, &app);
+            draw_bird(&bird, &app);
+            render_game_over(&app, &menu, GAME_WIDTH, GAME_HEIGHT);
+        }
 
         SDL_RenderPresent(app.renderer);
         SDL_Delay(16);
     }
 
-    free(column);
     cleanupSDL(&app, &bird, column, &background);
+    free(column);
     return 0;
 }
