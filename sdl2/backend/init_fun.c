@@ -88,7 +88,7 @@ void init_tex(column_t* pcol, bird_t *bird, menu_t *menu, app_t *app, background
     (menu->skins_tex)[3]= loadTexture("../img/birds/Future_bird.png", app);
     (menu->skins_tex)[4]= loadTexture("../img/birds/Angry_bird.png", app);
 
-    bird->texture= (menu->skins_tex)[4]; //monto cambia el inide fijo por menu->index_skin que se puede seleccionar en tu menu
+    bird->texture= (menu->skins_tex)[0]; //monto cambia el inide fijo por menu->index_skin que se puede seleccionar en tu menu
     bird->tex_resurrection = loadTexture("../img/birds/Resurecting_bird.png", app);
     bird->current_frame=0;
     bird->last_frame_time = SDL_GetTicks();

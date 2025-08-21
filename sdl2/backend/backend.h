@@ -34,7 +34,7 @@
     //macros birds
     #define HITBOX_X 224
     #define HITBOX_Y 168
-    #define NUM_SKINS 3
+    #define NUM_SKINS 5
 
     //macros for the menus
     #define NUM_OPTIONS_MAIN 2 
