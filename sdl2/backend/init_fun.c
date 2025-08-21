@@ -86,8 +86,12 @@ void init_tex(column_t* pcol, bird_t *bird, menu_t *menu, app_t *app, background
     bird->current_frame=0;
     bird->last_frame_time = SDL_GetTicks();
 
+        //hearts text initmenu->full_heart_tex = loadTexture("../img/simbols/Full_heart.png", app);
+    menu->full_heart_tex = loadTexture("../img/simbols/Full_heart.png", app);
+    menu->empty_heart_tex = loadTexture("../img/simbols/Empty_heart.png", app);
+
         //points letters init
-    app->font = TTF_OpenFont("../img/fonts/Jersey15-Regular.ttf", 16); // tamaño “físico” en px
+    app->font = TTF_OpenFont("../img/fonts/Jersey15-Regular.ttf", 26); // tamaño “físico” en px
     if (!app->font) {
         SDL_Log("OpenFont FAIL: %s", TTF_GetError());
         exit(1);
@@ -150,7 +154,7 @@ SDL_Texture* loadTexture(char *filename, app_t *app){
 }
 
 //exit fun
-void cleanupSDL(app_t *app, bird_t *bird, column_t *column, background_t *background){
+void cleanupSDL(app_t *app, bird_t *bird, column_t *column, background_t *background, menu_t *menu){
     // 1) Texturas y recursos dependientes del renderer
     if (app->score_tex) { 
         SDL_DestroyTexture(app->score_tex); 
@@ -178,8 +182,17 @@ void cleanupSDL(app_t *app, bird_t *bird, column_t *column, background_t *backgr
         TTF_CloseFont(app->font); 
         app->font = NULL; 
     }
+    if(menu->full_heart_tex){
+        SDL_DestroyTexture(menu->full_heart_tex);
+        menu->full_heart_tex = NULL; 
+    }
+    if(menu->empty_heart_tex){
+        SDL_DestroyTexture(menu->empty_heart_tex);
+        menu->empty_heart_tex = NULL; 
+    }
 
-    // 2) Ahora sí: renderer y ventana
+
+    // 2) renderer y ventana
     if (app->renderer) { 
         SDL_DestroyRenderer(app->renderer); 
         app->renderer = NULL; 

@@ -18,7 +18,6 @@ char collision(column_t* pcol, bird_t* pbird){
         if (pcol[i].x == OUTSIDE){
             continue; // Saltar columnas no activas
         }
-
         int col_left = pcol[i].x;
         int col_right = col_left + pcol[i].len;
         int hole_top = pcol[i].y;
@@ -81,8 +80,10 @@ void points(column_t* pcol, bird_t* pbird, menu_t* menu){
 
 void colition_update(menu_t* pmenu){     // Updates game statistics such as score and lives.
     pmenu->lives --;
-    if(pmenu->lives < 0){
-        pmenu->state = GAME_OVER;
+    if(pmenu->lives < 1){
+        menu_set_state(pmenu, GAME_OVER);
+        pmenu->last_top_pos = score_update(pmenu,pmenu->score);
+        score_save(pmenu);
     }
 }
 

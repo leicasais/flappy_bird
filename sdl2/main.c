@@ -32,6 +32,7 @@ int main(void){
    // menu_init(&menu);                                         // MAIN_MENU + highscores :contentReference[oaicite:6]{index=6}
 
     int running = 1;
+    int reboot_time=0; 
     while (running){
         SDL_Event event;
         while (SDL_PollEvent(&event)){
@@ -107,13 +108,22 @@ int main(void){
             col_mov(column);
             bird_fall(&bird);
             update_bird_animation(&bird);
-            points(column, &bird, &menu);
+            if(reboot_time==0){
+                points(column, &bird, &menu);       //Adds a point if the bird has passed a column only if in game mode
+            }
                 
-            if (collision(column, &bird)){
-                // acá podrías ir a GAME_OVER si querés; por ahora volvemos al menú
-                menu.last_top_pos = score_update(&menu,menu.score);
-                score_save(&menu);
-                menu_set_state(&menu, GAME_OVER);
+            if (collision(column, &bird) && !reboot_time){
+                colition_update(&menu);//counts the collition only if the game isnt in reboot mode
+                if(menu.state != GAME_OVER){
+                    reboot_time=1;
+                }
+            }
+            else if(reboot_time > 0 && reboot_time < (MS_BTW_FRAMES * (column->col_speed)*2)){
+                reboot_time++;
+                // show resurrection animation
+            }
+            else{
+                reboot_time = 0;                //Ends the resurection mode
             }
         }
 
@@ -140,7 +150,7 @@ int main(void){
         SDL_Delay(16);
     }
 
-    cleanupSDL(&app, &bird, column, &background);
+    cleanupSDL(&app, &bird, column, &background, &menu);
     free(column);
     return 0;
 }

@@ -20,7 +20,6 @@
 
     //Macros for the main/game flow
     #define MS_BTW_FRAMES 16
-    #define VEL_COL 4
     #define MIN_GAME_HEIGHT 8
     #define MIN_GAME_WIDTH 8 
 
@@ -95,17 +94,15 @@
     typedef struct {
         int score;
         int lives;
+        SDL_Texture *full_heart_tex;       //saves the 3 full hearts animation
+        SDL_Texture *empty_heart_tex;      //saves the 3 empty heart 
+        int heart_h;
+        int heart_w;
         int high_score[MAX_SCORES];
         int state;          // MAIN_MENU, RUNING, PAUSE, GAME_OVER, etc.
         int selected;       // índice de opción actualmente seleccionada en el menú activo
         int last_top_pos;
     } menu_t;
-
-    typedef struct {
-        SDL_Texture *full_heart_tex;
-        SDL_Texture *empty_heart_tex;
-        int heart_size;
-    }simbols_t;
     /*#########################################
                         Functions
     #########################################*/
@@ -116,7 +113,7 @@
     void initSDL(app_t *app);
     void init_tex(column_t* pcol, bird_t *bird, menu_t *menu, app_t *app, background_t *background); 
     void set_parameters(void);
-    void cleanupSDL(app_t *app, bird_t *bird, column_t *column, background_t *background);
+    void cleanupSDL(app_t *app, bird_t *bird, column_t *column, background_t *background, menu_t *menu);
     SDL_Texture *loadTexture(char *filename, app_t *app);
 
     // *** NUEVO: reset "rápido" sin recargar texturas ***

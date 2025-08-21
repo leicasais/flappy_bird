@@ -249,29 +249,77 @@ backend/menu.c.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/flappy_bird.dir/build.make CMakeFiles/flappy_bird.dir/backend/menu.c.s
 .PHONY : backend/menu.c.s
 
-frontend/frontend.o: frontend/frontend.c.o
-.PHONY : frontend/frontend.o
+frontend/front_menu.o: frontend/front_menu.c.o
+.PHONY : frontend/front_menu.o
 
 # target to build an object file
-frontend/frontend.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/flappy_bird.dir/build.make CMakeFiles/flappy_bird.dir/frontend/frontend.c.o
-.PHONY : frontend/frontend.c.o
+frontend/front_menu.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/flappy_bird.dir/build.make CMakeFiles/flappy_bird.dir/frontend/front_menu.c.o
+.PHONY : frontend/front_menu.c.o
 
-frontend/frontend.i: frontend/frontend.c.i
-.PHONY : frontend/frontend.i
+frontend/front_menu.i: frontend/front_menu.c.i
+.PHONY : frontend/front_menu.i
 
 # target to preprocess a source file
-frontend/frontend.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/flappy_bird.dir/build.make CMakeFiles/flappy_bird.dir/frontend/frontend.c.i
-.PHONY : frontend/frontend.c.i
+frontend/front_menu.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/flappy_bird.dir/build.make CMakeFiles/flappy_bird.dir/frontend/front_menu.c.i
+.PHONY : frontend/front_menu.c.i
 
-frontend/frontend.s: frontend/frontend.c.s
-.PHONY : frontend/frontend.s
+frontend/front_menu.s: frontend/front_menu.c.s
+.PHONY : frontend/front_menu.s
 
 # target to generate assembly for a file
-frontend/frontend.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/flappy_bird.dir/build.make CMakeFiles/flappy_bird.dir/frontend/frontend.c.s
-.PHONY : frontend/frontend.c.s
+frontend/front_menu.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/flappy_bird.dir/build.make CMakeFiles/flappy_bird.dir/frontend/front_menu.c.s
+.PHONY : frontend/front_menu.c.s
+
+frontend/main_game.o: frontend/main_game.c.o
+.PHONY : frontend/main_game.o
+
+# target to build an object file
+frontend/main_game.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/flappy_bird.dir/build.make CMakeFiles/flappy_bird.dir/frontend/main_game.c.o
+.PHONY : frontend/main_game.c.o
+
+frontend/main_game.i: frontend/main_game.c.i
+.PHONY : frontend/main_game.i
+
+# target to preprocess a source file
+frontend/main_game.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/flappy_bird.dir/build.make CMakeFiles/flappy_bird.dir/frontend/main_game.c.i
+.PHONY : frontend/main_game.c.i
+
+frontend/main_game.s: frontend/main_game.c.s
+.PHONY : frontend/main_game.s
+
+# target to generate assembly for a file
+frontend/main_game.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/flappy_bird.dir/build.make CMakeFiles/flappy_bird.dir/frontend/main_game.c.s
+.PHONY : frontend/main_game.c.s
+
+frontend/render_helpers.o: frontend/render_helpers.c.o
+.PHONY : frontend/render_helpers.o
+
+# target to build an object file
+frontend/render_helpers.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/flappy_bird.dir/build.make CMakeFiles/flappy_bird.dir/frontend/render_helpers.c.o
+.PHONY : frontend/render_helpers.c.o
+
+frontend/render_helpers.i: frontend/render_helpers.c.i
+.PHONY : frontend/render_helpers.i
+
+# target to preprocess a source file
+frontend/render_helpers.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/flappy_bird.dir/build.make CMakeFiles/flappy_bird.dir/frontend/render_helpers.c.i
+.PHONY : frontend/render_helpers.c.i
+
+frontend/render_helpers.s: frontend/render_helpers.c.s
+.PHONY : frontend/render_helpers.s
+
+# target to generate assembly for a file
+frontend/render_helpers.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/flappy_bird.dir/build.make CMakeFiles/flappy_bird.dir/frontend/render_helpers.c.s
+.PHONY : frontend/render_helpers.c.s
 
 main.o: main.c.o
 .PHONY : main.o
@@ -321,9 +369,15 @@ help:
 	@echo "... backend/menu.o"
 	@echo "... backend/menu.i"
 	@echo "... backend/menu.s"
-	@echo "... frontend/frontend.o"
-	@echo "... frontend/frontend.i"
-	@echo "... frontend/frontend.s"
+	@echo "... frontend/front_menu.o"
+	@echo "... frontend/front_menu.i"
+	@echo "... frontend/front_menu.s"
+	@echo "... frontend/main_game.o"
+	@echo "... frontend/main_game.i"
+	@echo "... frontend/main_game.s"
+	@echo "... frontend/render_helpers.o"
+	@echo "... frontend/render_helpers.i"
+	@echo "... frontend/render_helpers.s"
 	@echo "... main.o"
 	@echo "... main.i"
 	@echo "... main.s"

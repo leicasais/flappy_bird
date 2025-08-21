@@ -28,7 +28,9 @@ set(SOURCES
     backend/game_logic.c
     backend/init_fun.c
     backend/menu.c
-    frontend/frontend.c
+    frontend/front_menu.c
+    frontend/main_game.c
+    frontend/render_helpers.c
 )
 
 # Build the executable
