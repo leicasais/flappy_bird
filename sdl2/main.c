@@ -118,6 +118,8 @@ int main(void){
 
 
                     case GAME_OVER:
+                        reboot_time=0;
+                        bird.vel_y=0;
                         if (event.key.keysym.sym == SDLK_UP) {         
                             menu_prev_option(&menu);
                         }
@@ -209,7 +211,6 @@ int main(void){
             render_pause_menu(&app, &menu, GAME_WIDTH, GAME_HEIGHT);
         }
         else if (menu.state == GAME_OVER) {
-            reboot_time=0;
             draw_col(column, &app);
             draw_bird(&bird, &app);
             render_game_over(&app, &menu, GAME_WIDTH, GAME_HEIGHT);
