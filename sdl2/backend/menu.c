@@ -9,6 +9,8 @@ static int menu_num_options(int state){
             return NUM_OPTIONS_PAUSE;     // 0: Continuar, 1: Reiniciar, 2: Menu, 3: Salir
         case GAME_OVER:  
             return NUM_OPTIONS_GAME_OVER; // 0: Reintentar, 1: Menus
+        case SKIN_MENU:
+            return NUM_OPTIONS_SKIN;      // 0: 5 Skins
         default:         
             return 0;
     }
@@ -50,16 +52,19 @@ void menu_activate_selected(menu_t *menu, column_t *cols, bird_t *bird, app_t *a
     (void)app;
 
     switch (menu->state) {
-        case MAIN_MENU: // 0: Jugar, 1: Salir
+        case MAIN_MENU: // 0: Jugar, 1: Elegir Skin, 2: Salir
             if (menu->selected == 0){
                 game_reset(cols, bird, menu);
                 menu_set_state(menu, RUNING);
-                menu->state=BEGINING;       //sets the game in pause until player presses space
             } 
-            else{
+            else if (menu->selected == 1){
+                menu->selected = 0;                 // arranca seleccionando la 1ª skin
+                menu_set_state(menu, SKIN_MENU);
+            } 
+            else {
                 menu_set_state(menu, EXIT);
             }
-            break;
+        break;
 
         case PAUSE:     // 0: Continuar, 1: Reiniciar, 2: Menu, 3: Salir
             if (menu->selected == 0){
@@ -75,7 +80,7 @@ void menu_activate_selected(menu_t *menu, column_t *cols, bird_t *bird, app_t *a
             else{
                 menu_set_state(menu, EXIT);
             }
-            break;
+        break;
 
         case GAME_OVER: // 0: Reintentar, 1: Menu, 2: Salir
             // guardo score ANTES de cambiar de escena
@@ -86,9 +91,15 @@ void menu_activate_selected(menu_t *menu, column_t *cols, bird_t *bird, app_t *a
             else {                                   // Salir
                 menu_set_state(menu, EXIT);
             }
-            break;
+        break;
+
+        case SKIN_MENU: // 5 skins
+            set_bird_skin(bird, app, menu->selected);  // aplica skin elegida
+            menu->selected = 0;                         // vuelve con la 1ª opción del Main
+            menu_set_state(menu, MAIN_MENU);
+        break;
 
         default:
-            break;
+        break;
     }
 }

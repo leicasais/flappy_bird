@@ -37,9 +37,10 @@
     #define NUM_SKINS 5
 
     //macros for the menus
-    #define NUM_OPTIONS_MAIN 2 
-    #define NUM_OPTIONS_GAME_OVER 2
-    #define NUM_OPTIONS_PAUSE 4
+    #define NUM_OPTIONS_MAIN       3   
+    #define NUM_OPTIONS_SKIN       5   
+    #define NUM_OPTIONS_GAME_OVER  2
+    #define NUM_OPTIONS_PAUSE      4    
     #define MAIN_MENU 1
     #define RUNING 2
     #define PAUSE 3
@@ -48,6 +49,7 @@
     #define RESTART 6
     #define GAME_OVER 7
     #define BEGINING 8
+    #define SKIN_MENU 9 
     #define MAX_SCORES 10
 
     /*#########################################
@@ -137,6 +139,8 @@
     void bird_flying(bird_t *bird);
     void bird_jump(bird_t* bird);
     void bird_fall(bird_t* bird);
+    void set_bird_skin(bird_t *bird, app_t *app, int idx);
+
 
     //game_logic.c
     /**

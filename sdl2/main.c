@@ -50,6 +50,7 @@ int main(void){
                         menu_set_state(&menu, MAIN_MENU);
                     }
                     break;
+
                     case MAIN_MENU:
                         if (event.key.keysym.sym == SDLK_UP){      
                             menu_prev_option(&menu);
@@ -67,7 +68,22 @@ int main(void){
                                 running = 0;
                             }
                         }
-                        break;
+                    break;
+
+                    case SKIN_MENU:
+                        if (event.key.keysym.sym == SDLK_UP) {
+                            menu_prev_option(&menu);
+                        }
+                        else if (event.key.keysym.sym == SDLK_DOWN) {
+                            menu_next_option(&menu);
+                        }
+                        else if (event.key.keysym.sym == SDLK_RETURN ||event.key.keysym.sym == SDLK_KP_ENTER) {
+                            menu_activate_selected(&menu, column, &bird, &app);   // aplica skin y vuelve al Main
+                        }
+                        else if (event.key.keysym.sym == SDLK_ESCAPE) {
+                            menu_set_state(&menu, MAIN_MENU);                      // cancelar y volver
+                        }
+                    break;
 
                     case RUNING:
                         if (event.key.keysym.sym == SDLK_SPACE){
@@ -76,7 +92,7 @@ int main(void){
                         else if (event.key.keysym.sym == SDLK_ESCAPE || event.key.keysym.sym == 'p' || event.key.keysym.sym == 'P'){
                             menu_set_state(&menu, PAUSE);;
                         }
-                        break;
+                    break;
 
                     case PAUSE:
                         if (event.key.keysym.sym == SDLK_UP) {
@@ -114,14 +130,14 @@ int main(void){
                             menu_set_state(&menu, EXIT);
                             running = 0;
                         }
-                        break;
+                    break;
 
                     case EXIT:
                         running = 0;
-                        break;
+                    break;
 
                     default:
-                        break;
+                    break;
                 }
             }
         }
@@ -160,6 +176,9 @@ int main(void){
             render_main_menu(&app, &menu, GAME_WIDTH, GAME_HEIGHT); // "FLAPPY" + Play/Salir
             reboot_time=0;      //acordate de agregar esta linea en la opcion restart del menu de pausa
         } 
+        else if (menu.state == SKIN_MENU) {
+            render_skin_menu(&app, &menu, GAME_WIDTH, GAME_HEIGHT);
+        }
         else if (menu.state == RUNING || menu.state == BEGINING) {
             draw_col(column, &app);
             if(!reboot_time){

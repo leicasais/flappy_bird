@@ -36,8 +36,8 @@ void render_main_menu(app_t *app, menu_t *menu, int w, int h){
     draw_text_center(app->renderer, app->font, "Presiona Enter para comenzar", textCol, cardX + cardW/2, cardY + 22 + th + 10, NULL, NULL);
 
     // 3) opciones
-    const char *opts[] = { "Play", "Salir" };
-    const int n = 2;
+    const char *opts[] = { "Play", "Elegir Skin" , "Salir" };
+    const int n = 3;
     const int lineH = ((th) ? (th) + 16 : 40);
     int startY = cardY + cardH/2 - (n * lineH)/2;
 
@@ -73,6 +73,109 @@ void draw_menu_list(SDL_Renderer *r, int w, int h, const char **options, int n, 
     extern app_t app; // si no tenés un app global, pasá font/color por parámetro
     // Alternativa segura: reemplazá 'app.font' por el font que tengas a mano.
 }
+
+void render_skin_menu(app_t *app, menu_t *menu, int w, int h)
+{
+    // Tarjeta base (idéntica a otros menús)
+    const int cardW = (int)(w * PANEL_W_RATIO);
+    const int cardH = (int)(h * PANEL_H_RATIO);
+    const int cardX = (w - cardW) / 2;
+    const int cardY = (h - cardH) / 2;
+
+    SDL_SetRenderDrawBlendMode(app->renderer, SDL_BLENDMODE_BLEND);
+    SDL_SetRenderDrawColor(app->renderer, 30, 30, 30, 200);
+    SDL_Rect card = { cardX, cardY, cardW, cardH };
+    SDL_RenderFillRect(app->renderer, &card);
+    SDL_SetRenderDrawColor(app->renderer, 220, 220, 220, 255);
+    SDL_RenderDrawRect(app->renderer, &card);
+
+    SDL_Color titleCol = (SDL_Color){230,230,80,255};
+    SDL_Color textCol  = (SDL_Color){240,240,240,255};
+    int tw=0, th=0;
+
+    draw_text_center(app->renderer, app->font, "ELEGIR SKIN", titleCol, cardX + cardW/2, cardY + 22, &tw, &th);
+    draw_text_center(app->renderer, app->font, "Enter para confirmar · Esc para volver", textCol, cardX + cardW/2, cardY + 22 + th + 8, NULL, NULL);
+
+    // Lista de skins 
+    const char* opts[] = { "Enojado", "Cerebro", "Futuro", "Violeta", "Amarillo"};
+    const int n = 5;
+
+    const int lineH = OPTION_LINE_H;
+    const int gap   = OPTION_GAP;
+    const int optsH = n * lineH + (n - 1) * gap;
+    const int startY = cardY + (cardH - optsH)/2 + 16; // centrado vertical simple
+
+    for (int i = 0; i < n; ++i) {
+        const int yy = startY + i * (lineH + gap);
+        if (i == menu->selected) {
+            SDL_SetRenderDrawColor(app->renderer, 70, 120, 200, 180);
+            SDL_Rect hi = { cardX + HILIGHT_INSET, yy - OPTION_HILIGHT_PAD_Y, cardW - 2*HILIGHT_INSET, OPTION_LINE_H + 2*OPTION_HILIGHT_PAD_Y };
+            SDL_RenderFillRect(app->renderer, &hi);
+        }
+        draw_text_center(app->renderer, app->font, opts[i], textCol, cardX + cardW/2, yy, NULL, NULL);
+    }
+
+    // --- Preview de la skin seleccionada ---
+    // Cacheamos las texturas de preview para no recargar en cada frame
+    static SDL_Texture* previews[5] = {NULL,NULL,NULL,NULL,NULL};
+    static const char *SKIN_PATHS[5] = {
+        "../img/birds/Angry_bird.png",
+        "../img/birds/Brain_bird.png",
+        "../img/birds/Future_bird.png",
+        "../img/birds/Purple_bird.png",
+        "../img/birds/Yellow_bird.png"
+    };
+
+    int sel = menu->selected;
+    if (sel < 0) {
+        sel = 0;
+    } 
+    if (sel > 4) {
+        sel = 4;
+    }
+    if (!previews[sel]) {
+        previews[sel] = loadTexture((char*)SKIN_PATHS[sel], app);
+    }
+
+    if (previews[sel]) {
+        // Zona para el preview: debajo de la lista y por encima del borde inferior
+        const int previewMaxW = (int)(cardW * 0.38f);
+        const int previewMaxH = (int)(cardH * 0.30f);
+
+        // y de arranque de las opciones (lo usaste arriba)
+        // startY + n*(lineH+gap) nos da el final de la lista
+        int endListY = startY + n * (lineH + gap) - gap;
+
+        // centro el preview bajo la lista con un margen
+        const int centerX = cardX + cardW/2;
+        const int topY    = endListY + 20;
+
+        // Mantengo proporción de la textura
+        int texW=0, texH=0;
+        SDL_QueryTexture(previews[sel], NULL, NULL, &texW, &texH);
+        if (texW > 0 && texH > 0) {
+            float sx = (float)previewMaxW / (float)texW;
+            float sy = (float)previewMaxH / (float)texH;
+            float s  = sx < sy ? sx : sy;               // que entre en ambos ejes
+
+            int dstW = (int)(texW * s);
+            int dstH = (int)(texH * s);
+            int dstX = centerX - dstW / 2;
+            int dstY = topY;
+
+            // panel suave detrás del preview (opcional)
+            SDL_SetRenderDrawColor(app->renderer, 255, 255, 255, 20);
+            SDL_Rect bg = { dstX - 8, dstY - 8, dstW + 16, dstH + 16 };
+            SDL_RenderFillRect(app->renderer, &bg);
+
+            SDL_Rect dst = { dstX, dstY, dstW, dstH };
+            SDL_RenderCopy(app->renderer, previews[sel], NULL, &dst);
+        }
+    }
+}
+
+
+
 
 void render_pause_menu(app_t *app, menu_t *menu, int w, int h)
 {

@@ -241,3 +241,29 @@ void cleanupSDL(app_t *app, bird_t *bird, column_t *column, background_t *backgr
     SDL_Quit();
 }
 
+void set_bird_skin(bird_t *bird, app_t *app, int idx)
+{
+    // Paths de las 5 skins
+    static const char *SKINS[5] = {
+        "../img/birds/Angry_bird.png",
+        "../img/birds/Brain_bird.png",
+        "../img/birds/Future_bird.png",
+        "../img/birds/Purple_bird.png",
+        "../img/birds/Yellow_bird.png"
+    };
+
+    if (idx < 0 || idx >= 5){
+        return;
+    }
+    SDL_Texture *newtex = loadTexture((char*)SKINS[idx], app);
+    if (!newtex) {
+        return;
+    }
+
+    if (bird->texture) {
+        SDL_DestroyTexture(bird->texture);
+    }
+    bird->texture = newtex;
+}
+
+
