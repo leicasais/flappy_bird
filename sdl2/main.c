@@ -118,7 +118,7 @@ int main(void){
                     reboot_time=1;
                 }
             }
-            else if(reboot_time > 0 && reboot_time < (MS_BTW_FRAMES * (column->col_speed)*2)){
+            else if(reboot_time > 0 && reboot_time < (MS_BTW_FRAMES * (column->col_speed)*10)){
                 reboot_time++;
                 // show resurrection animation
             }
@@ -136,8 +136,15 @@ int main(void){
         } 
         else if (menu.state == RUNING || menu.state == BEGINING) {
             draw_col(column, &app);
-            draw_bird(&bird, &app);
+            if(!reboot_time){
+                draw_bird(&bird, &app);
+                draw_hearts(&app, &menu);
+            }
+            else{
+                display_resurecting(&bird, &menu, &app);
+            }
             render_game_hud(&app, &menu);
+            
         }
         else if (menu.state == GAME_OVER) {
             // Podés dibujar el mundo “congelado” debajo si querés

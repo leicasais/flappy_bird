@@ -12,18 +12,21 @@
     #define HILIGHT_INSET     20      // sangría del destacador
 
     //main_game_display
+    void bird_flying(bird_t *bird);
     void draw_bird(bird_t *bird, app_t *app);
+    void draw_resurecting_bird(bird_t *bird, app_t *app, int frame);
+    void display_resurecting(bird_t * bird, menu_t *menu, app_t *app);
     void draw_col(column_t* pcol, app_t *app);
     void draw_background(background_t *background, app_t *app);
     void draw_hearts(app_t *app,menu_t *menu );
 
     // Render_helpers.c
     void prepareScene(app_t *app);
-    static void draw_tiled_segment(SDL_Renderer *r, SDL_Texture *tex, int x, int src_x, int y, int w, int src_w, int h);    // sin estirar en vertical: repite la textura en bloques y recorta el último si hace falta.
+    void draw_tiled_segment(SDL_Renderer *r, SDL_Texture *tex, int x, int src_x, int y, int w, int src_w, int h);    // sin estirar en vertical: repite la textura en bloques y recorta el último si hace falta.
         //text
-    static SDL_Texture* make_text(SDL_Renderer* r, TTF_Font* font, const char* txt, SDL_Color color, int* w, int* h);
+    SDL_Texture* make_text(SDL_Renderer* r, TTF_Font* font, const char* txt, SDL_Color color, int* w, int* h);
     void draw_text_center(SDL_Renderer* r, TTF_Font* font, const char* text, SDL_Color color, int cx, int y, int* out_w, int* out_h);
-    static void draw_text_left(SDL_Renderer* r, TTF_Font* font, const char* text, SDL_Color color, int x, int y, int* out_w, int* out_h);
+    void draw_text_left(SDL_Renderer* r, TTF_Font* font, const char* text, SDL_Color color, int x, int y, int* out_w, int* out_h);
     
 
     // front_menu.c         ---- UI / Menú ----

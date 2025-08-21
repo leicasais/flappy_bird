@@ -32,9 +32,10 @@
     #define SPEED_MAX 6.0f  // techo
 
     //macros birds
-    #define HITBOX_X 15
-    #define HITBOX_Y 16
-    
+    #define HITBOX_X 224
+    #define HITBOX_Y 168
+    #define NUM_SKINS 3
+
     //macros for the menus
     #define NUM_OPTIONS_MAIN 2 
     #define NUM_OPTIONS_GAME_OVER 2
@@ -87,6 +88,7 @@
         float vel_y;
         int scale;
         SDL_Texture *texture;
+        SDL_Texture *tex_resurrection;
         int current_frame;
         Uint32 last_frame_time;
     }bird_t;
@@ -98,11 +100,14 @@
         SDL_Texture *empty_heart_tex;      //saves the 3 empty heart 
         int heart_h;
         int heart_w;
+        SDL_Texture *skins_tex[NUM_SKINS];
+        int index_skin;
         int high_score[MAX_SCORES];
         int state;          // MAIN_MENU, RUNING, PAUSE, GAME_OVER, etc.
         int selected;       // índice de opción actualmente seleccionada en el menú activo
         int last_top_pos;
     } menu_t;
+
     /*#########################################
                         Functions
     #########################################*/
@@ -127,6 +132,7 @@
   
     //bird_fun.c
     void update_bird_animation(bird_t *bird);
+    void bird_flying(bird_t *bird);
     void bird_jump(bird_t* bird);
     void bird_fall(bird_t* bird);
 

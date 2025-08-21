@@ -29,7 +29,7 @@ set(SOURCES
     backend/init_fun.c
     backend/menu.c
     frontend/front_menu.c
-    frontend/main_game.c
+    frontend/front_main_game.c
     frontend/render_helpers.c
 )
 

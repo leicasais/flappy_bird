@@ -17,7 +17,7 @@ void prepareScene(app_t *app){   //Prepares a clean background for drawing the n
     SDL_RenderClear(app->renderer);         //Clears the screen with the color just set. erease the previous frame
 }
 
-static void draw_tiled_segment(SDL_Renderer *r, SDL_Texture *tex, int x, int src_x, int y, int w, int src_w, int h){
+void draw_tiled_segment(SDL_Renderer *r, SDL_Texture *tex, int x, int src_x, int y, int w, int src_w, int h){
     if (h <= 0 || w <= 0 || !tex) {
         return;
     }
@@ -39,7 +39,7 @@ static void draw_tiled_segment(SDL_Renderer *r, SDL_Texture *tex, int x, int src
 
 //text fun
 
-static SDL_Texture* make_text(SDL_Renderer* r, TTF_Font* font, const char* txt, SDL_Color color, int* w, int* h) {
+SDL_Texture* make_text(SDL_Renderer* r, TTF_Font* font, const char* txt, SDL_Color color, int* w, int* h) {
     SDL_Surface* s = TTF_RenderUTF8_Blended(font, txt, color);
     if (!s) { 
         SDL_Log("TTF_Render FAIL: %s", TTF_GetError()); 
@@ -68,7 +68,7 @@ void draw_text_center(SDL_Renderer* r, TTF_Font* font, const char* text, SDL_Col
     }
 }
 
-static void draw_text_left(SDL_Renderer* r, TTF_Font* font, const char* text, SDL_Color color, int x, int y, int* out_w, int* out_h) {
+void draw_text_left(SDL_Renderer* r, TTF_Font* font, const char* text, SDL_Color color, int x, int y, int* out_w, int* out_h) {
     int w=0, h=0;
     SDL_Texture* tex = make_text(r, font, text, color, &w, &h);
     if (!tex) {

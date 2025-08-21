@@ -59,13 +59,13 @@ void init(column_t* pcol, bird_t *bird, menu_t *menu, app_t *app, background_t *
 
     //Bird init
     bird->scale =3;
-    bird->x_l= SPACE/2 + ( (HITBOX_X*(bird->scale)) /2);
-    bird->x_r= bird->x_l+(HITBOX_X*(bird->scale));
+    bird->x_l= SPACE/2 + ( (HITBOX_X/(bird->scale)) /2);
+    bird->x_r= bird->x_l+(HITBOX_X/(bird->scale));
 
-    float y= 3+(rand()%((GAME_HEIGHT-TILE_HIGHT)-(3+((HITBOX_Y*(bird->scale))/2))));//inicialite the position bird
+    float y= 3+(rand()%((GAME_HEIGHT-TILE_HIGHT)-(3+((HITBOX_Y/(bird->scale))/2))));//inicialite the position bird
     bird->gravity_y = 0.4;//Despues esta opcion depende el menu pero por ahora lo dejo como si siempre estuviese en la tierra
     bird->y_top=(int)y;
-    bird->y_bottom=bird->y_top+(HITBOX_Y*(bird->scale));
+    bird->y_bottom=bird->y_top+(HITBOX_Y/(bird->scale));
 
     //Menue init
     menu_init(menu); 
@@ -81,8 +81,15 @@ void init_tex(column_t* pcol, bird_t *bird, menu_t *menu, app_t *app, background
         //Bakground textures 
     background->tile_tex = loadTexture("../img/background/Tile.png", app);
 
-        //bird texture
-    bird->texture= loadTexture("../img/birds/Player_Rainbow.png", app);
+        //bird textures
+    (menu->skins_tex)[0]= loadTexture("../img/birds/Purple_bird.png", app);
+    (menu->skins_tex)[1]= loadTexture("../img/birds/Brain_bird.png", app);
+    (menu->skins_tex)[2]= loadTexture("../img/birds/Yellow_bird.png", app);
+    (menu->skins_tex)[3]= loadTexture("../img/birds/Future_bird.png", app);
+    (menu->skins_tex)[4]= loadTexture("../img/birds/Angry_bird.png", app);
+
+    bird->texture= (menu->skins_tex)[4]; //monto cambia el inide fijo por menu->index_skin que se puede seleccionar en tu menu
+    bird->tex_resurrection = loadTexture("../img/birds/Resurecting_bird.png", app);
     bird->current_frame=0;
     bird->last_frame_time = SDL_GetTicks();
 
@@ -160,9 +167,19 @@ void cleanupSDL(app_t *app, bird_t *bird, column_t *column, background_t *backgr
         SDL_DestroyTexture(app->score_tex); 
         app->score_tex = NULL;
     }
+    for(int i=0; i< NUM_SKINS;i++){
+        if((menu->skins_tex)[i]){
+            SDL_DestroyTexture((menu->skins_tex)[i]);
+            (menu->skins_tex)[i] = NULL;
+        }
+    }
     if (bird->texture) { 
         SDL_DestroyTexture(bird->texture); 
         bird->texture = NULL; 
+    }
+    if (bird->tex_resurrection) { 
+        SDL_DestroyTexture(bird->tex_resurrection); 
+        bird->tex_resurrection = NULL; 
     }
     if (background->tile_tex) { 
         SDL_DestroyTexture(background->tile_tex); 

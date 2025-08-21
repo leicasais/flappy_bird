@@ -11,36 +11,32 @@ extern column_t* column;
 extern int COL_WIDTH;
 extern int SPACE;
 
-void displayy_bird(bird_t * bird, int ch){
-    static int up=0;
-    if(ch==' '){
-        up=!up;
-    }
-    else if(bird->delta_y>0){
-        mvaddch(bird->y,bird->x,'~');
-    }
-    else if(up){
-            mvaddch(bird->y,bird->x,'v');
-        }
-        else{
-            mvaddch(bird->y,bird->x,'^');
-        }
-    
-}
-
 void draw_bird(bird_t *bird, app_t *app){
-    int fly_frames[] = {0, 6, 6, 7};
+    int fly_frames[] = {0, 1, 2, 1};
     //&srcRect the position and size in pixeles that you want to cut off the img
     SDL_Rect scr_rect;
     int frame_index = fly_frames[bird->current_frame];
-    scr_rect.x = (frame_index % 4) * HITBOX_X;          //gives the index of the column of the bird matrix
-    scr_rect.y = (frame_index / 4) * HITBOX_Y;
+    scr_rect.x = (frame_index) * HITBOX_X;          //gives the index of the column of the bird matrix
+    scr_rect.y = 0;
     scr_rect.w = HITBOX_X;
     scr_rect.h = HITBOX_Y;
 
     // &destRect sets the size of the cut img and where to plaice it in the screen
     SDL_Rect dest_rect = {.x = (int)bird->x_l, .y = (int)bird->y_top, .w = (int)(bird->x_r - bird->x_l), .h = (int)(bird->y_bottom - bird->y_top)};
-    SDL_RenderCopyEx(app->renderer, bird->texture, &scr_rect, &dest_rect, bird->vel_y*5,NULL, SDL_FLIP_NONE);       // Copies a part of a texture (src_rect) and draws it in the screen using the active render
+    SDL_RenderCopyEx(app->renderer, bird->texture, &scr_rect, &dest_rect, bird->vel_y*3,NULL, SDL_FLIP_NONE);       // Copies a part of a texture (src_rect) and draws it in the screen using the active render
+}
+
+void draw_resurecting_bird(bird_t *bird, app_t *app, int frame){
+    SDL_Rect scr_rect;
+    scr_rect.x = frame * HITBOX_X;          //gives the index of the column of the bird matrix
+    scr_rect.y = 0;
+    scr_rect.w = HITBOX_X;
+    scr_rect.h = HITBOX_Y;
+
+    // &destRect sets the size of the cut img and where to plaice it in the screen
+    SDL_Rect dest_rect = {.x = (int)bird->x_l, .y = (int)bird->y_top, .w = (int)(bird->x_r - bird->x_l), .h = (int)(bird->y_bottom - bird->y_top)};
+    SDL_RenderCopyEx(app->renderer, bird->tex_resurrection, &scr_rect, &dest_rect, bird->vel_y*3,NULL, SDL_FLIP_NONE);       // Copies a part of a texture (src_rect) and draws it in the screen using the active render
+
 }
 
 void draw_col(column_t* pcol, app_t *app){
@@ -108,32 +104,44 @@ void render_game_hud(app_t *app, menu_t *menu){
         return;
     }
     draw_text_left(app->renderer, app->font, buf, c, GAME_WIDTH- text_w -10,8, NULL, NULL );
-    draw_hearts(app, menu);
-
-
 }
-/*
-void display_resurecting_bird(bird_t * bird, int ch){
-    static int up=0;
+
+void display_resurecting(bird_t * bird, menu_t *menu, app_t *app){
     static int time=0;
-    if(ch==' '){
-        up=!up;
-    }
-    if(time<10){
-        if(up){
-            mvaddch(bird->y,bird->x,'o');
+    SDL_Rect heart_rect = { .y = 4, .w= menu->heart_w/4, .h = menu->heart_h/4};
+        for(int i=0; i<3; i++){
+            heart_rect.x=8+ i*(menu->heart_w/4+menu->heart_w/9);
+            if(i != menu->lives){     //show normally all lives except the current one that is being lost
+                if(menu->lives >i){         //Case live is full
+                    SDL_RenderCopy(app->renderer, menu->full_heart_tex, NULL, &heart_rect);
+                }
+                else{
+                    SDL_RenderCopy(app->renderer, menu->empty_heart_tex, NULL, &heart_rect);
+                }
+            }
+            else{
+                if(time<5){
+                    SDL_RenderCopy(app->renderer, menu->full_heart_tex, NULL, &heart_rect);
+                }
+                else{
+                    SDL_RenderCopy(app->renderer, menu->empty_heart_tex, NULL, &heart_rect);
+                }
+            }
         }
-        else{
-            mvaddch(bird->y,bird->x,'-');
-        }
-    }
-    if(time<20){
-        time++;
+    if(bird->vel_y<0){
+        draw_resurecting_bird(bird, app, 1);
     }
     else{
+        draw_resurecting_bird(bird, app, 0);
+        
+    if(time==10) {
         time=0;
+    }
+    else{
+        time++;
+    }
     }  
     
-}*/
+}
 
 

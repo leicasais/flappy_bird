@@ -167,19 +167,19 @@ CMakeFiles/flappy_bird.dir/frontend/front_menu.c.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling C source to assembly CMakeFiles/flappy_bird.dir/frontend/front_menu.c.s"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/leila/Documents/COIL/flappy_bird/sdl2/frontend/front_menu.c -o CMakeFiles/flappy_bird.dir/frontend/front_menu.c.s
 
-CMakeFiles/flappy_bird.dir/frontend/main_game.c.o: CMakeFiles/flappy_bird.dir/flags.make
-CMakeFiles/flappy_bird.dir/frontend/main_game.c.o: /home/leila/Documents/COIL/flappy_bird/sdl2/frontend/main_game.c
-CMakeFiles/flappy_bird.dir/frontend/main_game.c.o: CMakeFiles/flappy_bird.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/leila/Documents/COIL/flappy_bird/sdl2/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_8) "Building C object CMakeFiles/flappy_bird.dir/frontend/main_game.c.o"
-	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/flappy_bird.dir/frontend/main_game.c.o -MF CMakeFiles/flappy_bird.dir/frontend/main_game.c.o.d -o CMakeFiles/flappy_bird.dir/frontend/main_game.c.o -c /home/leila/Documents/COIL/flappy_bird/sdl2/frontend/main_game.c
+CMakeFiles/flappy_bird.dir/frontend/front_main_game.c.o: CMakeFiles/flappy_bird.dir/flags.make
+CMakeFiles/flappy_bird.dir/frontend/front_main_game.c.o: /home/leila/Documents/COIL/flappy_bird/sdl2/frontend/front_main_game.c
+CMakeFiles/flappy_bird.dir/frontend/front_main_game.c.o: CMakeFiles/flappy_bird.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/leila/Documents/COIL/flappy_bird/sdl2/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_8) "Building C object CMakeFiles/flappy_bird.dir/frontend/front_main_game.c.o"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/flappy_bird.dir/frontend/front_main_game.c.o -MF CMakeFiles/flappy_bird.dir/frontend/front_main_game.c.o.d -o CMakeFiles/flappy_bird.dir/frontend/front_main_game.c.o -c /home/leila/Documents/COIL/flappy_bird/sdl2/frontend/front_main_game.c
 
-CMakeFiles/flappy_bird.dir/frontend/main_game.c.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing C source to CMakeFiles/flappy_bird.dir/frontend/main_game.c.i"
-	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /home/leila/Documents/COIL/flappy_bird/sdl2/frontend/main_game.c > CMakeFiles/flappy_bird.dir/frontend/main_game.c.i
+CMakeFiles/flappy_bird.dir/frontend/front_main_game.c.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing C source to CMakeFiles/flappy_bird.dir/frontend/front_main_game.c.i"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /home/leila/Documents/COIL/flappy_bird/sdl2/frontend/front_main_game.c > CMakeFiles/flappy_bird.dir/frontend/front_main_game.c.i
 
-CMakeFiles/flappy_bird.dir/frontend/main_game.c.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling C source to assembly CMakeFiles/flappy_bird.dir/frontend/main_game.c.s"
-	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/leila/Documents/COIL/flappy_bird/sdl2/frontend/main_game.c -o CMakeFiles/flappy_bird.dir/frontend/main_game.c.s
+CMakeFiles/flappy_bird.dir/frontend/front_main_game.c.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling C source to assembly CMakeFiles/flappy_bird.dir/frontend/front_main_game.c.s"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/leila/Documents/COIL/flappy_bird/sdl2/frontend/front_main_game.c -o CMakeFiles/flappy_bird.dir/frontend/front_main_game.c.s
 
 CMakeFiles/flappy_bird.dir/frontend/render_helpers.c.o: CMakeFiles/flappy_bird.dir/flags.make
 CMakeFiles/flappy_bird.dir/frontend/render_helpers.c.o: /home/leila/Documents/COIL/flappy_bird/sdl2/frontend/render_helpers.c
@@ -204,7 +204,7 @@ flappy_bird_OBJECTS = \
 "CMakeFiles/flappy_bird.dir/backend/init_fun.c.o" \
 "CMakeFiles/flappy_bird.dir/backend/menu.c.o" \
 "CMakeFiles/flappy_bird.dir/frontend/front_menu.c.o" \
-"CMakeFiles/flappy_bird.dir/frontend/main_game.c.o" \
+"CMakeFiles/flappy_bird.dir/frontend/front_main_game.c.o" \
 "CMakeFiles/flappy_bird.dir/frontend/render_helpers.c.o"
 
 # External object files for target flappy_bird
@@ -217,7 +217,7 @@ flappy_bird: CMakeFiles/flappy_bird.dir/backend/game_logic.c.o
 flappy_bird: CMakeFiles/flappy_bird.dir/backend/init_fun.c.o
 flappy_bird: CMakeFiles/flappy_bird.dir/backend/menu.c.o
 flappy_bird: CMakeFiles/flappy_bird.dir/frontend/front_menu.c.o
-flappy_bird: CMakeFiles/flappy_bird.dir/frontend/main_game.c.o
+flappy_bird: CMakeFiles/flappy_bird.dir/frontend/front_main_game.c.o
 flappy_bird: CMakeFiles/flappy_bird.dir/frontend/render_helpers.c.o
 flappy_bird: CMakeFiles/flappy_bird.dir/build.make
 flappy_bird: /usr/lib/x86_64-linux-gnu/libSDL2.so

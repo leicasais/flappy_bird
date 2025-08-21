@@ -168,14 +168,14 @@ void game_reset(column_t* pcol, bird_t *bird, menu_t *menu){
     col_reset_scroll();
 
     // *** pájaro: igual que en init(), pero sin crear textura ***
-    bird->x_l    = SPACE/2 + ((HITBOX_X * bird->scale) / 2);
-    bird->x_r = bird->x_l + (HITBOX_X * bird->scale);
+    bird->x_l    = SPACE/2 + ((HITBOX_X / bird->scale) / 2);
+    bird->x_r = bird->x_l + (HITBOX_X / bird->scale);
 
-    float y = 3 + (rand() % (GAME_HEIGHT - (3 + ((HITBOX_Y * bird->scale) / 2))));
+    float y = 3 + (rand() % (GAME_HEIGHT - (3 + ((HITBOX_Y / bird->scale) / 2))));
     bird->gravity_y = 0.4f;
     bird->vel_y = 0.0f;
     bird->y_top = (int)y;
-    bird->y_bottom = bird->y_top + (HITBOX_Y * bird->scale);
+    bird->y_bottom = bird->y_top + (HITBOX_Y / bird->scale);
     bird->current_frame = 0;
     bird->last_frame_time = SDL_GetTicks();
 
