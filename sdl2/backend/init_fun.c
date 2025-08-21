@@ -28,7 +28,19 @@ void init_parameters(void){
     set_parameters();
 }
 
-void init(column_t* pcol, bird_t *bird, menu_t *menu, app_t *app, background_t *background){  
+int rand_y_pos(float bird_size, int heart_h){ //returns a random coord y for the begining of the hole  OBS-> min + rand() % (max - min + 1);      
+    const int margin_inf = 3;  // lo que quieras dejar libre arriba
+    int minY = heart_h;
+    int maxY = GAME_HEIGHT - TILE_HIGHT - bird_size - margin_inf - 1; // límite correcto
+
+    if (maxY < minY) {
+        // agujero imposible de colocar: ajustá HOLE_HEIGHT o márgenes
+        maxY = minY;
+    }
+    return minY + rand() % (maxY - minY + 1); // rango [minY, maxY]
+}
+
+void init(column_t* pcol, bird_t *bird, menu_t *menu){  
 //Column init
     int aux_x=0; 
     int i;
@@ -59,17 +71,21 @@ void init(column_t* pcol, bird_t *bird, menu_t *menu, app_t *app, background_t *
 
     //Bird init
     bird->scale =3;
-    bird->x_l= SPACE/2 + ( (HITBOX_X/(bird->scale)) /2);
-    bird->x_r= bird->x_l+(HITBOX_X/(bird->scale));
+    bird->h =(HITBOX_Y)/(bird->scale);
+    bird->w =(HITBOX_X)/(bird->scale);
 
-    float y= 3+(rand()%((GAME_HEIGHT-TILE_HIGHT)-(3+((HITBOX_Y/(bird->scale))/2))));//inicialite the position bird
+    bird->x_l= SPACE/2 + ( (bird->w) /2);
+    bird->x_r= bird->x_l+(bird->w);
+
+    float y= rand_y_pos(bird->h, menu->heart_h);
     bird->gravity_y = 0.4;//Despues esta opcion depende el menu pero por ahora lo dejo como si siempre estuviese en la tierra
-    bird->y_top=(int)y;
-    bird->y_bottom=bird->y_top+(HITBOX_Y/(bird->scale));
+    bird->y_top=y;
+    bird->y_bottom=bird->y_top+(bird->h);
 
     //Menue init
     menu_init(menu); 
 }
+
 void init_tex(column_t* pcol, bird_t *bird, menu_t *menu, app_t *app, background_t *background){
        //column textures
     for(int i=0; i<NUM_COL; i++){

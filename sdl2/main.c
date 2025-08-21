@@ -25,7 +25,7 @@ int main(void){
     initSDL(&app);
 
     // Objetos y texturas (columnas, pájaro, background, fuente para HUD)
-    init(column, &bird, &menu, &app, &background);            // update the initial conditions of the game
+    init(column, &bird, &menu);            // update the initial conditions of the game
     init_tex(column, &bird, &menu, &app, &background);        //charges the textures 
 
     // --- Menú: estado inicial + fuente para UI del menú ---
@@ -46,6 +46,10 @@ int main(void){
                         if(event.key.keysym.sym == SDLK_SPACE){ //press space to begin playing
                             menu.state=RUNING;
                         }
+                        else if (event.key.keysym.sym == SDLK_ESCAPE){  // si querés: volver al menú con ESC
+                        menu_set_state(&menu, MAIN_MENU);
+                    }
+                    break;
                     case MAIN_MENU:
                         if (event.key.keysym.sym == SDLK_UP){      
                             menu_prev_option(&menu);
@@ -118,7 +122,7 @@ int main(void){
                     reboot_time=1;
                 }
             }
-            else if(reboot_time > 0 && reboot_time < (MS_BTW_FRAMES * (column->col_speed)*10)){
+            else if(reboot_time > 0 && reboot_time < (MS_BTW_FRAMES * (column->col_speed)*4)){
                 reboot_time++;
                 // show resurrection animation
             }
@@ -133,6 +137,7 @@ int main(void){
 
         if (menu.state == MAIN_MENU) {
             render_main_menu(&app, &menu, GAME_WIDTH, GAME_HEIGHT); // "FLAPPY" + Play/Salir
+            reboot_time=0;      //acordate de agregar esta linea en la opcion restart del menu de pausa
         } 
         else if (menu.state == RUNING || menu.state == BEGINING) {
             draw_col(column, &app);
@@ -147,7 +152,7 @@ int main(void){
             
         }
         else if (menu.state == GAME_OVER) {
-            // Podés dibujar el mundo “congelado” debajo si querés
+            reboot_time=0;
             draw_col(column, &app);
             draw_bird(&bird, &app);
             render_game_over(&app, &menu, GAME_WIDTH, GAME_HEIGHT);

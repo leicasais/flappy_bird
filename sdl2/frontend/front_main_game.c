@@ -22,7 +22,7 @@ void draw_bird(bird_t *bird, app_t *app){
     scr_rect.h = HITBOX_Y;
 
     // &destRect sets the size of the cut img and where to plaice it in the screen
-    SDL_Rect dest_rect = {.x = (int)bird->x_l, .y = (int)bird->y_top, .w = (int)(bird->x_r - bird->x_l), .h = (int)(bird->y_bottom - bird->y_top)};
+    SDL_Rect dest_rect = {.x = bird->x_l, .y = bird->y_top, .w = bird->w, .h = bird->h};
     SDL_RenderCopyEx(app->renderer, bird->texture, &scr_rect, &dest_rect, bird->vel_y*3,NULL, SDL_FLIP_NONE);       // Copies a part of a texture (src_rect) and draws it in the screen using the active render
 }
 
@@ -34,7 +34,7 @@ void draw_resurecting_bird(bird_t *bird, app_t *app, int frame){
     scr_rect.h = HITBOX_Y;
 
     // &destRect sets the size of the cut img and where to plaice it in the screen
-    SDL_Rect dest_rect = {.x = (int)bird->x_l, .y = (int)bird->y_top, .w = (int)(bird->x_r - bird->x_l), .h = (int)(bird->y_bottom - bird->y_top)};
+    SDL_Rect dest_rect = {.x = bird->x_l, .y = bird->y_top, .w = bird->w, .h = bird->h};
     SDL_RenderCopyEx(app->renderer, bird->tex_resurrection, &scr_rect, &dest_rect, bird->vel_y*3,NULL, SDL_FLIP_NONE);       // Copies a part of a texture (src_rect) and draws it in the screen using the active render
 
 }
@@ -78,9 +78,10 @@ void draw_background(background_t *background, app_t *app){
 
 
 void draw_hearts(app_t *app,menu_t *menu ){
-    SDL_Rect heart_rect = { .y = 4, .w= menu->heart_w/4, .h = menu->heart_h/4};
+    
+    SDL_Rect heart_rect = { .y = 4, .w= menu->heart_w, .h = menu->heart_h};
     for(int i=0; i<3; i++){
-        heart_rect.x=8+ i*(menu->heart_w/4+menu->heart_w/9);
+        heart_rect.x=8+ i*(menu->heart_w+menu->heart_w/4);
         if(menu->lives >i){         //Case live is full
             SDL_RenderCopy(app->renderer, menu->full_heart_tex, NULL, &heart_rect);
         }
@@ -107,40 +108,30 @@ void render_game_hud(app_t *app, menu_t *menu){
 }
 
 void display_resurecting(bird_t * bird, menu_t *menu, app_t *app){
-    static int time=0;
-    SDL_Rect heart_rect = { .y = 4, .w= menu->heart_w/4, .h = menu->heart_h/4};
-        for(int i=0; i<3; i++){
-            heart_rect.x=8+ i*(menu->heart_w/4+menu->heart_w/9);
-            if(i != menu->lives){     //show normally all lives except the current one that is being lost
-                if(menu->lives >i){         //Case live is full
-                    SDL_RenderCopy(app->renderer, menu->full_heart_tex, NULL, &heart_rect);
-                }
-                else{
-                    SDL_RenderCopy(app->renderer, menu->empty_heart_tex, NULL, &heart_rect);
-                }
-            }
-            else{
-                if(time<5){
-                    SDL_RenderCopy(app->renderer, menu->full_heart_tex, NULL, &heart_rect);
-                }
-                else{
-                    SDL_RenderCopy(app->renderer, menu->empty_heart_tex, NULL, &heart_rect);
-                }
-            }
+    static int time = 0;
+    int blink_on = (time < 5);
+    SDL_Rect heart_rect = { .y = 4, .w= menu->heart_w, .h = menu->heart_h};
+    for (int i = 0; i < 3; i++) {
+        heart_rect.x = 8 + i * (menu->heart_w + menu->heart_w/4);
+
+        if (i != menu->lives) {
+            //show normally all lives except the current one that is being lost
+            if (menu->lives > i) SDL_RenderCopy(app->renderer, menu->full_heart_tex, NULL, &heart_rect);
+            else                 SDL_RenderCopy(app->renderer, menu->empty_heart_tex, NULL, &heart_rect);
+        } else {
+            // blinking heart
+            if (blink_on) SDL_RenderCopy(app->renderer, menu->full_heart_tex, NULL, &heart_rect);
+            else          SDL_RenderCopy(app->renderer, menu->empty_heart_tex, NULL, &heart_rect);
         }
+    }
     if(bird->vel_y<0){
         draw_resurecting_bird(bird, app, 1);
     }
     else{
         draw_resurecting_bird(bird, app, 0);
-        
-    if(time==10) {
-        time=0;
-    }
-    else{
-        time++;
-    }
-    }  
+    } 
+    time = (time + 1) % 10;
+    
     
 }
 

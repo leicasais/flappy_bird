@@ -19,8 +19,8 @@ void menu_init(menu_t *menu){
     menu->selected      = 0;
     menu->score         = 0;
     menu->lives         = 3;
-    menu->heart_h       = 256; //px
-    menu->heart_w       = 256; //px
+    menu->heart_h       = 256/4 ; //px
+    menu->heart_w       = 256/4; //px
     menu->last_top_pos  = 0;
     score_init(menu); // carga/normaliza highscores
 }

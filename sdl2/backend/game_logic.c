@@ -141,47 +141,11 @@ void score_save(menu_t *pmenu) {
 
 
 void game_reset(column_t* pcol, bird_t *bird, menu_t *menu){
-    // *** columnas: igual que en init(), pero sin crear texturas ***
-    int aux_x = 0; 
-    int i;
-    for(i = 0; i < ((GAME_WIDTH/(COL_WIDTH+SPACE)) - 1); i++){
-        aux_x += SPACE + COL_WIDTH;  
-        pcol[i].x = aux_x;
-        pcol[i].y = rand_hole();
-        pcol[i].len = COL_WIDTH;
-        pcol[i].trim = 0;
-    }
-    if (GAME_WIDTH % (COL_WIDTH+SPACE)) {
-        int space_left = GAME_WIDTH - (COL_WIDTH + SPACE) * (i + 1);
-        pcol[i].x = aux_x + SPACE + COL_WIDTH;
-        pcol[i].y = rand_hole();
-        pcol[i].len = (space_left < COL_WIDTH) ? space_left : COL_WIDTH;
-        pcol[i].trim = 0;
-        i++;
-    }
-    for (int j = i; j < NUM_COL; j++){
-        pcol[j].x = OUTSIDE;
-        pcol[j].len = 0;
-        pcol[j].trim = 0;
-    }
-    pcol->col_speed = BASE_SPEED;   // usar tu “global” guardada en column[0]
-    col_reset_scroll();
-
-    // *** pájaro: igual que en init(), pero sin crear textura ***
-    bird->x_l    = SPACE/2 + ((HITBOX_X / bird->scale) / 2);
-    bird->x_r = bird->x_l + (HITBOX_X / bird->scale);
-
-    float y = 3 + (rand() % (GAME_HEIGHT - (3 + ((HITBOX_Y / bird->scale) / 2))));
-    bird->gravity_y = 0.4f;
-    bird->vel_y = 0.0f;
-    bird->y_top = (int)y;
-    bird->y_bottom = bird->y_top + (HITBOX_Y / bird->scale);
-    bird->current_frame = 0;
-    bird->last_frame_time = SDL_GetTicks();
-
+    init(pcol,bird, menu);
     // *** menú / score ***
     menu->score = 0;
     menu->lives = 3;
     menu->selected = 0;
     menu->last_top_pos = 0;
+    
 }

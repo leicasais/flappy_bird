@@ -84,6 +84,8 @@
         float y_bottom; //CAMBIE TODO A FLOAT, GUARDA!!! REVISALO BIEN
         float x_l;
         float x_r;
+        float h;
+        float w;
         float gravity_y;
         float vel_y;
         int scale;
@@ -114,7 +116,7 @@
     
     //init_fun.c
     void init_parameters(void);
-    void init(column_t* pcol, bird_t *bird, menu_t *menu, app_t *app, background_t *background);
+    void init(column_t* pcol, bird_t *bird, menu_t *menu);
     void initSDL(app_t *app);
     void init_tex(column_t* pcol, bird_t *bird, menu_t *menu, app_t *app, background_t *background); 
     void set_parameters(void);
