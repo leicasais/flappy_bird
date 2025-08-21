@@ -46,8 +46,8 @@ int main(void){
                         if(event.key.keysym.sym == SDLK_SPACE){ //press space to begin playing
                             menu.state=RUNING;
                         }
-                        else if (event.key.keysym.sym == SDLK_ESCAPE){  // si querés: volver al menú con ESC
-                        menu_set_state(&menu, MAIN_MENU);
+                        else if (event.key.keysym.sym == SDLK_ESCAPE){
+                        menu_set_state(&menu, PAUSE);
                     }
                     break;
 
@@ -90,7 +90,7 @@ int main(void){
                             bird.vel_y = -8.0f; 
                         } 
                         else if (event.key.keysym.sym == SDLK_ESCAPE || event.key.keysym.sym == 'p' || event.key.keysym.sym == 'P'){
-                            menu_set_state(&menu, PAUSE);;
+                            menu_set_state(&menu, PAUSE);
                         }
                     break;
 
@@ -105,6 +105,10 @@ int main(void){
                             menu_activate_selected(&menu, column, &bird, &app);
                             if (menu.state == EXIT) {
                                 running = 0;
+                            }
+                            if(menu.state == BEGINING){     //if restart is selected
+                                reboot_time=0;              //it doesnt begin with resurecting mode
+                                bird.vel_y = 0;             //sets the bird velocity on cero again
                             }
                         }
                         else if (event.key.keysym.sym == SDLK_ESCAPE) {
@@ -125,6 +129,7 @@ int main(void){
                             if (menu.state == EXIT) {
                                 running = 0;
                             }
+                
                         } 
                         else if (event.key.keysym.sym == SDLK_ESCAPE) {
                             menu_set_state(&menu, EXIT);

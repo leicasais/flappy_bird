@@ -55,7 +55,7 @@ void menu_activate_selected(menu_t *menu, column_t *cols, bird_t *bird, app_t *a
         case MAIN_MENU: // 0: Jugar, 1: Elegir Skin, 2: Salir
             if (menu->selected == 0){
                 game_reset(cols, bird, menu);
-                menu_set_state(menu, RUNING);
+                menu_set_state(menu, BEGINING);
             } 
             else if (menu->selected == 1){
                 menu->selected = 0;                 // arranca seleccionando la 1ª skin
@@ -72,7 +72,7 @@ void menu_activate_selected(menu_t *menu, column_t *cols, bird_t *bird, app_t *a
             } 
             else if (menu->selected == 1){
                 game_reset(cols, bird, menu);
-                menu_set_state(menu, RUNING);
+                menu_set_state(menu, BEGINING);
             } 
             else if (menu->selected == 2){
                 menu_set_state(menu, MAIN_MENU);

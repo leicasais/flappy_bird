@@ -14,6 +14,7 @@ extern int SPACE;
 
 
 char collision(column_t* pcol, bird_t* pbird){
+    int hair_px = (2*8) / pbird->scale;
     for (int i = 0; i < NUM_COL; i++) {
         if (pcol[i].x == OUTSIDE){
             continue; // Saltar columnas no activas
@@ -28,7 +29,7 @@ char collision(column_t* pcol, bird_t* pbird){
         }
         else if ((pbird->x_r >= col_left) && (pbird->x_l <= col_right)) {
             // Verificar si el pájaro NO está dentro del hueco
-            if (pbird->y_bottom >= hole_bottom || pbird->y_top <= hole_top) {
+            if (pbird->y_bottom >= hole_bottom || (pbird->y_top + hair_px) <= hole_top) {
                 return 1;
             }
         }
