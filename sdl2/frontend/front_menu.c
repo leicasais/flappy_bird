@@ -74,6 +74,53 @@ void draw_menu_list(SDL_Renderer *r, int w, int h, const char **options, int n, 
     // Alternativa segura: reemplazá 'app.font' por el font que tengas a mano.
 }
 
+void render_pause_menu(app_t *app, menu_t *menu, int w, int h)
+{
+    // tarjeta
+    const int cardW = (int)(w * PANEL_W_RATIO);
+    const int cardH = (int)(h * PANEL_H_RATIO);
+    const int cardX = (w - cardW) / 2;
+    const int cardY = (h - cardH) / 2;
+
+    SDL_SetRenderDrawBlendMode(app->renderer, SDL_BLENDMODE_BLEND);
+    SDL_SetRenderDrawColor(app->renderer, 30, 30, 30, 200);
+    SDL_Rect card = { cardX, cardY, cardW, cardH };
+    SDL_RenderFillRect(app->renderer, &card);
+    SDL_SetRenderDrawColor(app->renderer, 220, 220, 220, 255);
+    SDL_RenderDrawRect(app->renderer, &card);
+
+    // título y subtítulo
+    SDL_Color titleCol = (SDL_Color){230, 230, 80, 255};
+    SDL_Color textCol  = (SDL_Color){240, 240, 240, 255};
+    int tw=0, th=0;
+
+    draw_text_center(app->renderer, app->font, "PAUSA", titleCol, cardX + cardW/2, cardY + 22, &tw, &th);
+    draw_text_center(app->renderer, app->font, "Esc para volver", textCol, cardX + cardW/2, cardY + 22 + th + 8, NULL, NULL);
+
+    // opciones
+    const char *opts[] = { "Reanudar", "Reiniciar", "Volver al main menu", "Salir" };
+    const int n = 4;
+    const int lineH = OPTION_LINE_H;
+    const int gap   = OPTION_GAP;
+
+    // bloque de opciones al pie 
+    const int optsH = n * lineH + (n - 1) * gap;
+    const int optYStart = cardY + cardH - PANEL_BOTTOM_PAD - optsH;
+
+    for (int i = 0; i < n; ++i) {
+        const int yy = optYStart + i * (lineH + gap);
+        if (i == menu->selected) {
+            SDL_SetRenderDrawColor(app->renderer, 70, 120, 200, 180);
+            SDL_Rect hi = { cardX + HILIGHT_INSET, yy - OPTION_HILIGHT_PAD_Y, cardW - 2*HILIGHT_INSET, OPTION_LINE_H + 2*OPTION_HILIGHT_PAD_Y };
+            SDL_RenderFillRect(app->renderer, &hi);
+        }
+        draw_text_center(app->renderer, app->font, opts[i], textCol, cardX + cardW/2, yy, NULL, NULL);
+    }
+}
+
+
+
+
 // Muestra: "GAME OVER", subtítulo con Score, y opciones: Reintentar / Salir
 void render_game_over(app_t *app, menu_t *menu, int w, int h){
     // tarjeta

@@ -71,13 +71,31 @@ int main(void){
 
                     case RUNING:
                         if (event.key.keysym.sym == SDLK_SPACE){
-                            bird.vel_y = -8.0f; // salto
+                            bird.vel_y = -8.0f; 
                         } 
-                        else if (event.key.keysym.sym == SDLK_ESCAPE){
-                            // si querés: volver al menú con ESC
-                            menu_set_state(&menu, MAIN_MENU);
+                        else if (event.key.keysym.sym == SDLK_ESCAPE || event.key.keysym.sym == 'p' || event.key.keysym.sym == 'P'){
+                            menu_set_state(&menu, PAUSE);;
                         }
                         break;
+
+                    case PAUSE:
+                        if (event.key.keysym.sym == SDLK_UP) {
+                            menu_prev_option(&menu);
+                        }
+                        else if (event.key.keysym.sym == SDLK_DOWN) {
+                            menu_next_option(&menu);
+                        }
+                        else if (event.key.keysym.sym == SDLK_RETURN || event.key.keysym.sym == SDLK_KP_ENTER) {
+                            menu_activate_selected(&menu, column, &bird, &app);
+                            if (menu.state == EXIT) {
+                                running = 0;
+                            }
+                        }
+                        else if (event.key.keysym.sym == SDLK_ESCAPE) {
+                            menu_set_state(&menu, RUNING);   // Esc reanuda sin elegir
+                        }
+                    break;
+
 
                     case GAME_OVER:
                         if (event.key.keysym.sym == SDLK_UP) {         
@@ -107,7 +125,10 @@ int main(void){
                 }
             }
         }
- // --- Update por estado ---
+
+
+        // --- Update por estado ---
+
         if (menu.state == RUNING){
             col_mov(column);
             bird_fall(&bird);
@@ -150,6 +171,18 @@ int main(void){
             }
             render_game_hud(&app, &menu);
             
+        }
+        else if (menu.state == PAUSE) {
+            draw_col(column, &app);
+            if(!reboot_time){
+                draw_bird(&bird, &app);
+                draw_hearts(&app, &menu);
+            } 
+            else {
+                display_resurecting(&bird, &menu, &app);
+            }
+            render_game_hud(&app, &menu);
+            render_pause_menu(&app, &menu, GAME_WIDTH, GAME_HEIGHT);
         }
         else if (menu.state == GAME_OVER) {
             reboot_time=0;
