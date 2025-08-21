@@ -1,22 +1,16 @@
-Created by Mantis
-original game:
-http://www.newgrounds.com/portal/view/646556
 
---------
+original; redondeamos a todos a 28*21 px. Tamaño total de cada planilla: 84*21. 
+size*8-> 672*168 px, bird cell = (x=224, y=168)
 
+0: 28*20 (alas para abajo)
+1: 24*20 (estacionario)
+2: 27*21 (alas para arriba)
 
-player single cell size: (x: 15, y: 16)
+flying [0, 1, 2, 1] -> 0.1 FPS.
+soar [1]
 
-animations are here:
- 	//addAnimation(name, frames, fps, loop);
- 	addAnimation("idle", [0], 0, false);
- 	addAnimation("moveOnGround", [0, 1, 0, 2], 20, true);
- 	addAnimation("wallTouch", [3, 4, 5], 50, false);
- 	addAnimation("midair", [ 0, 6, 6, 7], 20, false);
+Resurrecting bird (idem size of normal bird but it has only 2 frames)
 
-Player_Genclops.png has an extra animation: addAnimation("shoot", [8], 0, false);
+skins order: 
 
 
-Player_Flame2.png has a glow image embeded to
-it because glow was lagging behind in Flixel when seperated.
-I included an embedded and vanilla versions depending on your game engine.

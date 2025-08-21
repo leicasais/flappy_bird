@@ -13,7 +13,7 @@ extern int SPACE;
 
 //windows
 void prepareScene(app_t *app){   //Prepares a clean background for drawing the next frame.
-    SDL_SetRenderDrawColor(app->renderer,106, 138, 153, 255);   //Sets the color that SDL will use when clearing or drawing, SDL_SetRenderDrawColor(app.renderer, R, G, B, A); A: opacidad (255 ultra opaco)
+    SDL_SetRenderDrawColor(app->renderer,149, 187, 225, 255);   //106, 138, 153, 255 Sets the color that SDL will use when clearing or drawing, SDL_SetRenderDrawColor(app.renderer, R, G, B, A); A: opacidad (255 ultra opaco)
     SDL_RenderClear(app->renderer);         //Clears the screen with the color just set. erease the previous frame
 }
 
