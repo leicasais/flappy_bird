@@ -25,10 +25,11 @@ int main(void){
     initSDL(&app);
 
     // Objetos y texturas (columnas, pájaro, background, fuente para HUD)
-    init(column, &bird, &menu, &app, &background);            // carga texturas, etc. :contentReference[oaicite:5]{index=5}
+    init(column, &bird, &menu, &app, &background);            // update the initial conditions of the game
+    init_tex(column, &bird, &menu, &app, &background);        //charges the textures 
 
     // --- Menú: estado inicial + fuente para UI del menú ---
-    menu_init(&menu);                                         // MAIN_MENU + highscores :contentReference[oaicite:6]{index=6}
+   // menu_init(&menu);                                         // MAIN_MENU + highscores :contentReference[oaicite:6]{index=6}
 
     int running = 1;
     while (running){
@@ -40,6 +41,10 @@ int main(void){
             }
             if (event.type == SDL_KEYDOWN && event.key.repeat == 0){
                 switch (menu.state){
+                    case BEGINING: 
+                        if(event.key.keysym.sym == SDLK_SPACE){ //press space to begin playing
+                            menu.state=RUNING;
+                        }
                     case MAIN_MENU:
                         if (event.key.keysym.sym == SDLK_UP){      
                             menu_prev_option(&menu);
@@ -97,8 +102,7 @@ int main(void){
                 }
             }
         }
-
-        // --- Update por estado ---
+ // --- Update por estado ---
         if (menu.state == RUNING){
             col_mov(column);
             bird_fall(&bird);
@@ -120,7 +124,7 @@ int main(void){
         if (menu.state == MAIN_MENU) {
             render_main_menu(&app, &menu, GAME_WIDTH, GAME_HEIGHT); // "FLAPPY" + Play/Salir
         } 
-        else if (menu.state == RUNING) {
+        else if (menu.state == RUNING || menu.state == BEGINING) {
             draw_col(column, &app);
             draw_bird(&bird, &app);
             render_game_hud(&app, &menu);

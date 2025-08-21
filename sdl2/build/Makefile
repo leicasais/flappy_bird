@@ -225,6 +225,30 @@ backend/init_fun.c.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/flappy_bird.dir/build.make CMakeFiles/flappy_bird.dir/backend/init_fun.c.s
 .PHONY : backend/init_fun.c.s
 
+backend/menu.o: backend/menu.c.o
+.PHONY : backend/menu.o
+
+# target to build an object file
+backend/menu.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/flappy_bird.dir/build.make CMakeFiles/flappy_bird.dir/backend/menu.c.o
+.PHONY : backend/menu.c.o
+
+backend/menu.i: backend/menu.c.i
+.PHONY : backend/menu.i
+
+# target to preprocess a source file
+backend/menu.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/flappy_bird.dir/build.make CMakeFiles/flappy_bird.dir/backend/menu.c.i
+.PHONY : backend/menu.c.i
+
+backend/menu.s: backend/menu.c.s
+.PHONY : backend/menu.s
+
+# target to generate assembly for a file
+backend/menu.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/flappy_bird.dir/build.make CMakeFiles/flappy_bird.dir/backend/menu.c.s
+.PHONY : backend/menu.c.s
+
 frontend/frontend.o: frontend/frontend.c.o
 .PHONY : frontend/frontend.o
 
@@ -294,6 +318,9 @@ help:
 	@echo "... backend/init_fun.o"
 	@echo "... backend/init_fun.i"
 	@echo "... backend/init_fun.s"
+	@echo "... backend/menu.o"
+	@echo "... backend/menu.i"
+	@echo "... backend/menu.s"
 	@echo "... frontend/frontend.o"
 	@echo "... frontend/frontend.i"
 	@echo "... frontend/frontend.s"

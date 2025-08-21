@@ -27,6 +27,7 @@ set(SOURCES
     backend/column_fun.c
     backend/game_logic.c
     backend/init_fun.c
+    backend/menu.c
     frontend/frontend.c
 )
 

@@ -56,15 +56,6 @@ void init(column_t* pcol, bird_t *bird, menu_t *menu, app_t *app, background_t *
     }
     pcol->col_speed=BASE_SPEED;   // px por frame (dinámica)
     
-    //column textures
-    for(int i=0; i<NUM_COL; i++){
-        column[i].texture_down = loadTexture("../img/columns/Col.png", app);
-        column[i].texture_up = loadTexture("../img/columns/Col.png", app);
-        column[i].trim=0;
-    }
-
-    //Bakground textures 
-    background->tile_tex = loadTexture("../img/background/Tile.png", app);
 
     //Bird init
     bird->scale =3;
@@ -76,25 +67,34 @@ void init(column_t* pcol, bird_t *bird, menu_t *menu, app_t *app, background_t *
     bird->y_top=(int)y;
     bird->y_bottom=bird->y_top+(HITBOX_Y*(bird->scale));
 
-    //bird texture
+    //Menue init
+    menu_init(menu); 
+}
+void init_tex(column_t* pcol, bird_t *bird, menu_t *menu, app_t *app, background_t *background){
+       //column textures
+    for(int i=0; i<NUM_COL; i++){
+        column[i].texture_down = loadTexture("../img/columns/Col.png", app);
+        column[i].texture_up = loadTexture("../img/columns/Col.png", app);
+        column[i].trim=0;
+    }
+
+        //Bakground textures 
+    background->tile_tex = loadTexture("../img/background/Tile.png", app);
+
+        //bird texture
     bird->texture= loadTexture("../img/birds/Player_Rainbow.png", app);
     bird->current_frame=0;
     bird->last_frame_time = SDL_GetTicks();
 
-    //points letters init
+        //points letters init
     app->font = TTF_OpenFont("../img/fonts/Jersey15-Regular.ttf", 16); // tamaño “físico” en px
     if (!app->font) {
         SDL_Log("OpenFont FAIL: %s", TTF_GetError());
         exit(1);
     }
-
     app->score_tex = NULL;
     app->score_w = app->score_h = 0;
     app->score_color = (SDL_Color){ 20, 20, 20, 255 }; // gris oscuro
-
-    //Menue init
-    menu->lives=3;
-    menu->score=0;
 }
 
 void initSDL(app_t *app){

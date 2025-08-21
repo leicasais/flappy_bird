@@ -101,13 +101,20 @@
         int last_top_pos;
     } menu_t;
 
+    typedef struct {
+        SDL_Texture *full_heart_tex;
+        SDL_Texture *empty_heart_tex;
+        int heart_size;
+    }simbols_t;
     /*#########################################
                         Functions
     #########################################*/
     
     //init_fun.c
     void init_parameters(void);
-    void init(column_t* pcol, bird_t *bird, menu_t *menu, app_t *app, background_t *background);    void initSDL(app_t *app);
+    void init(column_t* pcol, bird_t *bird, menu_t *menu, app_t *app, background_t *background);
+    void initSDL(app_t *app);
+    void init_tex(column_t* pcol, bird_t *bird, menu_t *menu, app_t *app, background_t *background); 
     void set_parameters(void);
     void cleanupSDL(app_t *app, bird_t *bird, column_t *column, background_t *background);
     SDL_Texture *loadTexture(char *filename, app_t *app);
@@ -127,6 +134,11 @@
     void bird_fall(bird_t* bird);
 
     //game_logic.c
+    /**
+     * @brief no se que hace
+     * @param pcol variable hace algo
+     * @param pbird variable hace otra cosa
+     */
     char collision(column_t* pcol, bird_t* pbird);
     void colition_update(menu_t* pmenu);
     void points(column_t* pcol, bird_t* pbird, menu_t* menu);

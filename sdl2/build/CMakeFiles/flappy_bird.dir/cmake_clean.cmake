@@ -7,6 +7,8 @@ file(REMOVE_RECURSE
   "CMakeFiles/flappy_bird.dir/backend/game_logic.c.o.d"
   "CMakeFiles/flappy_bird.dir/backend/init_fun.c.o"
   "CMakeFiles/flappy_bird.dir/backend/init_fun.c.o.d"
+  "CMakeFiles/flappy_bird.dir/backend/menu.c.o"
+  "CMakeFiles/flappy_bird.dir/backend/menu.c.o.d"
   "CMakeFiles/flappy_bird.dir/frontend/frontend.c.o"
   "CMakeFiles/flappy_bird.dir/frontend/frontend.c.o.d"
   "CMakeFiles/flappy_bird.dir/main.c.o"

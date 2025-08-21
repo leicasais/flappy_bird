@@ -52,6 +52,7 @@ void menu_activate_selected(menu_t *menu, column_t *cols, bird_t *bird, app_t *a
             if (menu->selected == 0){
                 game_reset(cols, bird, menu);
                 menu_set_state(menu, RUNING);
+                menu->state=BEGINING;       //sets the game in pause until player presses space
             } 
             else{
                 menu_set_state(menu, EXIT);
@@ -78,7 +79,7 @@ void menu_activate_selected(menu_t *menu, column_t *cols, bird_t *bird, app_t *a
             // guardo score ANTES de cambiar de escena
             if (menu->selected == 0) {                 // Volver a jugar
                 game_reset(cols, bird, menu);
-                menu_set_state(menu, RUNING);
+                menu_set_state(menu, BEGINING);
             } 
             else {                                   // Salir
                 menu_set_state(menu, EXIT);

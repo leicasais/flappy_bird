@@ -3,11 +3,11 @@
 //Global var from main.c
 extern int GAME_WIDTH;
 extern int GAME_HEIGHT;
+extern int TILE_HIGHT;
 extern int HOLE_HEIGHT;
 extern int COL_BOTTOM_WIDTH;
 extern int COL_TOP_HIGH;            
 extern int NUM_COL;
-extern column_t* column;
 extern int COL_WIDTH;
 extern int SPACE;
 
@@ -24,7 +24,10 @@ char collision(column_t* pcol, bird_t* pbird){
         int hole_top = pcol[i].y;
         int hole_bottom = hole_top + HOLE_HEIGHT;
 
-        if ((pbird->x_r >= col_left) && (pbird->x_l <= col_right)) {
+        if(pbird->y_bottom >= GAME_HEIGHT-TILE_HIGHT-1){
+            return 1;
+        }
+        else if ((pbird->x_r >= col_left) && (pbird->x_l <= col_right)) {
             // Verificar si el pájaro NO está dentro del hueco
             if (pbird->y_bottom >= hole_bottom || pbird->y_top <= hole_top) {
                 return 1;

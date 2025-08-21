@@ -1,5 +1,5 @@
-CMakeFiles/flappy_bird.dir/main.c.o: \
- /home/leila/Documents/COIL/flappy_bird/sdl2/main.c \
+CMakeFiles/flappy_bird.dir/backend/menu.c.o: \
+ /home/leila/Documents/COIL/flappy_bird/sdl2/backend/menu.c \
  /usr/include/stdc-predef.h \
  /home/leila/Documents/COIL/flappy_bird/sdl2/backend/backend.h \
  /usr/include/stdio.h \
@@ -200,5 +200,4 @@ CMakeFiles/flappy_bird.dir/main.c.o: \
  /usr/include/x86_64-linux-gnu/bits/confname.h \
  /usr/include/x86_64-linux-gnu/bits/getopt_posix.h \
  /usr/include/x86_64-linux-gnu/bits/getopt_core.h \
- /usr/include/x86_64-linux-gnu/bits/unistd_ext.h \
- /home/leila/Documents/COIL/flappy_bird/sdl2/frontend/frontend.h
+ /usr/include/x86_64-linux-gnu/bits/unistd_ext.h

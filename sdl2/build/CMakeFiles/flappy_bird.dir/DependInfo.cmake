@@ -12,6 +12,7 @@ set(CMAKE_DEPENDS_DEPENDENCY_FILES
   "/home/leila/Documents/COIL/flappy_bird/sdl2/backend/column_fun.c" "CMakeFiles/flappy_bird.dir/backend/column_fun.c.o" "gcc" "CMakeFiles/flappy_bird.dir/backend/column_fun.c.o.d"
   "/home/leila/Documents/COIL/flappy_bird/sdl2/backend/game_logic.c" "CMakeFiles/flappy_bird.dir/backend/game_logic.c.o" "gcc" "CMakeFiles/flappy_bird.dir/backend/game_logic.c.o.d"
   "/home/leila/Documents/COIL/flappy_bird/sdl2/backend/init_fun.c" "CMakeFiles/flappy_bird.dir/backend/init_fun.c.o" "gcc" "CMakeFiles/flappy_bird.dir/backend/init_fun.c.o.d"
+  "/home/leila/Documents/COIL/flappy_bird/sdl2/backend/menu.c" "CMakeFiles/flappy_bird.dir/backend/menu.c.o" "gcc" "CMakeFiles/flappy_bird.dir/backend/menu.c.o.d"
   "/home/leila/Documents/COIL/flappy_bird/sdl2/frontend/frontend.c" "CMakeFiles/flappy_bird.dir/frontend/frontend.c.o" "gcc" "CMakeFiles/flappy_bird.dir/frontend/frontend.c.o.d"
   "/home/leila/Documents/COIL/flappy_bird/sdl2/main.c" "CMakeFiles/flappy_bird.dir/main.c.o" "gcc" "CMakeFiles/flappy_bird.dir/main.c.o.d"
   )
