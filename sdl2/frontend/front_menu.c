@@ -113,40 +113,65 @@ void render_game_over(app_t *app, menu_t *menu, int w, int h){
     y += 28;
     draw_text_center(app->renderer, app->font, "TOP 10", titleCol, cardX + cardW/2, y, NULL, NULL);
 
-    // lista Top 10 alineada a la izquierda
-    y += 20;
-    int listX = cardX + 40;
-    for (int i = 0; i < MAX_SCORES; ++i) {
-        char line[48];
-        snprintf(line, sizeof(line), "%2d) %d", i+1, menu->high_score[i]);
 
-        if (menu->last_top_pos == i+1) {
-            SDL_SetRenderDrawColor(app->renderer, 70, 120, 200, 120);
-            SDL_Rect hi = { cardX + 20, y - 4, cardW - 40, 20 };
-            SDL_RenderFillRect(app->renderer, &hi);
-        }
-        draw_text_left(app->renderer, app->font, line, textCol, listX, y, NULL, NULL);
-        y += 20;
-    }
+    // --- LISTA TOP-10 ---
+    y += 20;                            // un poquito menos de gap
+    const int listX = cardX + 40;      // margen izquierdo de la tabla
 
-    // opciones al pie
+    // Primero calculamos dónde empiezan las opciones para saber
+    // cuánto alto nos queda para la lista
     const char* opts[] = { "Volver a jugar", "Salir" };
     const int n = 2;
     const int lineH = OPTION_LINE_H;
     const int gap   = OPTION_GAP;
-
-    // alto total del bloque de opciones (2 botones + separación)
     const int optsH = n * lineH + (n - 1) * gap;
-
-    // arranque del bloque de opciones dejando un margen inferior claro
     const int optYStart = cardY + cardH - PANEL_BOTTOM_PAD - optsH;
 
+    // Altura disponible para 10 filas
+    int listStartY = y;
+    int availH = optYStart - listStartY - LIST_OPTIONS_GAP;        // 6 px de respiro
+    if (availH < 10) {
+        availH = 10;
+    }
+
+    // Altura base de la fuente y escala para que entren las 10 filas
+    int baseH  = TTF_FontHeight(app->font);
+    int rowH   = availH / MAX_SCORES;               // alto de cada renglón
+    float scale = (float)rowH / (float)baseH;       // escala de texto para ese alto
+    if (scale > 0.95f) {
+        scale = 0.95f;               // no agrandes
+    }
+    if (scale < 0.65f) {
+        scale = 0.65f;               // no achiques demasiado
+    }
+    // Ajusto rowH en función de la escala real y dejo 2 px de padding interno
+    int text_h = (int)(baseH * scale);
+    rowH = text_h + 4;
+
+    for (int i = 0; i < MAX_SCORES; ++i) {
+        const int rowY = listStartY + i * rowH;
+
+        // Subrayado del renglón completo si el score nuevo entró en esa posición
+        if (menu->last_top_pos == i + 1) {
+            SDL_SetRenderDrawColor(app->renderer, 70, 120, 200, 140);
+            SDL_Rect hi = { cardX + 20, rowY - 2, cardW - 40, rowH };
+            SDL_RenderFillRect(app->renderer, &hi);
+        }
+
+        char line[48];
+        snprintf(line, sizeof(line), "%2d) %d", i + 1, menu->high_score[i]);
+
+        // Dibujamos el texto centrado *verticalmente* dentro de la fila
+        int tw=0, th=0;
+        draw_text_left_scaled(app->renderer, app->font, line, textCol, listX, rowY + (rowH - text_h)/2, scale, &tw, &th);
+    }
+
+    // --- Opciones al pie ---
     for (int i = 0; i < n; ++i) {
         const int yy = optYStart + i * (lineH + gap);
-
         if (i == menu->selected) {
             SDL_SetRenderDrawColor(app->renderer, 70, 120, 200, 180);
-            SDL_Rect hi = { cardX + HILIGHT_INSET, yy - 6, cardW - 2*HILIGHT_INSET, lineH };
+            SDL_Rect hi = {cardX + HILIGHT_INSET, yy - OPTION_HILIGHT_PAD_Y, cardW - 2*HILIGHT_INSET, OPTION_LINE_H + 2*OPTION_HILIGHT_PAD_Y};
             SDL_RenderFillRect(app->renderer, &hi);
         }
         draw_text_center(app->renderer, app->font, opts[i], (SDL_Color){240,240,240,255}, cardX + cardW/2, yy, NULL, NULL);

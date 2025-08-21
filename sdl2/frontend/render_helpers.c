@@ -81,3 +81,36 @@ void draw_text_left(SDL_Renderer* r, TTF_Font* font, const char* text, SDL_Color
         *out_w = w; if (out_h) *out_h = h;
     }
 }
+void draw_text_center_scaled(SDL_Renderer* r, TTF_Font* font, const char* text,
+                             SDL_Color color, int cx, int y, float scale,
+                             int* out_w, int* out_h)
+{
+    int w=0, h=0;
+    SDL_Texture* tex = make_text(r, font, text, color, &w, &h);
+    if (!tex) return;
+    int sw = (int)(w * scale);
+    int sh = (int)(h * scale);
+    SDL_Rect dst = { cx - sw/2, y, sw, sh };
+    SDL_RenderCopy(r, tex, NULL, &dst);
+    SDL_DestroyTexture(tex);
+    if (out_w) { *out_w = sw; if (out_h) *out_h = sh; }
+}
+
+void draw_text_left_scaled(SDL_Renderer* r, TTF_Font* font, const char* text, SDL_Color color, int x, int y, float scale, int* out_w, int* out_h){
+    int w=0, h=0;
+    SDL_Texture* tex = make_text(r, font, text, color, &w, &h);
+    if (!tex){
+        return;
+    }
+    int sw = (int)(w * scale);
+    int sh = (int)(h * scale);
+    SDL_Rect dst = { x, y, sw, sh };
+    SDL_RenderCopy(r, tex, NULL, &dst);
+    SDL_DestroyTexture(tex);
+    if (out_w) { 
+        *out_w = sw; 
+        if (out_h) {
+            *out_h = sh; 
+        }
+    }
+}

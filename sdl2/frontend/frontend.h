@@ -2,13 +2,15 @@
 #ifndef FRONTEND_H
 #define FRONTEND_H
 
-    // --- Layout del panel ---
-    #define PANEL_W_RATIO     0.55f   // ancho: % de la ventana
-    #define PANEL_H_RATIO     0.66f   // alto:  % de la ventana
-    #define PANEL_PAD         24      // margen interno (arriba/lados)
-    #define PANEL_BOTTOM_PAD  28      // margen inferior para opciones
-    #define OPTION_LINE_H     28      // alto de cada opción
-    #define OPTION_GAP         6      // separación entre opciones
+    // --- Layout del panel (ajustes) ---
+    #define PANEL_W_RATIO     0.58f   
+    #define PANEL_H_RATIO     0.78f   
+    #define PANEL_BOTTOM_PAD  52      
+    #define OPTION_LINE_H        32    
+    #define OPTION_GAP           16    
+    #define OPTION_HILIGHT_PAD_Y 8     
+        
+    #define LIST_OPTIONS_GAP  18   // espacio fijo entre la lista y las opciones
     #define HILIGHT_INSET     20      // sangría del destacador
 
     //main_game_display
@@ -23,7 +25,11 @@
     // Render_helpers.c
     void prepareScene(app_t *app);
     void draw_tiled_segment(SDL_Renderer *r, SDL_Texture *tex, int x, int src_x, int y, int w, int src_w, int h);    // sin estirar en vertical: repite la textura en bloques y recorta el último si hace falta.
-        //text
+    void draw_text_center_scaled(SDL_Renderer* r, TTF_Font* font, const char* text, SDL_Color color, int cx, int y, float scale, int* out_w, int* out_h);
+    void draw_text_left_scaled  (SDL_Renderer* r, TTF_Font* font, const char* text, SDL_Color color, int x,  int y, float scale, int* out_w, int* out_h);
+    
+
+    //text
     SDL_Texture* make_text(SDL_Renderer* r, TTF_Font* font, const char* txt, SDL_Color color, int* w, int* h);
     void draw_text_center(SDL_Renderer* r, TTF_Font* font, const char* text, SDL_Color color, int cx, int y, int* out_w, int* out_h);
     void draw_text_left(SDL_Renderer* r, TTF_Font* font, const char* text, SDL_Color color, int x, int y, int* out_w, int* out_h);
