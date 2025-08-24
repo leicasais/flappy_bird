@@ -128,6 +128,7 @@ int score_update(menu_t *pmenu, int new_score) {
 }
 
 void score_save(menu_t *pmenu) {
+    //scores
     FILE *f = fopen("scores.txt", "w");
     if (!f){
         SDL_Log("score_save: cannot open %s", "scores.txt");

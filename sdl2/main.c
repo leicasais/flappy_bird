@@ -22,6 +22,7 @@ int main(void){
     column = malloc(sizeof(column_t) * NUM_COL);
 
     memset(&app, 0, sizeof(app));
+    SDL_StartTextInput();
     initSDL(&app);
 
     // Objetos y texturas (columnas, pájaro, background, fuente para HUD)
@@ -40,6 +41,22 @@ int main(void){
                 running = 0; 
                 break; 
             }
+            if (event.type == SDL_TEXTINPUT) {
+                if (menu.state == NAME_MENU && menu.name_editing) {
+                    for (const char *p = event.text.text; *p; ++p) {
+                        unsigned char c = (unsigned char)*p;
+                        if (c >= ' ' && c <= '~') {                // imprimibles
+                            size_t len = strlen(menu.username);
+                            if (len < USERNAME_MAX) {
+                                menu.username[len]   = (char)c;
+                                menu.username[len+1] = '\0';
+                            }
+                        }
+                    }
+                }
+                continue;
+            }
+
             if (event.type == SDL_KEYDOWN && event.key.repeat == 0){
                 switch (menu.state){
                     case BEGINING: 
@@ -49,6 +66,25 @@ int main(void){
                         else if (event.key.keysym.sym == SDLK_ESCAPE){
                         menu_set_state(&menu, PAUSE);
                     }
+                    break;
+
+                    case NAME_MENU:
+                        if (event.key.keysym.sym == SDLK_BACKSPACE) {
+                            size_t len = strlen(menu.username);
+                            if (len > 0) {
+                                menu.username[len-1] = '\0';
+                            }
+                        } 
+                        else if (event.key.keysym.sym == SDLK_RETURN || event.key.keysym.sym == SDLK_KP_ENTER) {
+                            if (menu.username[0]) {              
+                                menu.name_editing = 0;
+                                menu_set_state(&menu, MAIN_MENU);
+                            }
+                        } 
+                        else if (event.key.keysym.sym == SDLK_ESCAPE) {
+                            menu_set_state(&menu, EXIT);
+                            running = 0;
+                        }
                     break;
 
                     case MAIN_MENU:
@@ -179,7 +215,10 @@ int main(void){
         prepareScene(&app);
         draw_background(&background, &app);
 
-        if (menu.state == MAIN_MENU) {
+        if (menu.state == NAME_MENU) {
+            render_name_menu(&app, &menu, GAME_WIDTH, GAME_HEIGHT);
+        }
+        else if (menu.state == MAIN_MENU) {
             render_main_menu(&app, &menu, GAME_WIDTH, GAME_HEIGHT); // "FLAPPY" + Play/Salir
             reboot_time=0;      //acordate de agregar esta linea en la opcion restart del menu de pausa
         } 

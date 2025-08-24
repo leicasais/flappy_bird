@@ -17,13 +17,15 @@ static int menu_num_options(int state){
 }
 
 void menu_init(menu_t *menu){
-    menu->state         = MAIN_MENU;
+    menu->state         = NAME_MENU;
     menu->selected      = 0;
     menu->score         = 0;
     menu->lives         = 3;
     menu->heart_h       = 256/4 ; //px
     menu->heart_w       = 256/4; //px
     menu->last_top_pos  = 0;
+    menu->username[0]   = '\0';        
+    menu->name_editing  = 1;           
     score_init(menu); // carga/normaliza highscores
 }
 

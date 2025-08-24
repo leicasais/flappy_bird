@@ -53,9 +53,70 @@ void render_main_menu(app_t *app, menu_t *menu, int w, int h){
     }
 }
 
+void render_name_menu(app_t *app, menu_t *menu, int w, int h) {
+    // -------- Panel --------
+    const int cardW = (int)(w * PANEL_W_RATIO);
+    const int cardH = (int)(h * PANEL_H_RATIO);
+    const int cardX = (w - cardW) / 2;
+    const int cardY = (h - cardH) / 2;
+
+    SDL_SetRenderDrawBlendMode(app->renderer, SDL_BLENDMODE_BLEND);
+    SDL_SetRenderDrawColor(app->renderer, 30, 30, 30, 200);
+    SDL_Rect card = { cardX, cardY, cardW, cardH };
+    SDL_RenderFillRect(app->renderer, &card);
+    SDL_SetRenderDrawColor(app->renderer, 220, 220, 220, 255);
+    SDL_RenderDrawRect(app->renderer, &card);
+
+    SDL_Color titleCol = (SDL_Color){230,230,80,255};
+    SDL_Color textCol  = (SDL_Color){240,240,240,255};
+    int tw=0, th=0;
+
+    // -------- Título y subtítulo --------
+    const int titleY = cardY + 22;
+    draw_text_center(app->renderer, app->font, "FLAPPY BIRD", titleCol, cardX + cardW/2, titleY, &tw, &th);
+
+    const int subY = titleY + th + 8;
+    draw_text_center(app->renderer, app->font, "Ingresa tu nombre para continuar", textCol, cardX + cardW/2, subY, NULL, NULL);
+
+    // -------- Bloque de Username centrado verticalmente en la tarjeta --------
+    const int padX    = 22;      // padding lateral del input
+    const int inputH  = 36;      // alto de la caja de texto
+    const int vgap    = 10;      // separación label -> input
+    const int helpGap = 12;      // separación input -> texto de ayuda
+    const int fh      = TTF_FontHeight(app->font); // alto de una línea de texto
+
+    // Alto total del bloque
+    const int blockH  = fh + vgap + inputH + helpGap + fh;
+
+    // Y de inicio para centrar el bloque dentro del panel
+    const int startY  = cardY + (cardH - blockH)/2;
+
+    // Caja de entrada
+    SDL_Rect input = (SDL_Rect){ cardX + padX, startY + fh + vgap, cardW - 2*padX, inputH };
+
+    // Label
+    draw_text_left(app->renderer, app->font, "Username:", textCol,input.x, startY, NULL, NULL);
+
+    // Caja (fondo + borde)
+    SDL_SetRenderDrawColor(app->renderer, 20, 30, 40, 110);
+    SDL_RenderFillRect(app->renderer, &input);
+    SDL_SetRenderDrawColor(app->renderer, 200, 200, 200, 180);
+    SDL_RenderDrawRect(app->renderer, &input);
+
+    // Texto 
+    const int textPad = 8;
+    const char *txt   = (menu->username[0] ? menu->username : "Escribe tu nombre...");
+    SDL_Color txtCol  = (menu->username[0] ? (SDL_Color){255,255,255,255} :(SDL_Color){160,160,160,255});
+    draw_text_left(app->renderer, app->font, txt, txtCol, input.x + textPad, input.y + (input.h - 18)/2, &tw, &th);
+
+    // Texto de ayuda, centrado justo bajo el input
+    draw_text_center(app->renderer, app->font,"Enter para continuar · Esc para salir", textCol, cardX + cardW/2, input.y + inputH + helpGap,NULL, NULL);
+}
+
+
+
 // ===== tarjeta y lista del menú =====
-void draw_menu_list(SDL_Renderer *r, int w, int h, const char **options, int n, int selected, const char *title, const char *subtitle)
-{
+void draw_menu_list(SDL_Renderer *r, int w, int h, const char **options, int n, int selected, const char *title, const char *subtitle) {
     // tarjeta centrada
     const int cardW = w * 0.45;
     const int cardH = h * 0.50;
@@ -74,8 +135,7 @@ void draw_menu_list(SDL_Renderer *r, int w, int h, const char **options, int n, 
     // Alternativa segura: reemplazá 'app.font' por el font que tengas a mano.
 }
 
-void render_skin_menu(app_t *app, menu_t *menu, int w, int h)
-{
+void render_skin_menu(app_t *app, menu_t *menu, int w, int h) {
     // Tarjeta base (idéntica a otros menús)
     const int cardW = (int)(w * PANEL_W_RATIO);
     const int cardH = (int)(h * PANEL_H_RATIO);

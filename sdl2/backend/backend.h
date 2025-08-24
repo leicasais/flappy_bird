@@ -49,8 +49,13 @@
     #define RESTART 6
     #define GAME_OVER 7
     #define BEGINING 8
-    #define SKIN_MENU 9 
+    #define SKIN_MENU 9
+    #define NAME_MENU 10  
+ 
+    //macros for the txt's
     #define MAX_SCORES 10
+    #define USERNAME_MAX 16
+
 
     /*#########################################
                         Structs
@@ -110,6 +115,8 @@
         int state;          // MAIN_MENU, RUNING, PAUSE, GAME_OVER, etc.
         int selected;       // índice de opción actualmente seleccionada en el menú activo
         int last_top_pos;
+        char username[USERNAME_MAX + 1];
+        int  name_editing;   // 0 = no, 1 = yes
     } menu_t;
 
     /*#########################################
