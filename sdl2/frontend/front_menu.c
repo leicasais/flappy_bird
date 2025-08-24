@@ -11,6 +11,14 @@ extern column_t* column;
 extern int COL_WIDTH;
 extern int SPACE;
 
+SDL_Color color_title(void){
+    SDL_Color titleCol = (SDL_Color){217, 215, 161, 255};
+    return titleCol;
+}
+void color_selection(app_t *app){
+    SDL_SetRenderDrawColor(app->renderer, 107, 119, 142, 180);
+}
+
 
 void render_main_menu(app_t *app, menu_t *menu, int w, int h){
     // 1) dibujamos la tarjeta
@@ -28,15 +36,15 @@ void render_main_menu(app_t *app, menu_t *menu, int w, int h){
 
     // 2) título y subtítulo
     int tw=0, th=0;
-    SDL_Color titleCol = (SDL_Color){230, 230, 80, 255};
+    SDL_Color titleCol= color_title();
     SDL_Color textCol  = (SDL_Color){240, 240, 240, 255};
 
     draw_text_center(app->renderer, app->font, "FLAPPY", titleCol, cardX + cardW/2, cardY + 22, &tw, &th);
 
-    draw_text_center(app->renderer, app->font, "Presiona Enter para comenzar", textCol, cardX + cardW/2, cardY + 22 + th + 10, NULL, NULL);
+    draw_text_center(app->renderer, app->font, "Press ENTER to start", textCol, cardX + cardW/2, cardY + 22 + th + 10, NULL, NULL);
 
     // 3) opciones
-    const char *opts[] = { "Play", "Elegir Skin" , "Salir" };
+    const char *opts[] = { "Play", "Select Skin" , "Exit game :(" };
     const int n = 3;
     const int lineH = ((th) ? (th) + 16 : 40);
     int startY = cardY + cardH/2 - (n * lineH)/2;
@@ -45,7 +53,7 @@ void render_main_menu(app_t *app, menu_t *menu, int w, int h){
         int y = startY + i * lineH;
         if (i == menu->selected) {
             // highlight de opción seleccionada
-            SDL_SetRenderDrawColor(app->renderer, 70, 120, 200, 180);
+            color_selection(app);
             SDL_Rect hi = { cardX + 20, y - 6, cardW - 40, lineH };
             SDL_RenderFillRect(app->renderer, &hi);
         }
@@ -67,7 +75,7 @@ void render_name_menu(app_t *app, menu_t *menu, int w, int h) {
     SDL_SetRenderDrawColor(app->renderer, 220, 220, 220, 255);
     SDL_RenderDrawRect(app->renderer, &card);
 
-    SDL_Color titleCol = (SDL_Color){230,230,80,255};
+    SDL_Color titleCol= color_title();
     SDL_Color textCol  = (SDL_Color){240,240,240,255};
     int tw=0, th=0;
 
@@ -76,7 +84,7 @@ void render_name_menu(app_t *app, menu_t *menu, int w, int h) {
     draw_text_center(app->renderer, app->font, "FLAPPY BIRD", titleCol, cardX + cardW/2, titleY, &tw, &th);
 
     const int subY = titleY + th + 8;
-    draw_text_center(app->renderer, app->font, "Ingresa tu nombre para continuar", textCol, cardX + cardW/2, subY, NULL, NULL);
+    draw_text_center(app->renderer, app->font, "Enter your name to star playing", textCol, cardX + cardW/2, subY, NULL, NULL);
 
     // -------- Bloque de Username centrado verticalmente en la tarjeta --------
     const int padX    = 22;      // padding lateral del input
@@ -105,12 +113,12 @@ void render_name_menu(app_t *app, menu_t *menu, int w, int h) {
 
     // Texto 
     const int textPad = 8;
-    const char *txt   = (menu->username[0] ? menu->username : "Escribe tu nombre...");
+    const char *txt   = (menu->username[0] ? menu->username : "Write your name...");
     SDL_Color txtCol  = (menu->username[0] ? (SDL_Color){255,255,255,255} :(SDL_Color){160,160,160,255});
     draw_text_left(app->renderer, app->font, txt, txtCol, input.x + textPad, input.y + (input.h - 18)/2, &tw, &th);
 
     // Texto de ayuda, centrado justo bajo el input
-    draw_text_center(app->renderer, app->font,"Enter para continuar · Esc para salir", textCol, cardX + cardW/2, input.y + inputH + helpGap,NULL, NULL);
+    draw_text_center(app->renderer, app->font,"Enter to continue · Esc to exit", textCol, cardX + cardW/2, input.y + inputH + helpGap,NULL, NULL);
 }
 
 
@@ -149,7 +157,7 @@ void render_skin_menu(app_t *app, menu_t *menu, int w, int h) {
     SDL_SetRenderDrawColor(app->renderer, 220, 220, 220, 255);
     SDL_RenderDrawRect(app->renderer, &card);
 
-    SDL_Color titleCol = (SDL_Color){230,230,80,255};
+    SDL_Color titleCol= color_title();
     SDL_Color textCol  = (SDL_Color){240,240,240,255};
     int tw=0, th=0;
 
@@ -168,7 +176,7 @@ void render_skin_menu(app_t *app, menu_t *menu, int w, int h) {
     for (int i = 0; i < n; ++i) {
         const int yy = startY + i * (lineH + gap);
         if (i == menu->selected) {
-            SDL_SetRenderDrawColor(app->renderer, 70, 120, 200, 180);
+            color_selection(app);
             SDL_Rect hi = { cardX + HILIGHT_INSET, yy - OPTION_HILIGHT_PAD_Y, cardW - 2*HILIGHT_INSET, OPTION_LINE_H + 2*OPTION_HILIGHT_PAD_Y };
             SDL_RenderFillRect(app->renderer, &hi);
         }
@@ -217,8 +225,6 @@ void render_skin_menu(app_t *app, menu_t *menu, int w, int h) {
         p.y_top = (float)baseY;
         p.y_bottom = p.y_top + p.h;
 
-            
-
         // Fondo suave (opcional)
         SDL_SetRenderDrawColor(app->renderer, 255, 255, 255, 0);
         SDL_Rect bg = { dstX - 8, baseY - 8, p.w + 16, p.h + 16 };
@@ -244,46 +250,6 @@ void render_skin_menu(app_t *app, menu_t *menu, int w, int h) {
     }
 }
 
-    /*if (previews[sel]) {
-        // Zona para el preview: debajo de la lista y por encima del borde inferior
-        const int previewMaxW = (int)(cardW * 0.38f);
-        const int previewMaxH = (int)(cardH * 0.30f);
-
-        // y de arranque de las opciones
-        // startY + n*(lineH+gap) nos da el final de la lista
-        int endListY = startY + n * (lineH + gap) - gap;
-
-        // centro el preview bajo la lista con un margen
-        const int centerX = cardX + cardW/2;
-        const int topY    = endListY + 20;
-
-        // Mantengo proporción de la textura
-        int texW=0, texH=0;
-        SDL_QueryTexture(previews[sel], NULL, NULL, &texW, &texH);
-        if (texW > 0 && texH > 0) {
-            float sx = (float)previewMaxW / (float)texW;
-            float sy = (float)previewMaxH / (float)texH;
-            float s  = sx < sy ? sx : sy;               // que entre en ambos ejes
-
-            int dstW = (int)(texW * s);
-            int dstH = (int)(texH * s);
-            int dstX = centerX - dstW / 2;
-            int dstY = topY;
-
-            // panel suave detrás del preview (opcional)
-            SDL_SetRenderDrawColor(app->renderer, 255, 255, 255, 20);
-            SDL_Rect bg = { dstX - 8, dstY - 8, dstW + 16, dstH + 16 };
-            SDL_RenderFillRect(app->renderer, &bg);
-
-            SDL_Rect dst = { dstX, dstY, dstW, dstH };
-            SDL_RenderCopy(app->renderer, previews[sel], NULL, &dst);
-        }
-    }
-}*/
-
-
-
-
 void render_pause_menu(app_t *app, menu_t *menu, int w, int h)
 {
     // tarjeta
@@ -300,15 +266,15 @@ void render_pause_menu(app_t *app, menu_t *menu, int w, int h)
     SDL_RenderDrawRect(app->renderer, &card);
 
     // título y subtítulo
-    SDL_Color titleCol = (SDL_Color){230, 230, 80, 255};
+    SDL_Color titleCol= color_title();
     SDL_Color textCol  = (SDL_Color){240, 240, 240, 255};
     int tw=0, th=0;
 
-    draw_text_center(app->renderer, app->font, "PAUSA", titleCol, cardX + cardW/2, cardY + 22, &tw, &th);
-    draw_text_center(app->renderer, app->font, "Esc para volver", textCol, cardX + cardW/2, cardY + 22 + th + 8, NULL, NULL);
+    draw_text_center(app->renderer, app->font, "PAUSE - Take a brake ;)", titleCol, cardX + cardW/2, cardY + 22, &tw, &th);
+    draw_text_center(app->renderer, app->font, "zzz...", textCol, cardX + cardW/2, cardY + 22 + th + 8, NULL, NULL);
 
     // opciones
-    const char *opts[] = { "Reanudar", "Reiniciar", "Volver al main menu", "Salir" };
+    const char *opts[] = { "Resume", "Restart", "Go back to main menu", "Exit :(" };
     const int n = 4;
     const int lineH = OPTION_LINE_H;
     const int gap   = OPTION_GAP;
@@ -320,7 +286,7 @@ void render_pause_menu(app_t *app, menu_t *menu, int w, int h)
     for (int i = 0; i < n; ++i) {
         const int yy = optYStart + i * (lineH + gap);
         if (i == menu->selected) {
-            SDL_SetRenderDrawColor(app->renderer, 70, 120, 200, 180);
+            color_selection(app);
             SDL_Rect hi = { cardX + HILIGHT_INSET, yy - OPTION_HILIGHT_PAD_Y, cardW - 2*HILIGHT_INSET, OPTION_LINE_H + 2*OPTION_HILIGHT_PAD_Y };
             SDL_RenderFillRect(app->renderer, &hi);
         }
@@ -348,20 +314,20 @@ void render_game_over(app_t *app, menu_t *menu, int w, int h){
 
     // título + puntaje
     int tw=0, th=0;
-    SDL_Color titleCol = (SDL_Color){230,230,80,255};
+    SDL_Color titleCol= color_title();
     SDL_Color textCol  = (SDL_Color){240,240,240,255};
 
-    draw_text_center(app->renderer, app->font, "GAME OVER", titleCol, cardX + cardW/2, cardY + 22, &tw, &th);
+    draw_text_center(app->renderer, app->font, "*** GAME OVER ***", titleCol, cardX + cardW/2, cardY + 22, &tw, &th);
 
     char sub[64];
-    snprintf(sub, sizeof(sub), "Puntaje: %d", menu->score);
+    snprintf(sub, sizeof(sub), "Score: %d", menu->score);
     draw_text_center(app->renderer, app->font, sub, textCol, cardX + cardW/2, cardY + 22 + th + 8, NULL, NULL);
 
     int y = cardY + 22 + th + 8;
     // mensaje de felicitación si entró al Top
     if (menu->last_top_pos > 0) {
         char congr[96];
-        snprintf(congr, sizeof(congr), "Felicitaciones, entraste al top %d!", menu->last_top_pos);
+        snprintf(congr, sizeof(congr), "Congratulations, you've made it to TOP %d!", menu->last_top_pos);
         y += 22;
         draw_text_center(app->renderer, app->font, congr, textCol, cardX + cardW/2, y, NULL, NULL);
     }
@@ -377,7 +343,7 @@ void render_game_over(app_t *app, menu_t *menu, int w, int h){
 
     // Primero calculamos dónde empiezan las opciones para saber
     // cuánto alto nos queda para la lista
-    const char* opts[] = { "Volver a jugar", "Salir" };
+    const char* opts[] = { "Let's try it again!!", "Exit :(" };
     const int n = 2;
     const int lineH = OPTION_LINE_H;
     const int gap   = OPTION_GAP;
@@ -410,7 +376,7 @@ void render_game_over(app_t *app, menu_t *menu, int w, int h){
 
         // Subrayado del renglón completo si el score nuevo entró en esa posición
         if (menu->last_top_pos == i + 1) {
-            SDL_SetRenderDrawColor(app->renderer, 70, 120, 200, 140);
+            color_selection(app);
             SDL_Rect hi = { cardX + 20, rowY - 2, cardW - 40, rowH };
             SDL_RenderFillRect(app->renderer, &hi);
         }
@@ -427,7 +393,7 @@ void render_game_over(app_t *app, menu_t *menu, int w, int h){
     for (int i = 0; i < n; ++i) {
         const int yy = optYStart + i * (lineH + gap);
         if (i == menu->selected) {
-            SDL_SetRenderDrawColor(app->renderer, 70, 120, 200, 180);
+            color_selection(app);
             SDL_Rect hi = {cardX + HILIGHT_INSET, yy - OPTION_HILIGHT_PAD_Y, cardW - 2*HILIGHT_INSET, OPTION_LINE_H + 2*OPTION_HILIGHT_PAD_Y};
             SDL_RenderFillRect(app->renderer, &hi);
         }
