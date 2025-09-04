@@ -1,6 +1,6 @@
 CC = gcc
 CFLAGS = -Wall -Wextra -g
-LDFLAGS = -lncurses -lSDL2
+LDFLAGS = -lncurses #-lSDL2
 
 SRC = main.c backend.c frontend.c
 OBJ = $(SRC:.c=.o)

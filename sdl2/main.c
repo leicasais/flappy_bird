@@ -48,8 +48,8 @@ int main(void){
                         if (c >= ' ' && c <= '~') {                // imprimibles
                             size_t len = strlen(menu.username);
                             if (len < USERNAME_MAX) {
-                                menu.username[len]   = (char)c;
-                                menu.username[len+1] = '\0';
+                                menu.username[len++]   = (char)c;
+                                menu.username[len] = '\0';
                             }
                         }
                     }

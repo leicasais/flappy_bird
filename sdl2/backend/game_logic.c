@@ -84,9 +84,20 @@ void colition_update(menu_t* pmenu){     // Updates game statistics such as scor
     pmenu->lives --;
     if(pmenu->lives < 1){
         menu_set_state(pmenu, GAME_OVER);
+        history_log(pmenu);
         pmenu->last_top_pos = score_update(pmenu,pmenu->score);
         score_save(pmenu);
     }
+}
+
+void history_log(menu_t* pmenu){
+    time_t t;
+    struct tm * info;
+    time(&t);
+    info = localtime(&t);
+    FILE *f = fopen("history_log.txt","a");
+    fprintf(f,"Username: %s\t Score: %d\t at %s",pmenu->username,pmenu->score,asctime(info));
+    fclose(f);
 }
 
 void score_init(menu_t *pmenu) {
@@ -144,7 +155,17 @@ void score_save(menu_t *pmenu) {
 
 
 void game_reset(column_t* pcol, bird_t *bird, menu_t *menu){
+    //Create a temporal "save_name" string to no lose de orginial name
+    char saved_name[USERNAME_MAX + 1];
+    strncpy(saved_name, menu->username, USERNAME_MAX);
+    saved_name[USERNAME_MAX] = '\0';
+    
     init(pcol,bird, menu);
+
+    strncpy(menu->username, saved_name, USERNAME_MAX);
+    menu->username[USERNAME_MAX] = '\0';
+    menu->name_editing = 0;
+
     // *** menú / score ***
     menu->score = 0;
     menu->lives = 3;

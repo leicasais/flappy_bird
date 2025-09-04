@@ -158,6 +158,7 @@
     char collision(column_t* pcol, bird_t* pbird);
     void colition_update(menu_t* pmenu);
     void points(column_t* pcol, bird_t* pbird, menu_t* menu);
+    void history_log(menu_t* pmenu);
     void score_init(menu_t *pmenu);
     int score_update(menu_t *pmenu, int new_score);
     void score_save(menu_t *pmenu);
