@@ -16,7 +16,7 @@ char collision(column_t* pcol, bird_t* pbird, screen_dim_t *screen_dim){
             return 1;
         }
         else if ((pbird->x_r >= col_left) && (pbird->x_l <= col_right)) {
-            // Verificar si el pájaro NO está dentro del hueco
+            // check if the bird is outside of the hole
             if ((pbird->y_bottom - foot_px) >= hole_bottom || (pbird->y_top + hair_px) <= hole_top) {
                 return 1;
             }
@@ -29,15 +29,20 @@ void points(column_t* pcol, bird_t* pbird, menu_t* menu, screen_dim_t *screen_di
     for (int i=0; i < screen_dim->NUM_COL; i++){
         if (pcol[i].len == 0){
             continue;
-        } // Saltar columnas no activas
+        } // skips innactive columns
         int col_right = pcol[i].x + pcol[i].len;
 
-        // Cuenta la columna cuando el borde derecho quedó a la izquierda del pájaro
+        //Adds a point when the bird passes the right corner of the column
         if (!pcol[i].trim && (col_right < (int)pbird->x_l)) {
-            pcol[i].trim = 1;           // marcar como contada
-            menu->score++;
+            pcol[i].trim = 1;
+            if(pcol->col_speed >= SPEED_MAX/2){     //Aditional score: passing 1 col = 2 points
+                menu->score+=2;
+            }
+            else{   //normal score: passing 1 col = 1 point
+                menu->score++;
+            }           
 
-            // subir velocidad suavemente (con tope)
+            // inccrements the velocity of the columns each time the bird passes a col (it has a max speed)
             pcol->col_speed += SPEED_INC;
             SDL_Log("SPEED = %.2f", pcol->col_speed);
             if (pcol->col_speed > SPEED_MAX) {
@@ -69,13 +74,13 @@ void history_log(menu_t* pmenu){
 }
 
 void score_init(menu_t *pmenu) {
-    // arranco todo en cero por si el archivo no existe o tiene menos líneas
+    // set the values in 0
     for (int i = 0; i < MAX_SCORES; i++){
         pmenu->high_score[i] = 0;
     }
     FILE *f = fopen("scores.txt", "r");
     if (!f) {
-        // si no existe, lo creo con ceros y salgo
+        // if it doestn exist, create it in values=0
         score_save(pmenu);
     }
     else{
@@ -87,7 +92,7 @@ void score_init(menu_t *pmenu) {
 }
 
 int score_update(menu_t *pmenu, int new_score) {
-    // encontrar posición de inserción (orden descendente)
+    //find the right position for the final score (descending order)
     int pos = MAX_SCORES;
     for (int i = 0; i < MAX_SCORES && pos == MAX_SCORES; i++){
         if (new_score >= pmenu->high_score[i]){ 
@@ -98,7 +103,6 @@ int score_update(menu_t *pmenu, int new_score) {
         return 0;
     }
     else{
-        // desplazar hacia abajo y colocar
         for (int i = MAX_SCORES - 1; i > pos; i--){
             pmenu->high_score[i] = pmenu->high_score[i-1];
         }
@@ -108,7 +112,6 @@ int score_update(menu_t *pmenu, int new_score) {
 }
 
 void score_save(menu_t *pmenu) {
-    //scores
     FILE *f = fopen("scores.txt", "w");
     if (!f){
         SDL_Log("score_save: cannot open %s", "scores.txt");
