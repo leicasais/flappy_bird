@@ -1,5 +1,12 @@
-#include "backend.h"
-#include "frontend.h"
+#include "structs.h"
+#include "front_main_game.h"
+#include "front_menu.h"
+#include "game_logic.h"
+#include "init_fun.h"
+#include "menu.h"
+#include "render_helpers.h"
+#include "running_fun.h"
+
 
 int main(void){
     bird_t bird;
@@ -16,12 +23,12 @@ int main(void){
     SDL_StartTextInput();
     initSDL(&app, &screen_dim);
 
+    menu_init(&menu); 
+
     // Objetos y texturas (columnas, pájaro, background, fuente para HUD)
     init(column, &bird, &menu, &screen_dim);            // update the initial conditions of the game
     init_tex(column, &bird, &menu, &app, &background, &screen_dim);        //charges the textures 
 
-    // --- Menú: estado inicial + fuente para UI del menú ---
-   // menu_init(&menu);                                         // MAIN_MENU + highscores :contentReference[oaicite:6]{index=6}
 
     int running = 1;
     int reboot_time=0; 

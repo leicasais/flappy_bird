@@ -1,5 +1,5 @@
-#include "frontend.h"
-#include "backend.h"
+#include "front_main_game.h"
+#include "render_helpers.h"
 
 void draw_bird(bird_t *bird, app_t *app){
     int fly_frames[] = {0, 1, 2, 1};
@@ -84,7 +84,7 @@ void draw_hearts(app_t *app,menu_t *menu ){
 
 
 void render_game_hud(app_t *app, menu_t *menu, screen_dim_t *screen_dim){
-    //Draw the points collected
+        //Draw the points collected
     char buf[32]; 
     snprintf(buf, sizeof(buf), "Score: %d", menu->score);
     SDL_Color c = { 250, 250, 250, 255 };
@@ -115,7 +115,6 @@ void display_resurecting(bird_t * bird, menu_t *menu, app_t *app){
         }
     }
     if(bird->vel_y<0){
-        
         draw_resurecting_bird(bird, app, 1);
     }
     else{

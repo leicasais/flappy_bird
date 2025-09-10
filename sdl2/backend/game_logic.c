@@ -1,4 +1,6 @@
-#include "backend.h"
+#include "game_logic.h"
+#include "menu.h"
+#include "init_fun.h"
 
 char collision(column_t* pcol, bird_t* pbird, screen_dim_t *screen_dim){
     int hair_px = (2*8) / pbird->scale;

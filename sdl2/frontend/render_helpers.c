@@ -1,5 +1,4 @@
-#include "frontend.h"
-#include "backend.h"
+#include "render_helpers.h"
 
 //windows
 void prepareScene(app_t *app){   //Prepares a clean background for drawing the next frame.
@@ -8,7 +7,7 @@ void prepareScene(app_t *app){   //Prepares a clean background for drawing the n
 }
 
 void draw_tiled_segment(SDL_Renderer *r, SDL_Texture *tex, int x, int src_x, int y, int w, int src_w, int h){
-    if (h <= 0 || w <= 0 || !tex) {
+    if (h <= 0 || w <= 0 || !tex){
         return;
     }
 
@@ -16,11 +15,11 @@ void draw_tiled_segment(SDL_Renderer *r, SDL_Texture *tex, int x, int src_x, int
     SDL_QueryTexture(tex, NULL, NULL, &texW, &texH);
 
     int drawn = 0;
-    while (drawn < h) {
+    while (drawn < h){
         int chunk = (h - drawn < texH) ? (h - drawn) : texH;
 
-        SDL_Rect src = {src_x, 0, src_w, chunk};        
-        SDL_Rect dst = {x, y + drawn, w, chunk};  
+        SDL_Rect src = {src_x, 0, src_w, chunk};        // recorto solo lo que entra
+        SDL_Rect dst = {x, y + drawn, w, chunk};   // mismo alto que src -> sin estirar verticalmente
         SDL_RenderCopy(r, tex, &src, &dst);
 
         drawn += chunk;
@@ -36,8 +35,11 @@ SDL_Texture* make_text(SDL_Renderer* r, TTF_Font* font, const char* txt, SDL_Col
         return NULL; 
     }
     SDL_Texture* t = SDL_CreateTextureFromSurface(r, s);
-    if (w) { 
-        *w = s->w; if (h) *h = s->h;
+    if (w){ 
+        *w = s->w; 
+        if (h){
+            *h = s->h;
+        }
     }
     SDL_FreeSurface(s);
     SDL_SetTextureBlendMode(t, SDL_BLENDMODE_BLEND);
@@ -53,8 +55,11 @@ void draw_text_center(SDL_Renderer* r, TTF_Font* font, const char* text, SDL_Col
     SDL_Rect dst = { cx - w/2, y, w, h };
     SDL_RenderCopy(r, tex, NULL, &dst);
     SDL_DestroyTexture(tex);
-    if (out_w) {
-        *out_w = w; if (out_h) *out_h = h;
+    if (out_w){
+        *out_w = w; 
+        if (out_h){ 
+            *out_h = h;
+        }
     }
 }
 
@@ -67,23 +72,30 @@ void draw_text_left(SDL_Renderer* r, TTF_Font* font, const char* text, SDL_Color
     SDL_Rect dst = { x, y, w, h };
     SDL_RenderCopy(r, tex, NULL, &dst);
     SDL_DestroyTexture(tex);
-    if (out_w) {
-        *out_w = w; if (out_h) *out_h = h;
+    if (out_w){
+        *out_w = w; 
+        if (out_h){
+            *out_h = h;
+        }
     }
 }
-void draw_text_center_scaled(SDL_Renderer* r, TTF_Font* font, const char* text,
-                             SDL_Color color, int cx, int y, float scale,
-                             int* out_w, int* out_h)
-{
+void draw_text_center_scaled(SDL_Renderer* r, TTF_Font* font, const char* text, SDL_Color color, int cx, int y, float scale, int* out_w, int* out_h){
     int w=0, h=0;
     SDL_Texture* tex = make_text(r, font, text, color, &w, &h);
-    if (!tex) return;
+    if (!tex){
+        return;
+    }
     int sw = (int)(w * scale);
     int sh = (int)(h * scale);
     SDL_Rect dst = { cx - sw/2, y, sw, sh };
     SDL_RenderCopy(r, tex, NULL, &dst);
     SDL_DestroyTexture(tex);
-    if (out_w) { *out_w = sw; if (out_h) *out_h = sh; }
+    if (out_w){ 
+        *out_w = sw; 
+        if (out_h){
+            *out_h = sh; 
+        }
+    }
 }
 
 void draw_text_left_scaled(SDL_Renderer* r, TTF_Font* font, const char* text, SDL_Color color, int x, int y, float scale, int* out_w, int* out_h){
@@ -97,9 +109,9 @@ void draw_text_left_scaled(SDL_Renderer* r, TTF_Font* font, const char* text, SD
     SDL_Rect dst = { x, y, sw, sh };
     SDL_RenderCopy(r, tex, NULL, &dst);
     SDL_DestroyTexture(tex);
-    if (out_w) { 
+    if (out_w){ 
         *out_w = sw; 
-        if (out_h) {
+        if (out_h){
             *out_h = sh; 
         }
     }

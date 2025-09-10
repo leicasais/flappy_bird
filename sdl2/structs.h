@@ -1,6 +1,11 @@
 //std libs and SDL2
-#ifndef EXTERN_LIBS_H
-#define EXTERN_LIBS_H
+#ifndef STRUCTS_H
+#define STRUCTS_H
+    
+    /*#########################################
+                        Librerias
+    #########################################*/
+
     #include <stdio.h>
     #include <stdlib.h>
     #include <string.h>
@@ -9,19 +14,15 @@
     #include <SDL2/SDL_ttf.h>
     #include <time.h>
     #include <unistd.h>  // usleep()
-#endif
-
-#ifndef BACKEND_H
-#define BACKEND_H
 
     /*#########################################
                         MACROS
     #########################################*/
 
-    //Macros for the main/game flow
+    // --- Macros for the main/game flow ---
     #define MS_BTW_FRAMES 16
 
-    //macros for the columns
+    // --- macros for the columns ---
     #define OUTSIDE -1000
     #define COL_PX_H 1024
     #define COL_PX_W 256
@@ -33,12 +34,12 @@
     #define EXTREME 60
     #define IMPOSSIBLE 100
 
-    //macros birds
+    // --- macros birds ---
     #define HITBOX_X 224
     #define HITBOX_Y 168
     #define NUM_SKINS 5
 
-    //macros for the menus
+    // --- macros for the menus ---
     #define NUM_OPTIONS_MAIN       4   
     #define NUM_OPTIONS_SKIN       5   
     #define NUM_OPTIONS_DIFICULTY  4
@@ -56,10 +57,20 @@
     #define NAME_MENU 10
     #define DIFICULTY_MENU 11  
  
-    //macros for the txt's
+    // --- macros for the txt's ---
     #define MAX_SCORES 10
     #define USERNAME_MAX 16
 
+    // --- Layout del panel (ajustes) ---
+    #define PANEL_W_RATIO     0.58f   
+    #define PANEL_H_RATIO     0.78f   
+    #define PANEL_BOTTOM_PAD  52      
+    #define OPTION_LINE_H        32    
+    #define OPTION_GAP           16    
+    #define OPTION_HILIGHT_PAD_Y 8     
+        
+    #define LIST_OPTIONS_GAP  18   // espacio fijo entre la lista y las opciones
+    #define HILIGHT_INSET     20      // sangría del destacador
 
     /*#########################################
                         Structs
@@ -136,54 +147,5 @@
         int  name_editing;   // 0 = no, 1 = yes
         int dificulty;
     } menu_t;
-
-    /*#########################################
-                        Functions
-    #########################################*/
-    
-    //init_fun.c
-    void set_parameters(screen_dim_t *screen_dim);
-    void init_parameters(screen_dim_t *screen_dim);
-    int rand_y_pos(float bird_size, int heart_h,screen_dim_t *screen_dim);
-    void init(column_t* pcol, bird_t *bird, menu_t *menu, screen_dim_t *screen_dim);
-    void init_tex(column_t* column, bird_t *bird, menu_t *menu, app_t *app, background_t *background, screen_dim_t *screen_dim); 
-    void initSDL(app_t *app, screen_dim_t *screen_dim);
-    SDL_Texture *loadTexture(char *filename, app_t *app);
-    void cleanupSDL(app_t *app, bird_t *bird, column_t *column, background_t *background, menu_t *menu, screen_dim_t *screen_dim);
-    void set_bird_skin(bird_t *bird, app_t *app, int idx);
-
-    //column_fun.c
-    int rand_hole(screen_dim_t *screen_dim);
-    void col_mov(column_t* pcol, screen_dim_t *screen_dim, menu_t *pmenu);
-    void col_reset_scroll(void);
-
-  
-    //bird_fun.c
-    void update_bird_animation(bird_t *bird);
-    void bird_flying(bird_t *bird);
-    void bird_jump(bird_t* bird);
-    void bird_fall(bird_t* bird, screen_dim_t *screen_dim);
-    void set_bird_skin(bird_t *bird, app_t *app, int idx);
-
-
-    //game_logic.c
-    char collision(column_t* pcol, bird_t* pbird, screen_dim_t *screen_dim);
-    void colition_update(menu_t* pmenu);
-    void points(column_t* pcol, bird_t* pbird, menu_t* menu, screen_dim_t *screen_dim);
-    void history_log(menu_t* pmenu);
-    void score_init(menu_t *pmenu);
-    int score_update(menu_t *pmenu, int new_score);
-    void score_save(menu_t *pmenu);
-    void game_reset(column_t* pcol, bird_t *bird, menu_t *menu, screen_dim_t *screen_dim);
-
-    //menu.c
-    void menu_init(menu_t *menu);
-    void menu_set_state(menu_t *menu, int state);
-    void menu_next_option(menu_t *menu);
-    void menu_prev_option(menu_t *menu);
-    void menu_activate_selected(menu_t *menu, column_t *cols, bird_t *bird, app_t *app, screen_dim_t *screen_dim);
-
-    //input.c
-    void window_input(void);
 
 #endif

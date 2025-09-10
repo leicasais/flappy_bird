@@ -1,4 +1,6 @@
-#include "backend.h"
+#include "menu.h"
+#include "game_logic.h"
+#include "init_fun.h"
 
 
 static int menu_num_options(int state){
@@ -27,8 +29,8 @@ void menu_init(menu_t *menu){
     menu->heart_w       = 256/4; //px
     menu->last_top_pos  = 0;
     menu->username[0]   = '\0';        
-    menu->name_editing  = 1;     
-    //menu->dificulty     = EASY;      
+    menu->name_editing  = 1;      
+    menu->dificulty = EASY;     
     score_init(menu); // carga/normaliza highscores
 }
 
@@ -91,13 +93,13 @@ void menu_activate_selected(menu_t *menu, column_t *cols, bird_t *bird, app_t *a
             }
         break;
 
-        case GAME_OVER: // 0: Reintentar, 1: Menu, 2: Salir
-            // guardo score ANTES de cambiar de escena
-            if (menu->selected == 0) {                 // Volver a jugar
+        case GAME_OVER: // 0: Retry, 1: Menu, 2: Exit
+            //Save score before change the scene
+            if (menu->selected == 0){                 // Play again
                 game_reset(cols, bird, menu, screen_dim);
                 menu_set_state(menu, BEGINING);
             } 
-            else {                                   // Salir
+            else{                                   // Exit
                 menu_set_state(menu, EXIT);
             }
         break;

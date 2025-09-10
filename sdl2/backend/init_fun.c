@@ -1,7 +1,8 @@
-#include "backend.h"
+#include "init_fun.h"
+#include "running_fun.h"
+#include "menu.h"
 
 //Inicialisations and parameters functions
-
 void set_parameters(screen_dim_t *screen_dim){          //Redefine globals dependidng on the screen size 
     screen_dim-> HOLE_HEIGHT = (screen_dim->GAME_HEIGHT) / 3;       
     screen_dim->COL_WIDTH = screen_dim->GAME_WIDTH / 10;         
@@ -18,16 +19,15 @@ void init_parameters(screen_dim_t *screen_dim){
 }
 
 int rand_y_pos(float bird_size, int heart_h,screen_dim_t *screen_dim){ //returns a random coord y for the begining of the hole  OBS-> min + rand() % (max - min + 1);      
-    const int margin_inf = 3;  // upper margin
     const int margin_inf = 7;  // lo que quieras dejar libre arriba
     int minY = heart_h;
     int maxY = (screen_dim->GAME_HEIGHT) - (screen_dim->TILE_HIGHT) - bird_size - margin_inf - 1; // límite correcto
 
     if (maxY < minY) {
-        // case the hole is imposible to put in the pipe 
+        // case the hole is imposible to put
         maxY = minY;
     }
-    return minY + rand() % (maxY - minY + 1); // range [minY, maxY]
+    return minY + rand() % (maxY - minY + 1); // rango [minY, maxY]
 }
 
 void init(column_t* pcol, bird_t *bird, menu_t *menu, screen_dim_t *screen_dim){  
@@ -58,7 +58,7 @@ void init(column_t* pcol, bird_t *bird, menu_t *menu, screen_dim_t *screen_dim){
         pcol[j].x=OUTSIDE;
         pcol[j].len=0;
     }
-    pcol->col_speed=BASE_SPEED;   // px por frame (dinamic)
+    pcol->col_speed=BASE_SPEED;   // px por frame (dinámica)
     
 
     //Bird init
@@ -70,12 +70,10 @@ void init(column_t* pcol, bird_t *bird, menu_t *menu, screen_dim_t *screen_dim){
     bird->x_r= bird->x_l+(bird->w);
 
     float y= rand_y_pos(bird->h, menu->heart_h, screen_dim);
-    bird->gravity_y = 0.4;
+    bird->gravity_y = 0.4;//Despues esta opcion depende el menu pero por ahora lo dejo como si siempre estuviese en la tierra
     bird->y_top=y;
     bird->y_bottom=bird->y_top+(bird->h);
 
-    //Menu init
-    menu_init(menu); 
 }
 
 void init_tex(column_t* column, bird_t *bird, menu_t *menu, app_t *app, background_t *background, screen_dim_t *screen_dim){
@@ -96,22 +94,24 @@ void init_tex(column_t* column, bird_t *bird, menu_t *menu, app_t *app, backgrou
     (menu->skins_tex)[3]= loadTexture("../img/birds/Future_bird.png", app);
     (menu->skins_tex)[4]= loadTexture("../img/birds/Angry_bird.png", app);
 
-    bird->texture= (menu->skins_tex)[0];
+    bird->texture= (menu->skins_tex)[0]; //monto cambia el inide fijo por menu->index_skin que se puede seleccionar en tu menu
     bird->tex_resurrection = loadTexture("../img/birds/Resurecting_bird.png", app);
     bird->current_frame=0;
     bird->last_frame_time = SDL_GetTicks();
+
+        //hearts text initmenu->full_heart_tex = loadTexture("../img/simbols/Full_heart.png", app);
     menu->full_heart_tex = loadTexture("../img/simbols/Full_heart.png", app);
     menu->empty_heart_tex = loadTexture("../img/simbols/Empty_heart.png", app);
 
         //points letters init
-    app->font = TTF_OpenFont("../img/fonts/Jersey15-Regular.ttf", 26); // phisic size in px
+    app->font = TTF_OpenFont("../img/fonts/Jersey15-Regular.ttf", 26); // tamaño “físico” en px
     if (!app->font) {
         SDL_Log("OpenFont FAIL: %s", TTF_GetError());
         exit(1);
     }
     app->score_tex = NULL;
     app->score_w = app->score_h = 0;
-    app->score_color = (SDL_Color){ 20, 20, 20, 255 }; // dark gray
+    app->score_color = (SDL_Color){ 20, 20, 20, 255 }; // gris oscuro
 }
 
 void initSDL(app_t *app, screen_dim_t *screen_dim){
@@ -168,7 +168,7 @@ SDL_Texture* loadTexture(char *filename, app_t *app){
 
 //exit fun
 void cleanupSDL(app_t *app, bird_t *bird, column_t *column, background_t *background, menu_t *menu, screen_dim_t *screen_dim){
-    // 1) Textures and resources that depends on the renderer
+    // 1) Texturas y recursos dependientes del renderer
     if (app->score_tex) { 
         SDL_DestroyTexture(app->score_tex); 
         app->score_tex = NULL;
@@ -215,7 +215,7 @@ void cleanupSDL(app_t *app, bird_t *bird, column_t *column, background_t *backgr
     }
 
 
-    // 2) closes rederer and windows
+    // 2) renderer y ventana
     if (app->renderer) { 
         SDL_DestroyRenderer(app->renderer); 
         app->renderer = NULL; 
@@ -225,13 +225,14 @@ void cleanupSDL(app_t *app, bird_t *bird, column_t *column, background_t *backgr
         app->window   = NULL; 
     }
 
-    // 3) close the libs
+    // 3) Cierres de libs
     TTF_Quit();
     IMG_Quit();
     SDL_Quit();
 }
 
-void set_bird_skin(bird_t *bird, app_t *app, int idx){
+void set_bird_skin(bird_t *bird, app_t *app, int idx)
+{
     // Paths de las 5 skins
     static const char *SKINS[5] = {
         "../img/birds/Angry_bird.png",
