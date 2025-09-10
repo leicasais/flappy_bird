@@ -4,13 +4,15 @@
 static int menu_num_options(int state){
     switch (state){
         case MAIN_MENU:  
-            return NUM_OPTIONS_MAIN;      // 0: Jugar, 1: Salir
+            return NUM_OPTIONS_MAIN;      // 0: Jugar, 1:Elegir Skin, 2:Dificultad , 3: Salir
         case PAUSE:      
             return NUM_OPTIONS_PAUSE;     // 0: Continuar, 1: Reiniciar, 2: Menu, 3: Salir
         case GAME_OVER:  
             return NUM_OPTIONS_GAME_OVER; // 0: Reintentar, 1: Menus
         case SKIN_MENU:
             return NUM_OPTIONS_SKIN;      // 0: 5 Skins
+        case DIFICULTY_MENU:
+            return NUM_OPTIONS_DIFICULTY; // 0: 4 Dificultades
         default:         
             return 0;
     }
@@ -25,7 +27,8 @@ void menu_init(menu_t *menu){
     menu->heart_w       = 256/4; //px
     menu->last_top_pos  = 0;
     menu->username[0]   = '\0';        
-    menu->name_editing  = 1;           
+    menu->name_editing  = 1;     
+    //menu->dificulty     = EASY;      
     score_init(menu); // carga/normaliza highscores
 }
 
@@ -54,7 +57,7 @@ void menu_activate_selected(menu_t *menu, column_t *cols, bird_t *bird, app_t *a
     (void)app;
 
     switch (menu->state) {
-        case MAIN_MENU: // 0: Jugar, 1: Elegir Skin, 2: Salir
+        case MAIN_MENU: // 0: Jugar, 1: Elegir Skin, 2:Dificultad , 3: Salir
             if (menu->selected == 0){
                 game_reset(cols, bird, menu, screen_dim);
                 menu_set_state(menu, BEGINING);
@@ -63,6 +66,10 @@ void menu_activate_selected(menu_t *menu, column_t *cols, bird_t *bird, app_t *a
                 menu->selected = 0;                 // arranca seleccionando la 1ª skin
                 menu_set_state(menu, SKIN_MENU);
             } 
+            else if (menu->selected == 2){
+                menu->selected = 0; // Arranca con la primer dificultad
+                menu_set_state(menu, DIFICULTY_MENU);
+            }
             else {
                 menu_set_state(menu, EXIT);
             }
@@ -101,6 +108,23 @@ void menu_activate_selected(menu_t *menu, column_t *cols, bird_t *bird, app_t *a
             menu_set_state(menu, MAIN_MENU);
         break;
 
+        case DIFICULTY_MENU:
+            if(menu->selected==0){
+                menu->dificulty=EASY;
+            }
+            else if(menu->selected==1){
+                menu->dificulty=MEDIUM;
+            }
+            else if(menu->selected==2){
+                menu->dificulty=EXTREME;
+            }
+            else{
+                menu->dificulty=IMPOSSIBLE;
+            }
+            menu->selected=0;
+            menu_set_state(menu, MAIN_MENU);
+        break;
+        
         default:
         break;
     }

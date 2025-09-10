@@ -112,6 +112,21 @@ int main(void){
                         }
                     break;
 
+                    case DIFICULTY_MENU:
+                        if (event.key.keysym.sym == SDLK_UP) {
+                            menu_prev_option(&menu);
+                        }
+                        else if (event.key.keysym.sym == SDLK_DOWN) {
+                            menu_next_option(&menu);
+                        }
+                        else if (event.key.keysym.sym == SDLK_RETURN || event.key.keysym.sym == SDLK_KP_ENTER) {
+                            menu_activate_selected(&menu, column, &bird, &app, &screen_dim);
+                        }
+                        else if (event.key.keysym.sym == SDLK_ESCAPE) {
+                            menu_set_state(&menu, MAIN_MENU);                      // cancelar y volver
+                        }
+                    break;
+
                     case RUNING:
                         if (event.key.keysym.sym == SDLK_SPACE){
                             bird.vel_y = -8.0f; 
@@ -180,7 +195,7 @@ int main(void){
         // --- Update por estado ---
 
         if (menu.state == RUNING){
-            col_mov(column, &screen_dim);
+            col_mov(column, &screen_dim, &menu);
             bird_fall(&bird, &screen_dim);
             update_bird_animation(&bird);
             if(reboot_time==0){
@@ -215,6 +230,9 @@ int main(void){
         } 
         else if (menu.state == SKIN_MENU) {
             render_skin_menu(&app, &menu, screen_dim.GAME_WIDTH, screen_dim.GAME_HEIGHT);
+        }
+        else if(menu.state == DIFICULTY_MENU){
+            render_dificulty_menu(&app, &menu, screen_dim.GAME_WIDTH, screen_dim.GAME_HEIGHT);
         }
         else if (menu.state == RUNING || menu.state == BEGINING) {
             draw_col(column, &app, &screen_dim);

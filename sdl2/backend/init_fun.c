@@ -19,6 +19,7 @@ void init_parameters(screen_dim_t *screen_dim){
 
 int rand_y_pos(float bird_size, int heart_h,screen_dim_t *screen_dim){ //returns a random coord y for the begining of the hole  OBS-> min + rand() % (max - min + 1);      
     const int margin_inf = 3;  // upper margin
+    const int margin_inf = 7;  // lo que quieras dejar libre arriba
     int minY = heart_h;
     int maxY = (screen_dim->GAME_HEIGHT) - (screen_dim->TILE_HIGHT) - bird_size - margin_inf - 1; // límite correcto
 
@@ -38,11 +39,13 @@ void init(column_t* pcol, bird_t *bird, menu_t *menu, screen_dim_t *screen_dim){
         pcol[i].x=aux_x;  //Sets the coordinate x of each point of the column
         pcol[i].y=rand_hole(screen_dim);
         pcol[i].len=screen_dim->COL_WIDTH;
+        pcol[i].col_speed_y=0;
     }
     if(screen_dim->GAME_WIDTH % (screen_dim->COL_WIDTH + screen_dim->SPACE)){//if GAME_WIDTH/(COL_WIDTH+SPACE) was supposed to be a float -> we have to put a 'weird case'
         int space_left=screen_dim->GAME_WIDTH-(screen_dim->COL_WIDTH+screen_dim->SPACE)*(i+1);//The space left after saving the last column+space in the for
         pcol[i].x=aux_x+screen_dim->SPACE+screen_dim->COL_WIDTH;
         pcol[i].y=rand_hole(screen_dim);
+        pcol[i].col_speed_y=0;
         if(space_left<screen_dim->COL_WIDTH){ //case the last column of the screen is not shown fully 
             pcol[i].len=space_left;
         }
@@ -71,7 +74,7 @@ void init(column_t* pcol, bird_t *bird, menu_t *menu, screen_dim_t *screen_dim){
     bird->y_top=y;
     bird->y_bottom=bird->y_top+(bird->h);
 
-    //Menue init
+    //Menu init
     menu_init(menu); 
 }
 

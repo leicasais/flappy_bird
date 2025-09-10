@@ -31,6 +31,7 @@
     #define EASY 0 
     #define MEDIUM 30
     #define EXTREME 60
+    #define IMPOSSIBLE 100
 
     //macros birds
     #define HITBOX_X 224
@@ -38,8 +39,9 @@
     #define NUM_SKINS 5
 
     //macros for the menus
-    #define NUM_OPTIONS_MAIN       3   
+    #define NUM_OPTIONS_MAIN       4   
     #define NUM_OPTIONS_SKIN       5   
+    #define NUM_OPTIONS_DIFICULTY  4
     #define NUM_OPTIONS_GAME_OVER  2
     #define NUM_OPTIONS_PAUSE      4    
     #define MAIN_MENU 1
@@ -51,7 +53,8 @@
     #define GAME_OVER 7
     #define BEGINING 8
     #define SKIN_MENU 9
-    #define NAME_MENU 10  
+    #define NAME_MENU 10
+    #define DIFICULTY_MENU 11  
  
     //macros for the txt's
     #define MAX_SCORES 10
@@ -131,7 +134,7 @@
         int last_top_pos;
         char username[USERNAME_MAX + 1];
         int  name_editing;   // 0 = no, 1 = yes
-        int difuculty;
+        int dificulty;
     } menu_t;
 
     /*#########################################
@@ -151,7 +154,7 @@
 
     //column_fun.c
     int rand_hole(screen_dim_t *screen_dim);
-    void col_mov(column_t* pcol, screen_dim_t *screen_dim);
+    void col_mov(column_t* pcol, screen_dim_t *screen_dim, menu_t *pmenu);
     void col_reset_scroll(void);
 
   

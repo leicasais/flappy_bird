@@ -44,6 +44,7 @@ void points(column_t* pcol, bird_t* pbird, menu_t* menu, screen_dim_t *screen_di
 
             // inccrements the velocity of the columns each time the bird passes a col (it has a max speed)
             pcol->col_speed += SPEED_INC;
+            SDL_Log("Dificult = %d", menu->dificulty);
             SDL_Log("SPEED = %.2f", pcol->col_speed);
             if (pcol->col_speed > SPEED_MAX) {
                 pcol->col_speed = SPEED_MAX;

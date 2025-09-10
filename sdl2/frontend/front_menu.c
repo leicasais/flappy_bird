@@ -33,7 +33,7 @@ void render_main_menu(app_t *app, menu_t *menu, int w, int h){
 
     draw_text_center(app->renderer, app->font, "Press ENTER to start", textCol, cardX + cardW/2, cardY + 22 + th + 10, NULL, NULL);
 
-    // 3) options
+    // 3) opciones
     const char *opts[] = { "Play", "Select Skin" , "Exit game :(" };
     const int n = 3;
     const int lineH = ((th) ? (th) + 16 : 40);
@@ -155,7 +155,7 @@ void render_skin_menu(app_t *app, menu_t *menu, int w, int h) {
 
     // skins list
     const char* opts[] = { "Angry", "Brainy", "Future", "Purply", "Yellowy"};
-    const int n = 5;
+    const int n = NUM_OPTIONS_SKIN;
 
     const int lineH = OPTION_LINE_H;
     const int gap   = OPTION_GAP;
@@ -193,8 +193,7 @@ void render_skin_menu(app_t *app, menu_t *menu, int w, int h) {
     if (!previews[sel]) {
         previews[sel] = loadTexture((char*)SKIN_PATHS[sel], app);
     }
-
-    // preview of the bird animated
+    // Zona de preview debajo de la lista
     const int previewMaxW = (int)(cardW * 0.38f);
     const int previewMaxH = (int)(cardH * 0.30f);
     const int endListY    = startY + n * (lineH + gap) - gap;
@@ -332,7 +331,7 @@ void render_game_over(app_t *app, menu_t *menu, int w, int h){
     const int listX = cardX + 40;      // Left margin of the table
 
     const char* opts[] = { "Let's try it again!!", "Exit :(" };
-    const int n = 2;
+    const int n = NUM_OPTIONS_GAME_OVER;
     const int lineH = OPTION_LINE_H;
     const int gap   = OPTION_GAP;
     const int optsH = n * lineH + (n - 1) * gap;
