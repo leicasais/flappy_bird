@@ -19,8 +19,8 @@ void draw_tiled_segment(SDL_Renderer *r, SDL_Texture *tex, int x, int src_x, int
     while (drawn < h) {
         int chunk = (h - drawn < texH) ? (h - drawn) : texH;
 
-        SDL_Rect src = {src_x, 0, src_w, chunk};        // recorto solo lo que entra
-        SDL_Rect dst = {x, y + drawn, w, chunk};   // mismo alto que src -> sin estirar verticalmente
+        SDL_Rect src = {src_x, 0, src_w, chunk};        
+        SDL_Rect dst = {x, y + drawn, w, chunk};  
         SDL_RenderCopy(r, tex, &src, &dst);
 
         drawn += chunk;
