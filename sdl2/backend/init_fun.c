@@ -1,37 +1,27 @@
 #include "backend.h"
 
-//Global var from main.c
-extern int GAME_WIDTH;
-extern int GAME_HEIGHT;
-extern int TILE_HIGHT;
-extern int HOLE_HEIGHT;        
-extern int NUM_COL;
-extern column_t* column;
-extern int COL_WIDTH;
-extern int SPACE;
-
 
 //Inicialisations and parameters functions
 
-void set_parameters(void){          //Redefine globals dependidng on the screen size 
-    HOLE_HEIGHT = GAME_HEIGHT / 3;       
-    COL_WIDTH = GAME_WIDTH / 10;         
-    SPACE = GAME_HEIGHT/3;             
-    NUM_COL = GAME_WIDTH / COL_WIDTH;    
-    TILE_HIGHT = GAME_HEIGHT /9;
+void set_parameters(screen_dim_t *screen_dim){          //Redefine globals dependidng on the screen size 
+    screen_dim-> HOLE_HEIGHT = (screen_dim->GAME_HEIGHT) / 3;       
+    screen_dim->COL_WIDTH = screen_dim->GAME_WIDTH / 10;         
+    screen_dim->SPACE = screen_dim->GAME_HEIGHT/3;             
+    screen_dim->NUM_COL = screen_dim->GAME_WIDTH / screen_dim->COL_WIDTH;    
+    screen_dim->TILE_HIGHT = screen_dim->GAME_HEIGHT /9;
 }
 
-void init_parameters(void){
+void init_parameters(screen_dim_t *screen_dim){
     //Screen init
-    GAME_HEIGHT= 720;
-    GAME_WIDTH= 1280;
-    set_parameters();
+    screen_dim->GAME_HEIGHT= 720;
+    screen_dim->GAME_WIDTH= 1280;
+    set_parameters(screen_dim);
 }
 
-int rand_y_pos(float bird_size, int heart_h){ //returns a random coord y for the begining of the hole  OBS-> min + rand() % (max - min + 1);      
+int rand_y_pos(float bird_size, int heart_h,screen_dim_t *screen_dim){ //returns a random coord y for the begining of the hole  OBS-> min + rand() % (max - min + 1);      
     const int margin_inf = 3;  // lo que quieras dejar libre arriba
     int minY = heart_h;
-    int maxY = GAME_HEIGHT - TILE_HIGHT - bird_size - margin_inf - 1; // límite correcto
+    int maxY = (screen_dim->GAME_HEIGHT) - (screen_dim->TILE_HIGHT) - bird_size - margin_inf - 1; // límite correcto
 
     if (maxY < minY) {
         // agujero imposible de colocar: ajustá HOLE_HEIGHT o márgenes
@@ -40,29 +30,29 @@ int rand_y_pos(float bird_size, int heart_h){ //returns a random coord y for the
     return minY + rand() % (maxY - minY + 1); // rango [minY, maxY]
 }
 
-void init(column_t* pcol, bird_t *bird, menu_t *menu){  
+void init(column_t* pcol, bird_t *bird, menu_t *menu, screen_dim_t *screen_dim){  
 //Column init
     int aux_x=0; 
     int i;
-    for(i=0; i<((GAME_WIDTH/(COL_WIDTH+SPACE)) -1);i++){
-        aux_x+=SPACE+COL_WIDTH;  
+    for(i=0; i<((screen_dim->GAME_WIDTH/(screen_dim->COL_WIDTH + screen_dim->SPACE)) -1);i++){
+        aux_x+=screen_dim->SPACE+screen_dim->COL_WIDTH;  
         pcol[i].x=aux_x;  //Sets the coordinate x of each point of the column
-        pcol[i].y=rand_hole();
-        pcol[i].len=COL_WIDTH;
+        pcol[i].y=rand_hole(screen_dim);
+        pcol[i].len=screen_dim->COL_WIDTH;
     }
-    if(GAME_WIDTH%(COL_WIDTH+SPACE)){//if GAME_WIDTH/(COL_WIDTH+SPACE) was supposed to be a float -> we have to put a 'weird case'
-        int space_left=GAME_WIDTH-(COL_WIDTH+SPACE)*(i+1);//The space left after saving the last column+space in the for
-        pcol[i].x=aux_x+SPACE+COL_WIDTH;
-        pcol[i].y=rand_hole();
-        if(space_left<COL_WIDTH){ //case the last column of the screen is not shown fully 
+    if(screen_dim->GAME_WIDTH % (screen_dim->COL_WIDTH + screen_dim->SPACE)){//if GAME_WIDTH/(COL_WIDTH+SPACE) was supposed to be a float -> we have to put a 'weird case'
+        int space_left=screen_dim->GAME_WIDTH-(screen_dim->COL_WIDTH+screen_dim->SPACE)*(i+1);//The space left after saving the last column+space in the for
+        pcol[i].x=aux_x+screen_dim->SPACE+screen_dim->COL_WIDTH;
+        pcol[i].y=rand_hole(screen_dim);
+        if(space_left<screen_dim->COL_WIDTH){ //case the last column of the screen is not shown fully 
             pcol[i].len=space_left;
         }
         else{//Case the column is shown fully but there is not SPACE between the last column and the edge of the screen
-            pcol[i].len=COL_WIDTH;
+            pcol[i].len=screen_dim->COL_WIDTH;
         }
         i++;
     }
-    for(int j=i;j<NUM_COL;j++){ //col outside the screen prepearing to enter
+    for(int j=i;j<screen_dim->NUM_COL;j++){ //col outside the screen prepearing to enter
         pcol[j].x=OUTSIDE;
         pcol[j].len=0;
     }
@@ -74,10 +64,10 @@ void init(column_t* pcol, bird_t *bird, menu_t *menu){
     bird->h =(HITBOX_Y)/(bird->scale);
     bird->w =(HITBOX_X)/(bird->scale);
 
-    bird->x_l= SPACE/2 + ( (bird->w) /2);
+    bird->x_l= screen_dim->SPACE/2 + ( (bird->w) /2);
     bird->x_r= bird->x_l+(bird->w);
 
-    float y= rand_y_pos(bird->h, menu->heart_h);
+    float y= rand_y_pos(bird->h, menu->heart_h, screen_dim);
     bird->gravity_y = 0.4;//Despues esta opcion depende el menu pero por ahora lo dejo como si siempre estuviese en la tierra
     bird->y_top=y;
     bird->y_bottom=bird->y_top+(bird->h);
@@ -86,9 +76,9 @@ void init(column_t* pcol, bird_t *bird, menu_t *menu){
     menu_init(menu); 
 }
 
-void init_tex(column_t* pcol, bird_t *bird, menu_t *menu, app_t *app, background_t *background){
+void init_tex(column_t* column, bird_t *bird, menu_t *menu, app_t *app, background_t *background, screen_dim_t *screen_dim){
        //column textures
-    for(int i=0; i<NUM_COL; i++){
+    for(int i=0; i<screen_dim->NUM_COL; i++){
         column[i].texture_down = loadTexture("../img/columns/Col.png", app);
         column[i].texture_up = loadTexture("../img/columns/Col.png", app);
         column[i].trim=0;
@@ -124,7 +114,7 @@ void init_tex(column_t* pcol, bird_t *bird, menu_t *menu, app_t *app, background
     app->score_color = (SDL_Color){ 20, 20, 20, 255 }; // gris oscuro
 }
 
-void initSDL(app_t *app){
+void initSDL(app_t *app, screen_dim_t *screen_dim){
     //init windows
     int rendererFlags, windowFlags;
     rendererFlags = SDL_RENDERER_ACCELERATED;   //tells SDL to use hardware acceleration for the renderer (faster graphics performance via GPU).
@@ -135,10 +125,10 @@ void initSDL(app_t *app){
         exit(1);
     }
 
-    app->window = SDL_CreateWindow("Floppy bird", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, GAME_WIDTH, GAME_HEIGHT, windowFlags);       //SDL_WINDOWPOS_UNDEFINED tells SDL to let the OS position the window wherever it likes
+    app->window = SDL_CreateWindow("Floppy bird", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, screen_dim->GAME_WIDTH, screen_dim->GAME_HEIGHT, windowFlags);       //SDL_WINDOWPOS_UNDEFINED tells SDL to let the OS position the window wherever it likes
 
     if (!(app->window)){
-        printf("Failed to open %d x %d window: %s\n", GAME_WIDTH, GAME_HEIGHT, SDL_GetError());
+        printf("Failed to open %d x %d window: %s\n", screen_dim->GAME_WIDTH, screen_dim->GAME_HEIGHT, SDL_GetError());
         exit(1);
     }
 
@@ -177,7 +167,7 @@ SDL_Texture* loadTexture(char *filename, app_t *app){
 }
 
 //exit fun
-void cleanupSDL(app_t *app, bird_t *bird, column_t *column, background_t *background, menu_t *menu){
+void cleanupSDL(app_t *app, bird_t *bird, column_t *column, background_t *background, menu_t *menu, screen_dim_t *screen_dim){
     // 1) Texturas y recursos dependientes del renderer
     if (app->score_tex) { 
         SDL_DestroyTexture(app->score_tex); 
@@ -201,7 +191,7 @@ void cleanupSDL(app_t *app, bird_t *bird, column_t *column, background_t *backgr
         SDL_DestroyTexture(background->tile_tex); 
         background->tile_tex = NULL; 
     }
-    for (int i = 0; i < NUM_COL; i++){
+    for (int i = 0; i < screen_dim->NUM_COL; i++){
         if (column[i].texture_down) { 
             SDL_DestroyTexture(column[i].texture_down); 
             column[i].texture_down = NULL; 

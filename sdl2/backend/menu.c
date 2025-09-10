@@ -50,13 +50,13 @@ void menu_prev_option(menu_t *menu){
     menu->selected = (menu->selected - 1 + n) % n;
 }
 
-void menu_activate_selected(menu_t *menu, column_t *cols, bird_t *bird, app_t *app){
+void menu_activate_selected(menu_t *menu, column_t *cols, bird_t *bird, app_t *app, screen_dim_t *screen_dim){
     (void)app;
 
     switch (menu->state) {
         case MAIN_MENU: // 0: Jugar, 1: Elegir Skin, 2: Salir
             if (menu->selected == 0){
-                game_reset(cols, bird, menu);
+                game_reset(cols, bird, menu, screen_dim);
                 menu_set_state(menu, BEGINING);
             } 
             else if (menu->selected == 1){
@@ -73,7 +73,7 @@ void menu_activate_selected(menu_t *menu, column_t *cols, bird_t *bird, app_t *a
                 menu_set_state(menu, RUNING);
             } 
             else if (menu->selected == 1){
-                game_reset(cols, bird, menu);
+                game_reset(cols, bird, menu, screen_dim);
                 menu_set_state(menu, BEGINING);
             } 
             else if (menu->selected == 2){
@@ -87,7 +87,7 @@ void menu_activate_selected(menu_t *menu, column_t *cols, bird_t *bird, app_t *a
         case GAME_OVER: // 0: Reintentar, 1: Menu, 2: Salir
             // guardo score ANTES de cambiar de escena
             if (menu->selected == 0) {                 // Volver a jugar
-                game_reset(cols, bird, menu);
+                game_reset(cols, bird, menu, screen_dim);
                 menu_set_state(menu, BEGINING);
             } 
             else {                                   // Salir

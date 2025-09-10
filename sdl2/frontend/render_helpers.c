@@ -1,16 +1,6 @@
 #include "frontend.h"
 #include "backend.h"
 
-//Global var from main.c
-extern int GAME_WIDTH;
-extern int GAME_HEIGHT;
-extern int HOLE_HEIGHT;
-extern int TILE_HIGHT;
-extern int NUM_COL;
-extern column_t* column;
-extern int COL_WIDTH;
-extern int SPACE;
-
 //windows
 void prepareScene(app_t *app){   //Prepares a clean background for drawing the next frame.
     SDL_SetRenderDrawColor(app->renderer,149, 187, 225, 255);   //106, 138, 153, 255 Sets the color that SDL will use when clearing or drawing, SDL_SetRenderDrawColor(app.renderer, R, G, B, A); A: opacidad (255 ultra opaco)

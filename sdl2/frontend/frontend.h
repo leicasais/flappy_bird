@@ -18,9 +18,10 @@
     void draw_bird(bird_t *bird, app_t *app);
     void draw_resurecting_bird(bird_t *bird, app_t *app, int frame);
     void display_resurecting(bird_t * bird, menu_t *menu, app_t *app);
-    void draw_col(column_t* pcol, app_t *app);
-    void draw_background(background_t *background, app_t *app);
+    void draw_col(column_t* pcol, app_t *app, screen_dim_t *screen_dim);
+    void draw_background(background_t *background, app_t *app, screen_dim_t *screen_dim);
     void draw_hearts(app_t *app,menu_t *menu );
+    void render_game_hud(app_t *app, menu_t *menu, screen_dim_t *screen_dim);
 
     // Render_helpers.c
     void prepareScene(app_t *app);
@@ -40,7 +41,6 @@
     void render_main_menu(app_t *app, menu_t *menu, int w, int h);
     void render_name_menu(app_t *app, menu_t *menu, int w, int h);
     void render_skin_menu(app_t *app, menu_t *menu, int w, int h);
-    void render_game_hud(app_t *app, menu_t *menu);
     void render_game_over(app_t *app, menu_t *menu, int w, int h);
     void render_pause_menu(app_t *app, menu_t *menu, int w, int h);
 

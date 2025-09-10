@@ -1,16 +1,6 @@
 #include "frontend.h"
 #include "backend.h"
 
-//Global var from main.c
-extern int GAME_WIDTH;
-extern int GAME_HEIGHT;
-extern int HOLE_HEIGHT;
-extern int TILE_HIGHT;
-extern int NUM_COL;
-extern column_t* column;
-extern int COL_WIDTH;
-extern int SPACE;
-
 void draw_bird(bird_t *bird, app_t *app){
     int fly_frames[] = {0, 1, 2, 1};
     //&srcRect the position and size in pixeles that you want to cut off the img
@@ -39,12 +29,12 @@ void draw_resurecting_bird(bird_t *bird, app_t *app, int frame){
 
 }
 
-void draw_col(column_t* pcol, app_t *app){
-    for(int i=0; i< NUM_COL; i++){
+void draw_col(column_t* pcol, app_t *app, screen_dim_t *screen_dim){
+    for(int i=0; i< screen_dim->NUM_COL; i++){
         int src_x;
         int px_per_len;
         if(pcol[i].x != OUTSIDE) {
-            px_per_len= (COL_PX_W/COL_WIDTH)* (pcol[i].len);
+            px_per_len= (COL_PX_W/screen_dim->COL_WIDTH)* (pcol[i].len);
             SDL_Rect src_rect = {.y =0, .h =COL_PX_H, .w=px_per_len};
             if((int)pcol[i].x==0 ) {
                 src_x= COL_PX_W-(px_per_len);
@@ -56,23 +46,23 @@ void draw_col(column_t* pcol, app_t *app){
             //Displays the top of the column of the sup part
             int up_x=(int)pcol[i].x;
             int up_y=0;
-            int up_w=COL_WIDTH-(COL_WIDTH-pcol[i].len);
+            int up_w=screen_dim->COL_WIDTH-(screen_dim->COL_WIDTH-pcol[i].len);
             int up_h=pcol[i].y;
             draw_tiled_segment(app->renderer, pcol[i].texture_up, up_x,src_x, up_y, up_w,px_per_len, up_h); 
                 
             //Displays the bottom of the column of the inferior part
             int down_x=(int)pcol[i].x;
-            int down_y=pcol[i].y + HOLE_HEIGHT;
-            int down_w=COL_WIDTH-(COL_WIDTH-pcol[i].len);
-            int down_h = (GAME_HEIGHT-TILE_HIGHT-1) - (pcol[i].y + HOLE_HEIGHT);
+            int down_y=pcol[i].y + screen_dim->HOLE_HEIGHT;
+            int down_w=screen_dim->COL_WIDTH-(screen_dim->COL_WIDTH-pcol[i].len);
+            int down_h = (screen_dim->GAME_HEIGHT-screen_dim->TILE_HIGHT-1) - (pcol[i].y + screen_dim->HOLE_HEIGHT);
             draw_tiled_segment(app->renderer, pcol[i].texture_down, down_x,src_x, down_y, down_w,px_per_len , down_h);
         }
     }
 }
 
 
-void draw_background(background_t *background, app_t *app){
-    SDL_Rect dest_tile = {.x = 0, .y= GAME_HEIGHT-TILE_HIGHT-1, .w= GAME_WIDTH, .h = TILE_HIGHT};
+void draw_background(background_t *background, app_t *app, screen_dim_t *screen_dim){
+    SDL_Rect dest_tile = {.x = 0, .y= screen_dim->GAME_HEIGHT-screen_dim->TILE_HIGHT-1, .w= screen_dim->GAME_WIDTH, .h = screen_dim->TILE_HIGHT};
     SDL_RenderCopy(app->renderer, background->tile_tex, NULL, &dest_tile);
 }
 
@@ -93,7 +83,7 @@ void draw_hearts(app_t *app,menu_t *menu ){
 }
 
 
-void render_game_hud(app_t *app, menu_t *menu){
+void render_game_hud(app_t *app, menu_t *menu, screen_dim_t *screen_dim){
         //Draw the points collected
     char buf[32]; 
     snprintf(buf, sizeof(buf), "Score: %d", menu->score);
@@ -104,7 +94,7 @@ void render_game_hud(app_t *app, menu_t *menu){
         fprintf(stderr, "TTF_SizeText error: %s\n", TTF_GetError());
         return;
     }
-    draw_text_left(app->renderer, app->font, buf, c, GAME_WIDTH- text_w -10,8, NULL, NULL );
+    draw_text_left(app->renderer, app->font, buf, c, screen_dim->GAME_WIDTH- text_w -10,8, NULL, NULL );
 }
 
 void display_resurecting(bird_t * bird, menu_t *menu, app_t *app){

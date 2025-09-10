@@ -1,15 +1,5 @@
 #include "backend.h"
 
-//Global var from main.c
-extern int GAME_WIDTH;
-extern int GAME_HEIGHT;
-extern int TILE_HIGHT;
-extern int HOLE_HEIGHT;         
-extern int NUM_COL;
-extern column_t* column;
-extern int COL_WIDTH;
-extern int SPACE;
-
 //Bird funcions
 void update_bird_animation(bird_t *bird){
     if(bird->vel_y < 0){
@@ -38,15 +28,15 @@ void bird_jump(bird_t* bird){
     bird->y_top+= jump_displacement;
     bird->y_bottom+= jump_displacement;
 }
-void bird_fall(bird_t* bird){
+void bird_fall(bird_t* bird, screen_dim_t *screen_dim){
     bird->vel_y += bird->gravity_y;
     bird->y_top +=bird->vel_y;        //the bird suffers the efect of gravity with and without the jump
     bird->y_bottom+=bird->vel_y;
 
     // Don't allow the bird going out of the screen 
-    if (bird->y_bottom > (GAME_HEIGHT-1-TILE_HIGHT)) {
-        bird->y_bottom = (GAME_HEIGHT-TILE_HIGHT)-1;
-        bird->y_top = (GAME_HEIGHT-TILE_HIGHT)-1-(HITBOX_Y/(bird->scale));
+    if (bird->y_bottom > (screen_dim->GAME_HEIGHT - 1 - screen_dim->TILE_HIGHT)) {
+        bird->y_bottom = (screen_dim->GAME_HEIGHT - screen_dim->TILE_HIGHT)-1;
+        bird->y_top = (screen_dim->GAME_HEIGHT - screen_dim->TILE_HIGHT)-1-(HITBOX_Y/(bird->scale));
         bird->vel_y = 0;
     }
     else if (bird->y_top < 0) {

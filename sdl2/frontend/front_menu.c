@@ -1,16 +1,6 @@
 #include "frontend.h"
 #include "backend.h"
 
-//Global var from main.c
-extern int GAME_WIDTH;
-extern int GAME_HEIGHT;
-extern int HOLE_HEIGHT;
-extern int TILE_HIGHT;
-extern int NUM_COL;
-extern column_t* column;
-extern int COL_WIDTH;
-extern int SPACE;
-
 SDL_Color color_title(void){
     SDL_Color titleCol = (SDL_Color){217, 215, 161, 255};
     return titleCol;

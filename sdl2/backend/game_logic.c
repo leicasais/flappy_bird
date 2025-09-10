@@ -1,31 +1,18 @@
 #include "backend.h"
 
-//Global var from main.c
-extern int GAME_WIDTH;
-extern int GAME_HEIGHT;
-extern int TILE_HIGHT;
-extern int HOLE_HEIGHT;
-extern int COL_BOTTOM_WIDTH;
-extern int COL_TOP_HIGH;            
-extern int NUM_COL;
-extern int COL_WIDTH;
-extern int SPACE;
-
-
-
-char collision(column_t* pcol, bird_t* pbird){
+char collision(column_t* pcol, bird_t* pbird, screen_dim_t *screen_dim){
     int hair_px = (2*8) / pbird->scale;
     int foot_px= (1*8) / pbird->scale;
-    for (int i = 0; i < NUM_COL; i++) {
+    for (int i = 0; i < screen_dim->NUM_COL; i++) {
         if (pcol[i].x == OUTSIDE){
-            continue; // Saltar columnas no activas
+            continue; // skip unactive columns
         }
         int col_left = pcol[i].x;
         int col_right = col_left + pcol[i].len;
         int hole_top = pcol[i].y;
-        int hole_bottom = hole_top + HOLE_HEIGHT;
+        int hole_bottom = hole_top + screen_dim->HOLE_HEIGHT;
 
-        if(pbird->y_bottom >= GAME_HEIGHT-TILE_HIGHT-1){
+        if(pbird->y_bottom >= screen_dim->GAME_HEIGHT- screen_dim->TILE_HIGHT -1){
             return 1;
         }
         else if ((pbird->x_r >= col_left) && (pbird->x_l <= col_right)) {
@@ -38,8 +25,8 @@ char collision(column_t* pcol, bird_t* pbird){
     return 0;
 }
 
-void points(column_t* pcol, bird_t* pbird, menu_t* menu){
-    for (int i=0; i < NUM_COL; i++){
+void points(column_t* pcol, bird_t* pbird, menu_t* menu, screen_dim_t *screen_dim){
+    for (int i=0; i < screen_dim->NUM_COL; i++){
         if (pcol[i].len == 0){
             continue;
         } // Saltar columnas no activas
@@ -60,25 +47,6 @@ void points(column_t* pcol, bird_t* pbird, menu_t* menu){
 
     }
 }
-
-/*void hud_update_score(app_t* app, TTF_Font* font, SDL_Color color,int score, SDL_Texture** out_tex, int* out_w, int* out_h) {
-    static int last = -1;
-    if (score == last && *out_tex) return;  //canges the number only if there was a change in the score
-    last = score;
-
-    if (*out_tex) { SDL_DestroyTexture(*out_tex); *out_tex = NULL; }
-
-    char buf[32]; snprintf(buf, sizeof(buf), "%d", score);
-    SDL_Surface* surf = TTF_RenderUTF8_Solid(font, buf, color); // bordes “duros”
-    if (!surf) { SDL_Log("TTF_Render FAIL: %s", TTF_GetError()); return; }
-
-    *out_tex = SDL_CreateTextureFromSurface(app->renderer, surf);
-    *out_w = surf ->w;
-    *out_h = surf->h;
-    SDL_FreeSurface(surf);
-    SDL_SetTextureBlendMode(*out_tex, SDL_BLENDMODE_BLEND);
-}
-*/
 
 void colition_update(menu_t* pmenu){     // Updates game statistics such as score and lives.
     pmenu->lives --;
@@ -154,13 +122,13 @@ void score_save(menu_t *pmenu) {
 }
 
 
-void game_reset(column_t* pcol, bird_t *bird, menu_t *menu){
+void game_reset(column_t* pcol, bird_t *bird, menu_t *menu, screen_dim_t *screen_dim){
     //Create a temporal "save_name" string to no lose de orginial name
     char saved_name[USERNAME_MAX + 1];
     strncpy(saved_name, menu->username, USERNAME_MAX);
     saved_name[USERNAME_MAX] = '\0';
     
-    init(pcol,bird, menu);
+    init(pcol,bird, menu, screen_dim);
 
     strncpy(menu->username, saved_name, USERNAME_MAX);
     menu->username[USERNAME_MAX] = '\0';

@@ -20,8 +20,6 @@
 
     //Macros for the main/game flow
     #define MS_BTW_FRAMES 16
-    #define MIN_GAME_HEIGHT 8
-    #define MIN_GAME_WIDTH 8 
 
     //macros for the columns
     #define OUTSIDE -1000
@@ -74,6 +72,18 @@
         SDL_Texture *tile_tex;
     }background_t;
 
+    typedef struct{
+        int GAME_WIDTH;
+        int GAME_HEIGHT;
+        int TILE_HIGHT;
+        int HOLE_HEIGHT;
+        int COL_BOTTOM_WIDTH;
+        int COL_TOP_HIGH;            
+        int NUM_COL;
+        int COL_WIDTH;
+        int SPACE;   // px por frame (dinámica               
+    }screen_dim_t;
+
     typedef struct{ //Origin in (1,1)    
         float x;
         float y;
@@ -124,20 +134,19 @@
     #########################################*/
     
     //init_fun.c
-    void init_parameters(void);
-    void init(column_t* pcol, bird_t *bird, menu_t *menu);
-    void initSDL(app_t *app);
-    void init_tex(column_t* pcol, bird_t *bird, menu_t *menu, app_t *app, background_t *background); 
-    void set_parameters(void);
-    void cleanupSDL(app_t *app, bird_t *bird, column_t *column, background_t *background, menu_t *menu);
+    void set_parameters(screen_dim_t *screen_dim);
+    void init_parameters(screen_dim_t *screen_dim);
+    int rand_y_pos(float bird_size, int heart_h,screen_dim_t *screen_dim);
+    void init(column_t* pcol, bird_t *bird, menu_t *menu, screen_dim_t *screen_dim);
+    void init_tex(column_t* column, bird_t *bird, menu_t *menu, app_t *app, background_t *background, screen_dim_t *screen_dim); 
+    void initSDL(app_t *app, screen_dim_t *screen_dim);
     SDL_Texture *loadTexture(char *filename, app_t *app);
-
-    // *** NUEVO: reset "rápido" sin recargar texturas ***
-    void game_reset(column_t* pcol, bird_t *bird, menu_t *menu);
+    void cleanupSDL(app_t *app, bird_t *bird, column_t *column, background_t *background, menu_t *menu, screen_dim_t *screen_dim);
+    void set_bird_skin(bird_t *bird, app_t *app, int idx);
 
     //column_fun.c
-    int rand_hole(void);
-    void col_mov(column_t* pcol);
+    int rand_hole(screen_dim_t *screen_dim);
+    void col_mov(column_t* pcol, screen_dim_t *screen_dim);
     void col_reset_scroll(void);
 
   
@@ -145,31 +154,26 @@
     void update_bird_animation(bird_t *bird);
     void bird_flying(bird_t *bird);
     void bird_jump(bird_t* bird);
-    void bird_fall(bird_t* bird);
+    void bird_fall(bird_t* bird, screen_dim_t *screen_dim);
     void set_bird_skin(bird_t *bird, app_t *app, int idx);
 
 
     //game_logic.c
-    /**
-     * @brief no se que hace
-     * @param pcol variable hace algo
-     * @param pbird variable hace otra cosa
-     */
-    char collision(column_t* pcol, bird_t* pbird);
+    char collision(column_t* pcol, bird_t* pbird, screen_dim_t *screen_dim);
     void colition_update(menu_t* pmenu);
-    void points(column_t* pcol, bird_t* pbird, menu_t* menu);
+    void points(column_t* pcol, bird_t* pbird, menu_t* menu, screen_dim_t *screen_dim);
     void history_log(menu_t* pmenu);
     void score_init(menu_t *pmenu);
     int score_update(menu_t *pmenu, int new_score);
     void score_save(menu_t *pmenu);
-    void game_reset(column_t* pcol, bird_t *bird, menu_t *menu);
+    void game_reset(column_t* pcol, bird_t *bird, menu_t *menu, screen_dim_t *screen_dim);
 
     //menu.c
     void menu_init(menu_t *menu);
     void menu_set_state(menu_t *menu, int state);
     void menu_next_option(menu_t *menu);
     void menu_prev_option(menu_t *menu);
-    void menu_activate_selected(menu_t *menu, column_t *cols, bird_t *bird, app_t *app);
+    void menu_activate_selected(menu_t *menu, column_t *cols, bird_t *bird, app_t *app, screen_dim_t *screen_dim);
 
     //input.c
     void window_input(void);
