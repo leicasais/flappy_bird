@@ -1,6 +1,5 @@
 #include "backend.h"
 
-
 //Inicialisations and parameters functions
 
 void set_parameters(screen_dim_t *screen_dim){          //Redefine globals dependidng on the screen size 
@@ -24,7 +23,7 @@ int rand_y_pos(float bird_size, int heart_h,screen_dim_t *screen_dim){ //returns
     int maxY = (screen_dim->GAME_HEIGHT) - (screen_dim->TILE_HIGHT) - bird_size - margin_inf - 1; // límite correcto
 
     if (maxY < minY) {
-        // agujero imposible de colocar: ajustá HOLE_HEIGHT o márgenes
+        // case the hole is imposible to put
         maxY = minY;
     }
     return minY + rand() % (maxY - minY + 1); // rango [minY, maxY]

@@ -26,8 +26,11 @@
     #define COL_PX_H 1024
     #define COL_PX_W 256
     #define BASE_SPEED 2.2f   // velocidad inicial
-    #define SPEED_INC 0.06f  // cuánto sube por columna pasada
+    #define SPEED_INC 0.08f  // cuánto sube por columna pasada
     #define SPEED_MAX 6.0f  // techo
+    #define EASY 0 
+    #define MEDIUM 30
+    #define EXTREME 60
 
     //macros birds
     #define HITBOX_X 224
@@ -89,6 +92,7 @@
         float y;
         int len;
         float col_speed;           // px por frame (dinámica)
+        float col_speed_y;
         SDL_Texture *texture_down;
         SDL_Texture *texture_up;
         int trim;
@@ -127,6 +131,7 @@
         int last_top_pos;
         char username[USERNAME_MAX + 1];
         int  name_editing;   // 0 = no, 1 = yes
+        int difuculty;
     } menu_t;
 
     /*#########################################
