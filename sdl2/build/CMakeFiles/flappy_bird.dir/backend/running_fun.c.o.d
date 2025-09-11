@@ -1,7 +1,8 @@
-CMakeFiles/flappy_bird.dir/backend/column_fun.c.o: \
- /home/leila/Documents/COIL/flappy_bird/sdl2/backend/column_fun.c \
+CMakeFiles/flappy_bird.dir/backend/running_fun.c.o: \
+ /home/leila/Documents/COIL/flappy_bird/sdl2/backend/running_fun.c \
  /usr/include/stdc-predef.h \
- /home/leila/Documents/COIL/flappy_bird/sdl2/backend/backend.h \
+ /home/leila/Documents/COIL/flappy_bird/sdl2/backend/running_fun.h \
+ /home/leila/Documents/COIL/flappy_bird/sdl2/backend/structs.h \
  /usr/include/stdio.h \
  /usr/include/x86_64-linux-gnu/bits/libc-header-start.h \
  /usr/include/features.h /usr/include/features-time64.h \

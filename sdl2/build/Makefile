@@ -129,54 +129,6 @@ flappy_bird/fast:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/flappy_bird.dir/build.make CMakeFiles/flappy_bird.dir/build
 .PHONY : flappy_bird/fast
 
-backend/bird_fun.o: backend/bird_fun.c.o
-.PHONY : backend/bird_fun.o
-
-# target to build an object file
-backend/bird_fun.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/flappy_bird.dir/build.make CMakeFiles/flappy_bird.dir/backend/bird_fun.c.o
-.PHONY : backend/bird_fun.c.o
-
-backend/bird_fun.i: backend/bird_fun.c.i
-.PHONY : backend/bird_fun.i
-
-# target to preprocess a source file
-backend/bird_fun.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/flappy_bird.dir/build.make CMakeFiles/flappy_bird.dir/backend/bird_fun.c.i
-.PHONY : backend/bird_fun.c.i
-
-backend/bird_fun.s: backend/bird_fun.c.s
-.PHONY : backend/bird_fun.s
-
-# target to generate assembly for a file
-backend/bird_fun.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/flappy_bird.dir/build.make CMakeFiles/flappy_bird.dir/backend/bird_fun.c.s
-.PHONY : backend/bird_fun.c.s
-
-backend/column_fun.o: backend/column_fun.c.o
-.PHONY : backend/column_fun.o
-
-# target to build an object file
-backend/column_fun.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/flappy_bird.dir/build.make CMakeFiles/flappy_bird.dir/backend/column_fun.c.o
-.PHONY : backend/column_fun.c.o
-
-backend/column_fun.i: backend/column_fun.c.i
-.PHONY : backend/column_fun.i
-
-# target to preprocess a source file
-backend/column_fun.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/flappy_bird.dir/build.make CMakeFiles/flappy_bird.dir/backend/column_fun.c.i
-.PHONY : backend/column_fun.c.i
-
-backend/column_fun.s: backend/column_fun.c.s
-.PHONY : backend/column_fun.s
-
-# target to generate assembly for a file
-backend/column_fun.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/flappy_bird.dir/build.make CMakeFiles/flappy_bird.dir/backend/column_fun.c.s
-.PHONY : backend/column_fun.c.s
-
 backend/game_logic.o: backend/game_logic.c.o
 .PHONY : backend/game_logic.o
 
@@ -248,6 +200,30 @@ backend/menu.s: backend/menu.c.s
 backend/menu.c.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/flappy_bird.dir/build.make CMakeFiles/flappy_bird.dir/backend/menu.c.s
 .PHONY : backend/menu.c.s
+
+backend/running_fun.o: backend/running_fun.c.o
+.PHONY : backend/running_fun.o
+
+# target to build an object file
+backend/running_fun.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/flappy_bird.dir/build.make CMakeFiles/flappy_bird.dir/backend/running_fun.c.o
+.PHONY : backend/running_fun.c.o
+
+backend/running_fun.i: backend/running_fun.c.i
+.PHONY : backend/running_fun.i
+
+# target to preprocess a source file
+backend/running_fun.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/flappy_bird.dir/build.make CMakeFiles/flappy_bird.dir/backend/running_fun.c.i
+.PHONY : backend/running_fun.c.i
+
+backend/running_fun.s: backend/running_fun.c.s
+.PHONY : backend/running_fun.s
+
+# target to generate assembly for a file
+backend/running_fun.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/flappy_bird.dir/build.make CMakeFiles/flappy_bird.dir/backend/running_fun.c.s
+.PHONY : backend/running_fun.c.s
 
 frontend/front_main_game.o: frontend/front_main_game.c.o
 .PHONY : frontend/front_main_game.o
@@ -354,12 +330,6 @@ help:
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
 	@echo "... flappy_bird"
-	@echo "... backend/bird_fun.o"
-	@echo "... backend/bird_fun.i"
-	@echo "... backend/bird_fun.s"
-	@echo "... backend/column_fun.o"
-	@echo "... backend/column_fun.i"
-	@echo "... backend/column_fun.s"
 	@echo "... backend/game_logic.o"
 	@echo "... backend/game_logic.i"
 	@echo "... backend/game_logic.s"
@@ -369,6 +339,9 @@ help:
 	@echo "... backend/menu.o"
 	@echo "... backend/menu.i"
 	@echo "... backend/menu.s"
+	@echo "... backend/running_fun.o"
+	@echo "... backend/running_fun.i"
+	@echo "... backend/running_fun.s"
 	@echo "... frontend/front_main_game.o"
 	@echo "... frontend/front_main_game.i"
 	@echo "... frontend/front_main_game.s"

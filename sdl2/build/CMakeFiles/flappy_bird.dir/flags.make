@@ -4,7 +4,7 @@
 # compile C with /usr/bin/cc
 C_DEFINES = 
 
-C_INCLUDES = -I/home/leila/Documents/COIL/flappy_bird/sdl2/backend -I/home/leila/Documents/COIL/flappy_bird/sdl2/frontend -isystem /usr/include/SDL2
+C_INCLUDES = -I/home/leila/Documents/COIL/flappy_bird/sdl2/frontend -I/home/leila/Documents/COIL/flappy_bird/sdl2/backend -isystem /usr/include/SDL2
 
 C_FLAGS = -std=gnu11
 

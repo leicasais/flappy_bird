@@ -1,8 +1,8 @@
 CMakeFiles/flappy_bird.dir/frontend/front_main_game.c.o: \
  /home/leila/Documents/COIL/flappy_bird/sdl2/frontend/front_main_game.c \
  /usr/include/stdc-predef.h \
- /home/leila/Documents/COIL/flappy_bird/sdl2/frontend/frontend.h \
- /home/leila/Documents/COIL/flappy_bird/sdl2/backend/backend.h \
+ /home/leila/Documents/COIL/flappy_bird/sdl2/frontend/front_main_game.h \
+ /home/leila/Documents/COIL/flappy_bird/sdl2/frontend/structs.h \
  /usr/include/stdio.h \
  /usr/include/x86_64-linux-gnu/bits/libc-header-start.h \
  /usr/include/features.h /usr/include/features-time64.h \
@@ -201,4 +201,5 @@ CMakeFiles/flappy_bird.dir/frontend/front_main_game.c.o: \
  /usr/include/x86_64-linux-gnu/bits/confname.h \
  /usr/include/x86_64-linux-gnu/bits/getopt_posix.h \
  /usr/include/x86_64-linux-gnu/bits/getopt_core.h \
- /usr/include/x86_64-linux-gnu/bits/unistd_ext.h
+ /usr/include/x86_64-linux-gnu/bits/unistd_ext.h \
+ /home/leila/Documents/COIL/flappy_bird/sdl2/frontend/render_helpers.h

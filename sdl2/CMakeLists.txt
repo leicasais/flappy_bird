@@ -6,8 +6,16 @@ set(CMAKE_C_STANDARD 11)
 
 # Include directories for headers, tells the compiler where to look for header files when it sees an #include "..." directive in your C code
 include_directories(
-    backend
     frontend
+    backend
+    #structs
+    #game_logic
+    #init_fun
+    #menu
+    #running_fun
+    #front_main_game
+    #front_menu
+    #render_helpers
 )
 
 # SDL2
@@ -23,8 +31,7 @@ include_directories(
 # Source files, specify each doc and if its in a file
 set(SOURCES
     main.c
-    backend/bird_fun.c
-    backend/column_fun.c
+    backend/running_fun.c
     backend/game_logic.c
     backend/init_fun.c
     backend/menu.c

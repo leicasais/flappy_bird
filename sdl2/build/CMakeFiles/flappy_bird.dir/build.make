@@ -83,38 +83,24 @@ CMakeFiles/flappy_bird.dir/main.c.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling C source to assembly CMakeFiles/flappy_bird.dir/main.c.s"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/leila/Documents/COIL/flappy_bird/sdl2/main.c -o CMakeFiles/flappy_bird.dir/main.c.s
 
-CMakeFiles/flappy_bird.dir/backend/bird_fun.c.o: CMakeFiles/flappy_bird.dir/flags.make
-CMakeFiles/flappy_bird.dir/backend/bird_fun.c.o: /home/leila/Documents/COIL/flappy_bird/sdl2/backend/bird_fun.c
-CMakeFiles/flappy_bird.dir/backend/bird_fun.c.o: CMakeFiles/flappy_bird.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/leila/Documents/COIL/flappy_bird/sdl2/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building C object CMakeFiles/flappy_bird.dir/backend/bird_fun.c.o"
-	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/flappy_bird.dir/backend/bird_fun.c.o -MF CMakeFiles/flappy_bird.dir/backend/bird_fun.c.o.d -o CMakeFiles/flappy_bird.dir/backend/bird_fun.c.o -c /home/leila/Documents/COIL/flappy_bird/sdl2/backend/bird_fun.c
+CMakeFiles/flappy_bird.dir/backend/running_fun.c.o: CMakeFiles/flappy_bird.dir/flags.make
+CMakeFiles/flappy_bird.dir/backend/running_fun.c.o: /home/leila/Documents/COIL/flappy_bird/sdl2/backend/running_fun.c
+CMakeFiles/flappy_bird.dir/backend/running_fun.c.o: CMakeFiles/flappy_bird.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/leila/Documents/COIL/flappy_bird/sdl2/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building C object CMakeFiles/flappy_bird.dir/backend/running_fun.c.o"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/flappy_bird.dir/backend/running_fun.c.o -MF CMakeFiles/flappy_bird.dir/backend/running_fun.c.o.d -o CMakeFiles/flappy_bird.dir/backend/running_fun.c.o -c /home/leila/Documents/COIL/flappy_bird/sdl2/backend/running_fun.c
 
-CMakeFiles/flappy_bird.dir/backend/bird_fun.c.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing C source to CMakeFiles/flappy_bird.dir/backend/bird_fun.c.i"
-	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /home/leila/Documents/COIL/flappy_bird/sdl2/backend/bird_fun.c > CMakeFiles/flappy_bird.dir/backend/bird_fun.c.i
+CMakeFiles/flappy_bird.dir/backend/running_fun.c.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing C source to CMakeFiles/flappy_bird.dir/backend/running_fun.c.i"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /home/leila/Documents/COIL/flappy_bird/sdl2/backend/running_fun.c > CMakeFiles/flappy_bird.dir/backend/running_fun.c.i
 
-CMakeFiles/flappy_bird.dir/backend/bird_fun.c.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling C source to assembly CMakeFiles/flappy_bird.dir/backend/bird_fun.c.s"
-	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/leila/Documents/COIL/flappy_bird/sdl2/backend/bird_fun.c -o CMakeFiles/flappy_bird.dir/backend/bird_fun.c.s
-
-CMakeFiles/flappy_bird.dir/backend/column_fun.c.o: CMakeFiles/flappy_bird.dir/flags.make
-CMakeFiles/flappy_bird.dir/backend/column_fun.c.o: /home/leila/Documents/COIL/flappy_bird/sdl2/backend/column_fun.c
-CMakeFiles/flappy_bird.dir/backend/column_fun.c.o: CMakeFiles/flappy_bird.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/leila/Documents/COIL/flappy_bird/sdl2/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building C object CMakeFiles/flappy_bird.dir/backend/column_fun.c.o"
-	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/flappy_bird.dir/backend/column_fun.c.o -MF CMakeFiles/flappy_bird.dir/backend/column_fun.c.o.d -o CMakeFiles/flappy_bird.dir/backend/column_fun.c.o -c /home/leila/Documents/COIL/flappy_bird/sdl2/backend/column_fun.c
-
-CMakeFiles/flappy_bird.dir/backend/column_fun.c.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing C source to CMakeFiles/flappy_bird.dir/backend/column_fun.c.i"
-	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /home/leila/Documents/COIL/flappy_bird/sdl2/backend/column_fun.c > CMakeFiles/flappy_bird.dir/backend/column_fun.c.i
-
-CMakeFiles/flappy_bird.dir/backend/column_fun.c.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling C source to assembly CMakeFiles/flappy_bird.dir/backend/column_fun.c.s"
-	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/leila/Documents/COIL/flappy_bird/sdl2/backend/column_fun.c -o CMakeFiles/flappy_bird.dir/backend/column_fun.c.s
+CMakeFiles/flappy_bird.dir/backend/running_fun.c.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling C source to assembly CMakeFiles/flappy_bird.dir/backend/running_fun.c.s"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/leila/Documents/COIL/flappy_bird/sdl2/backend/running_fun.c -o CMakeFiles/flappy_bird.dir/backend/running_fun.c.s
 
 CMakeFiles/flappy_bird.dir/backend/game_logic.c.o: CMakeFiles/flappy_bird.dir/flags.make
 CMakeFiles/flappy_bird.dir/backend/game_logic.c.o: /home/leila/Documents/COIL/flappy_bird/sdl2/backend/game_logic.c
 CMakeFiles/flappy_bird.dir/backend/game_logic.c.o: CMakeFiles/flappy_bird.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/leila/Documents/COIL/flappy_bird/sdl2/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building C object CMakeFiles/flappy_bird.dir/backend/game_logic.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/leila/Documents/COIL/flappy_bird/sdl2/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building C object CMakeFiles/flappy_bird.dir/backend/game_logic.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/flappy_bird.dir/backend/game_logic.c.o -MF CMakeFiles/flappy_bird.dir/backend/game_logic.c.o.d -o CMakeFiles/flappy_bird.dir/backend/game_logic.c.o -c /home/leila/Documents/COIL/flappy_bird/sdl2/backend/game_logic.c
 
 CMakeFiles/flappy_bird.dir/backend/game_logic.c.i: cmake_force
@@ -128,7 +114,7 @@ CMakeFiles/flappy_bird.dir/backend/game_logic.c.s: cmake_force
 CMakeFiles/flappy_bird.dir/backend/init_fun.c.o: CMakeFiles/flappy_bird.dir/flags.make
 CMakeFiles/flappy_bird.dir/backend/init_fun.c.o: /home/leila/Documents/COIL/flappy_bird/sdl2/backend/init_fun.c
 CMakeFiles/flappy_bird.dir/backend/init_fun.c.o: CMakeFiles/flappy_bird.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/leila/Documents/COIL/flappy_bird/sdl2/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building C object CMakeFiles/flappy_bird.dir/backend/init_fun.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/leila/Documents/COIL/flappy_bird/sdl2/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building C object CMakeFiles/flappy_bird.dir/backend/init_fun.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/flappy_bird.dir/backend/init_fun.c.o -MF CMakeFiles/flappy_bird.dir/backend/init_fun.c.o.d -o CMakeFiles/flappy_bird.dir/backend/init_fun.c.o -c /home/leila/Documents/COIL/flappy_bird/sdl2/backend/init_fun.c
 
 CMakeFiles/flappy_bird.dir/backend/init_fun.c.i: cmake_force
@@ -142,7 +128,7 @@ CMakeFiles/flappy_bird.dir/backend/init_fun.c.s: cmake_force
 CMakeFiles/flappy_bird.dir/backend/menu.c.o: CMakeFiles/flappy_bird.dir/flags.make
 CMakeFiles/flappy_bird.dir/backend/menu.c.o: /home/leila/Documents/COIL/flappy_bird/sdl2/backend/menu.c
 CMakeFiles/flappy_bird.dir/backend/menu.c.o: CMakeFiles/flappy_bird.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/leila/Documents/COIL/flappy_bird/sdl2/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Building C object CMakeFiles/flappy_bird.dir/backend/menu.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/leila/Documents/COIL/flappy_bird/sdl2/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building C object CMakeFiles/flappy_bird.dir/backend/menu.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/flappy_bird.dir/backend/menu.c.o -MF CMakeFiles/flappy_bird.dir/backend/menu.c.o.d -o CMakeFiles/flappy_bird.dir/backend/menu.c.o -c /home/leila/Documents/COIL/flappy_bird/sdl2/backend/menu.c
 
 CMakeFiles/flappy_bird.dir/backend/menu.c.i: cmake_force
@@ -156,7 +142,7 @@ CMakeFiles/flappy_bird.dir/backend/menu.c.s: cmake_force
 CMakeFiles/flappy_bird.dir/frontend/front_menu.c.o: CMakeFiles/flappy_bird.dir/flags.make
 CMakeFiles/flappy_bird.dir/frontend/front_menu.c.o: /home/leila/Documents/COIL/flappy_bird/sdl2/frontend/front_menu.c
 CMakeFiles/flappy_bird.dir/frontend/front_menu.c.o: CMakeFiles/flappy_bird.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/leila/Documents/COIL/flappy_bird/sdl2/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "Building C object CMakeFiles/flappy_bird.dir/frontend/front_menu.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/leila/Documents/COIL/flappy_bird/sdl2/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Building C object CMakeFiles/flappy_bird.dir/frontend/front_menu.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/flappy_bird.dir/frontend/front_menu.c.o -MF CMakeFiles/flappy_bird.dir/frontend/front_menu.c.o.d -o CMakeFiles/flappy_bird.dir/frontend/front_menu.c.o -c /home/leila/Documents/COIL/flappy_bird/sdl2/frontend/front_menu.c
 
 CMakeFiles/flappy_bird.dir/frontend/front_menu.c.i: cmake_force
@@ -170,7 +156,7 @@ CMakeFiles/flappy_bird.dir/frontend/front_menu.c.s: cmake_force
 CMakeFiles/flappy_bird.dir/frontend/front_main_game.c.o: CMakeFiles/flappy_bird.dir/flags.make
 CMakeFiles/flappy_bird.dir/frontend/front_main_game.c.o: /home/leila/Documents/COIL/flappy_bird/sdl2/frontend/front_main_game.c
 CMakeFiles/flappy_bird.dir/frontend/front_main_game.c.o: CMakeFiles/flappy_bird.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/leila/Documents/COIL/flappy_bird/sdl2/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_8) "Building C object CMakeFiles/flappy_bird.dir/frontend/front_main_game.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/leila/Documents/COIL/flappy_bird/sdl2/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "Building C object CMakeFiles/flappy_bird.dir/frontend/front_main_game.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/flappy_bird.dir/frontend/front_main_game.c.o -MF CMakeFiles/flappy_bird.dir/frontend/front_main_game.c.o.d -o CMakeFiles/flappy_bird.dir/frontend/front_main_game.c.o -c /home/leila/Documents/COIL/flappy_bird/sdl2/frontend/front_main_game.c
 
 CMakeFiles/flappy_bird.dir/frontend/front_main_game.c.i: cmake_force
@@ -184,7 +170,7 @@ CMakeFiles/flappy_bird.dir/frontend/front_main_game.c.s: cmake_force
 CMakeFiles/flappy_bird.dir/frontend/render_helpers.c.o: CMakeFiles/flappy_bird.dir/flags.make
 CMakeFiles/flappy_bird.dir/frontend/render_helpers.c.o: /home/leila/Documents/COIL/flappy_bird/sdl2/frontend/render_helpers.c
 CMakeFiles/flappy_bird.dir/frontend/render_helpers.c.o: CMakeFiles/flappy_bird.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/leila/Documents/COIL/flappy_bird/sdl2/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_9) "Building C object CMakeFiles/flappy_bird.dir/frontend/render_helpers.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/leila/Documents/COIL/flappy_bird/sdl2/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_8) "Building C object CMakeFiles/flappy_bird.dir/frontend/render_helpers.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/flappy_bird.dir/frontend/render_helpers.c.o -MF CMakeFiles/flappy_bird.dir/frontend/render_helpers.c.o.d -o CMakeFiles/flappy_bird.dir/frontend/render_helpers.c.o -c /home/leila/Documents/COIL/flappy_bird/sdl2/frontend/render_helpers.c
 
 CMakeFiles/flappy_bird.dir/frontend/render_helpers.c.i: cmake_force
@@ -198,8 +184,7 @@ CMakeFiles/flappy_bird.dir/frontend/render_helpers.c.s: cmake_force
 # Object files for target flappy_bird
 flappy_bird_OBJECTS = \
 "CMakeFiles/flappy_bird.dir/main.c.o" \
-"CMakeFiles/flappy_bird.dir/backend/bird_fun.c.o" \
-"CMakeFiles/flappy_bird.dir/backend/column_fun.c.o" \
+"CMakeFiles/flappy_bird.dir/backend/running_fun.c.o" \
 "CMakeFiles/flappy_bird.dir/backend/game_logic.c.o" \
 "CMakeFiles/flappy_bird.dir/backend/init_fun.c.o" \
 "CMakeFiles/flappy_bird.dir/backend/menu.c.o" \
@@ -211,8 +196,7 @@ flappy_bird_OBJECTS = \
 flappy_bird_EXTERNAL_OBJECTS =
 
 flappy_bird: CMakeFiles/flappy_bird.dir/main.c.o
-flappy_bird: CMakeFiles/flappy_bird.dir/backend/bird_fun.c.o
-flappy_bird: CMakeFiles/flappy_bird.dir/backend/column_fun.c.o
+flappy_bird: CMakeFiles/flappy_bird.dir/backend/running_fun.c.o
 flappy_bird: CMakeFiles/flappy_bird.dir/backend/game_logic.c.o
 flappy_bird: CMakeFiles/flappy_bird.dir/backend/init_fun.c.o
 flappy_bird: CMakeFiles/flappy_bird.dir/backend/menu.c.o
@@ -222,7 +206,7 @@ flappy_bird: CMakeFiles/flappy_bird.dir/frontend/render_helpers.c.o
 flappy_bird: CMakeFiles/flappy_bird.dir/build.make
 flappy_bird: /usr/lib/x86_64-linux-gnu/libSDL2.so
 flappy_bird: CMakeFiles/flappy_bird.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir=/home/leila/Documents/COIL/flappy_bird/sdl2/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_10) "Linking C executable flappy_bird"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir=/home/leila/Documents/COIL/flappy_bird/sdl2/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_9) "Linking C executable flappy_bird"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/flappy_bird.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.
