@@ -14,15 +14,33 @@ void draw_tiled_segment(SDL_Renderer *r, SDL_Texture *tex, int x, int src_x, int
     int texW, texH;
     SDL_QueryTexture(tex, NULL, NULL, &texW, &texH);
 
-    int drawn = 0;
-    while (drawn < h){
-        int chunk = (h - drawn < texH) ? (h - drawn) : texH;
+    if (y ==0) {
+        int drawn = 0;
+        while (drawn < h) {
+            int remaining = h - drawn;
+            int chunk = (remaining < texH) ? remaining : texH;
 
-        SDL_Rect src = {src_x, 0, src_w, chunk};        // recorto solo lo que entra
-        SDL_Rect dst = {x, y + drawn, w, chunk};   // mismo alto que src -> sin estirar verticalmente
-        SDL_RenderCopy(r, tex, &src, &dst);
+            int src_y = texH - chunk;
+            int dst_y = y + (h - drawn - chunk);
 
-        drawn += chunk;
+            SDL_Rect src = (SDL_Rect){ src_x, src_y, src_w, chunk };
+            SDL_Rect dst = (SDL_Rect){ x,     dst_y, w,     chunk };
+            SDL_RenderCopy(r, tex, &src, &dst);
+
+            drawn += chunk;
+        }
+    } else {
+        int drawn = 0;
+        while (drawn < h) {
+            int remaining = h - drawn;
+            int chunk = (remaining < texH) ? remaining : texH;
+
+            SDL_Rect src = (SDL_Rect){ src_x, 0,      src_w, chunk };
+            SDL_Rect dst = (SDL_Rect){ x,     y+drawn, w,    chunk };
+            SDL_RenderCopy(r, tex, &src, &dst);
+
+            drawn += chunk;
+        }
     }
 }
 
