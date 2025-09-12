@@ -75,6 +75,16 @@
     /*#########################################
                         Structs
     #########################################*/
+    typedef struct {
+        float x;          // por si tenés cámara “real” en X/Y
+        float y;
+        char   shaking;    // 1 if it is shaking
+        Uint32 start_ms;  // inicio del shake
+        float duration;   // ms
+        float amp;        // amplitud en píxeles
+        float freq;       // Hz
+    } camera_t;
+
 
     typedef struct{
         SDL_Renderer *renderer;

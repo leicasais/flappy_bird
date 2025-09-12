@@ -46,3 +46,8 @@ add_executable(flappy_bird ${SOURCES})
 # Link SDL2
 target_link_libraries(flappy_bird ${SDL2_LIBRARIES} SDL2_image)
 target_link_libraries(flappy_bird ${SDL2_LIBRARIES} SDL2_image SDL2_ttf)
+
+# <math.h> para sinf/expf/lroundf en Unix/MinGW
+if (UNIX OR MINGW)
+    target_link_libraries(flappy_bird m)
+endif()

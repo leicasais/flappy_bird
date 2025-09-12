@@ -178,7 +178,7 @@ void draw_menu_list(SDL_Renderer *r, int w, int h, const char **options, int n, 
     // Alternativa segura: reemplazá 'app.font' por el font que tengas a mano.
 }
 
-void render_skin_menu(app_t *app, menu_t *menu, int w, int h) {
+void render_skin_menu(app_t *app, menu_t *menu, int w, int h, int shake_x, int shake_y) {
     // Tarjeta base (idéntica a otros menús)
     const int cardW = (int)(w * PANEL_W_RATIO);
     const int cardH = (int)(h * PANEL_H_RATIO);
@@ -281,7 +281,7 @@ void render_skin_menu(app_t *app, menu_t *menu, int w, int h) {
         }
         // Avanzar anim de alas y dibujar
         bird_flying(&p);
-        draw_bird(&p, app);
+        draw_bird(&p, app, shake_x, shake_y);
     }
 }
 

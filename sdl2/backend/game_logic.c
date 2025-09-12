@@ -56,14 +56,43 @@ void points(column_t* pcol, bird_t* pbird, menu_t* menu, screen_dim_t *screen_di
     }
 }
 
-void colition_update(menu_t* pmenu){     // Updates game statistics such as score and lives.
+void colition_update(menu_t* pmenu, camera_t* camera){     // Updates game statistics such as score and lives.
     pmenu->lives --;
+    camera_start_shake(camera, /*duration_ms*/ 550.0f,/*amp_px*/ 5.0f, /*freq_hz*/ 19.0f);
     if(pmenu->lives < 1){
         menu_set_state(pmenu, GAME_OVER);
         history_log(pmenu);
         pmenu->last_top_pos = score_update(pmenu,pmenu->score);
         score_save(pmenu);
     }
+}
+// returns the offset per friame 
+void camera_update(const camera_t *cam, int *offx, int *offy){
+    if (!cam->shaking) { *offx = 0; *offy = 0; return; }
+
+    Uint32 now   = SDL_GetTicks();
+    float   t    = (float)(now - cam->start_ms);       // ms desde inicio
+    if (t >= cam->duration) { *offx = 0; *offy = 0; return; }
+
+    // tiempo en segundos para trigonometría
+    float ts   = t * 0.001f;
+    // oscilación: 2π f t
+    float w    = 2.0f * 3.14159265f * cam->freq * ts;
+
+    // Podés variar ejes para que no sea 100% horizontal
+    float dx = cam->amp * sinf(w);
+    float dy = 0.6f     * cam->amp * cosf(1.3f * w);        //oscilacion armonica: A*cos(W*t)
+
+    *offx = (int)lroundf(dx);
+    *offy = (int)lroundf(dy);
+}
+void camera_start_shake(camera_t *cam, float duration_ms, float amp_px, float freq_hz){
+    cam->shaking  = 1;
+    cam->start_ms = SDL_GetTicks();
+    cam->duration = duration_ms;
+    cam->amp      = amp_px;
+    cam->freq     = freq_hz;
+
 }
 
 void history_log(menu_t* pmenu){

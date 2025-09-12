@@ -15,6 +15,7 @@ int main(void){
     background_t background;
     screen_dim_t screen_dim;
     column_t* column;
+    camera_t camera = {0};
 
     init_parameters(&screen_dim);
     column = malloc(sizeof(column_t) * screen_dim.NUM_COL);
@@ -31,7 +32,8 @@ int main(void){
 
 
     int running = 1;
-    int reboot_time=0; 
+    int reboot_time=0;
+    int shake_x, shake_y;
     while (running){
         SDL_Event event;
         while (SDL_PollEvent(&event)){
@@ -210,7 +212,7 @@ int main(void){
             }
                 
             if (collision(column, &bird, &screen_dim) && !reboot_time){
-                colition_update(&menu);//counts the collition only if the game isnt in reboot mode
+                colition_update(&menu, &camera);//counts the collition only if the game isnt in reboot mode
                 if(menu.state != GAME_OVER){
                     reboot_time=1;
                 }
@@ -226,48 +228,49 @@ int main(void){
 
         // --- Render ---
         prepareScene(&app);
-        draw_background(&background, &app, &screen_dim);
+        draw_background(&background, &app, &screen_dim, shake_x, shake_y);
+        camera_update(&camera, &shake_x, &shake_y);
 
         if (menu.state == NAME_MENU) {
             render_name_menu(&app, &menu, screen_dim.GAME_WIDTH, screen_dim.GAME_HEIGHT);
         }
         else if (menu.state == MAIN_MENU) {
             render_main_menu(&app, &menu, screen_dim.GAME_WIDTH, screen_dim.GAME_HEIGHT); // "FLAPPY" + Play/Salir
-            reboot_time=0;      //acordate de agregar esta linea en la opcion restart del menu de pausa
+            reboot_time=0;      
         } 
         else if (menu.state == SKIN_MENU) {
-            render_skin_menu(&app, &menu, screen_dim.GAME_WIDTH, screen_dim.GAME_HEIGHT);
+            render_skin_menu(&app, &menu, screen_dim.GAME_WIDTH, screen_dim.GAME_HEIGHT, shake_x, shake_y);
         }
         else if(menu.state == DIFICULTY_MENU){
             render_dificulty_menu(&app, &menu, screen_dim.GAME_WIDTH, screen_dim.GAME_HEIGHT);
         }
         else if (menu.state == RUNING || menu.state == BEGINING) {
-            draw_col(column, &app, &screen_dim);
+            draw_col(column, &app, &screen_dim, shake_x, shake_y);
             if(!reboot_time){
-                draw_bird(&bird, &app);
-                draw_hearts(&app, &menu);
+                draw_bird(&bird, &app, shake_x, shake_y);
+                draw_hearts(&app, &menu, shake_x, shake_y);
             }
             else{
-                display_resurecting(&bird, &menu, &app);
+                display_resurecting(&bird, &menu, &app, shake_x, shake_y);
             }
-            render_game_hud(&app, &menu, &screen_dim);
+            render_game_hud(&app, &menu, &screen_dim, shake_x, shake_y);
             
         }
         else if (menu.state == PAUSE) {
-            draw_col(column, &app, &screen_dim);
+            draw_col(column, &app, &screen_dim, shake_x, shake_y);
             if(!reboot_time){
-                draw_bird(&bird, &app);
-                draw_hearts(&app, &menu);
+                draw_bird(&bird, &app, shake_x, shake_y);
+                draw_hearts(&app, &menu, shake_x, shake_y);
             } 
             else {
-                display_resurecting(&bird, &menu, &app);
+                display_resurecting(&bird, &menu, &app, shake_x, shake_y);
             }
-            render_game_hud(&app, &menu, &screen_dim);
+            render_game_hud(&app, &menu, &screen_dim, shake_x, shake_y);
             render_pause_menu(&app, &menu, screen_dim.GAME_WIDTH, screen_dim.GAME_HEIGHT);
         }
         else if (menu.state == GAME_OVER) {
-            draw_col(column, &app, &screen_dim);
-            draw_bird(&bird, &app);
+            draw_col(column, &app, &screen_dim, shake_x, shake_y);
+            draw_bird(&bird, &app, shake_x, shake_y);
             render_game_over(&app, &menu, screen_dim.GAME_WIDTH, screen_dim.GAME_HEIGHT);
         }
 

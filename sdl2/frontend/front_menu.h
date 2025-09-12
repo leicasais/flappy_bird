@@ -9,7 +9,7 @@
     void render_main_menu(app_t *app, menu_t *menu, int w, int h);
     void render_dificulty_menu(app_t *app, menu_t *menu, int w, int h);
     void render_name_menu(app_t *app, menu_t *menu, int w, int h);
-    void render_skin_menu(app_t *app, menu_t *menu, int w, int h);
+    void render_skin_menu(app_t *app, menu_t *menu, int w, int h, int shake_x, int shake_y);
     void render_game_over(app_t *app, menu_t *menu, int w, int h);
     void render_pause_menu(app_t *app, menu_t *menu, int w, int h);
 

@@ -1,4 +1,5 @@
 #include "render_helpers.h"
+#include <math.h>     // sinf, cosf, expf, lroundf
 
 //windows
 void prepareScene(app_t *app){   //Prepares a clean background for drawing the next frame.
@@ -43,6 +44,7 @@ void draw_tiled_segment(SDL_Renderer *r, SDL_Texture *tex, int x, int src_x, int
         }
     }
 }
+
 
 //text fun
 
