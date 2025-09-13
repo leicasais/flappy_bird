@@ -97,7 +97,7 @@ void render_game_hud(app_t *app, menu_t *menu, screen_dim_t *screen_dim, int sha
         //Draw the points collected
     char buf[32]; 
     snprintf(buf, sizeof(buf), "Score: %d", menu->score);
-    SDL_Color c = { 250, 250, 250, 255 };
+    SDL_Color c = { 0, 0, 0, 255 };
     //the size of the hole text so it can be left centered
     int text_w = shake_x, text_h = shake_y;
     if (TTF_SizeText(app->font, buf, &text_w, &text_h) != 0) {
