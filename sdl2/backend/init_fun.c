@@ -119,12 +119,6 @@ void init_tex(column_t* column, bird_t *bird, menu_t *menu, app_t *app, backgrou
     app->score_color = (SDL_Color){ 20, 20, 20, 255 }; // gris oscuro
 }
 
-static SDL_Texture* safe_load(const char *path, app_t *app) {
-    SDL_Texture *t = loadTexture(path, app);
-    if (!t) fprintf(stderr, "Failed to load '%s'\n", path);
-    return t;
-}
-
 int explotion_init(ExplotionAnim *e, SDL_Renderer *r, const char *path_dir, float frame_time_ms, app_t *app){
     if (!e || !path_dir) return 0;
     memset(e, 0, sizeof(*e));
@@ -144,7 +138,7 @@ int explotion_init(ExplotionAnim *e, SDL_Renderer *r, const char *path_dir, floa
         char path[512];
         snprintf(path, sizeof(path), "%s/1_%d.png", path_dir, idx);
 
-        e->frames[i] = safe_load(path,app);
+        e->frames[i] = loadTexture(path,app);
     }
     return 1;
 }
@@ -160,7 +154,7 @@ void initSDL(app_t *app, screen_dim_t *screen_dim){
         exit(1);
     }
 
-    app->window = SDL_CreateWindow("Floppy bird", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, screen_dim->GAME_WIDTH, screen_dim->GAME_HEIGHT, windowFlags);       //SDL_WINDOWPOS_UNDEFINED tells SDL to let the OS position the window wherever it likes
+    app->window = SDL_CreateWindow("Flappy bird - COIL project", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, screen_dim->GAME_WIDTH, screen_dim->GAME_HEIGHT, windowFlags);       //SDL_WINDOWPOS_UNDEFINED tells SDL to let the OS position the window wherever it likes
 
     if (!(app->window)){
         printf("Failed to open %d x %d window: %s\n", screen_dim->GAME_WIDTH, screen_dim->GAME_HEIGHT, SDL_GetError());
