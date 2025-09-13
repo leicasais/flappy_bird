@@ -16,6 +16,7 @@ int main(void){
     screen_dim_t screen_dim;
     column_t* column;
     camera_t camera = {0};
+    ExplotionAnim e;
 
     init_parameters(&screen_dim);
     column = malloc(sizeof(column_t) * screen_dim.NUM_COL);
@@ -28,12 +29,13 @@ int main(void){
 
     // Objetos y texturas (columnas, pájaro, background, fuente para HUD)
     init(column, &bird, &menu, &screen_dim);            // update the initial conditions of the game
-    init_tex(column, &bird, &menu, &app, &background, &screen_dim);        //charges the textures 
+    init_tex(column, &bird, &menu, &app, &background, &screen_dim, &e);        //charges the textures
 
 
     int running = 1;
     int reboot_time=0;
     int shake_x, shake_y;
+    float dt_ms = 20;/* elapsed milliseconds for this frame */
     while (running){
         SDL_Event event;
         while (SDL_PollEvent(&event)){
@@ -214,7 +216,7 @@ int main(void){
             }
                 
             if (collision(column, &bird, &screen_dim) && !reboot_time){
-                colition_update(&menu, &camera);//counts the collition only if the game isnt in reboot mode
+                colition_update(&menu, &camera, &e, bird);//counts the collition only if the game isnt in reboot mode
                 if(menu.state != GAME_OVER){
                     reboot_time=1;
                 }
@@ -231,7 +233,10 @@ int main(void){
         // --- Render ---
         prepareScene(&app);
         camera_update(&camera, &shake_x, &shake_y);
+        explotion_update(&e, dt_ms);
         draw_background(&background, &app, &screen_dim, shake_x, shake_y);
+        draw_col(column, &app, &screen_dim, shake_x, shake_y);
+        
 
         if (menu.state == NAME_MENU) {
             render_name_menu(&app, &menu, screen_dim.GAME_WIDTH, screen_dim.GAME_HEIGHT);
@@ -247,7 +252,6 @@ int main(void){
             render_dificulty_menu(&app, &menu, screen_dim.GAME_WIDTH, screen_dim.GAME_HEIGHT);
         }
         else if (menu.state == RUNING || menu.state == BEGINING) {
-            draw_col(column, &app, &screen_dim, shake_x, shake_y);
             if(!reboot_time){
                 draw_bird(&bird, &app, shake_x, shake_y);
                 draw_hearts(&app, &menu, shake_x, shake_y);
@@ -275,12 +279,12 @@ int main(void){
             draw_bird(&bird, &app, shake_x, shake_y);
             render_game_over(&app, &menu, screen_dim.GAME_WIDTH, screen_dim.GAME_HEIGHT);
         }
-
+        explotion_render(&e, app.renderer);
         SDL_RenderPresent(app.renderer);
         SDL_Delay(16);
     }
 
-    cleanupSDL(&app, &bird, column, &background, &menu, &screen_dim);
+    cleanupSDL(&app, &bird, column, &background, &menu, &screen_dim, &e);
     free(column);
     return 0;
 }

@@ -15,7 +15,14 @@ void draw_bird(bird_t *bird, app_t *app, int shake_x, int shake_y){
     SDL_Rect dest_rect = {.x = bird->x_l + shake_x, .y = bird->y_top + shake_y, .w = bird->w, .h = bird->h};
     SDL_RenderCopyEx(app->renderer, bird->texture, &scr_rect, &dest_rect, bird->vel_y*3,NULL, SDL_FLIP_NONE);       // Copies a part of a texture (src_rect) and draws it in the screen using the active render
 }
+void explotion_render(ExplotionAnim *e, SDL_Renderer *r){
+    if (!e || !e->playing) return;
+    SDL_Texture *tex = e->frames[e->cur];
+    if (!tex) return;
 
+    SDL_Rect dst = { e->x , e->y , e->w*5, e->h*5 };
+    SDL_RenderCopy(r, tex, NULL, &dst);
+}
 void draw_resurecting_bird(bird_t *bird, app_t *app, int frame, int shake_x, int shake_y){
     SDL_Rect scr_rect;
     scr_rect.x = frame * HITBOX_X;          //gives the index of the column of the bird matrix

@@ -26,3 +26,17 @@ Username: l	 Score: 5	 at Fri Sep 12 23:01:57 2025
 Username: l	 Score: 4	 at Fri Sep 12 23:02:11 2025
 Username: l	 Score: 1	 at Fri Sep 12 23:02:27 2025
 Username: l	 Score: 4	 at Fri Sep 12 23:03:55 2025
+Username: l	 Score: 4	 at Fri Sep 12 23:07:19 2025
+Username: lei	 Score: 1	 at Sat Sep 13 00:06:58 2025
+Username: lei	 Score: 2	 at Sat Sep 13 00:11:58 2025
+Username: lei	 Score: 2	 at Sat Sep 13 00:13:30 2025
+Username: le	 Score: 2	 at Sat Sep 13 00:14:48 2025
+Username: lei	 Score: 2	 at Sat Sep 13 00:15:57 2025
+Username: lei	 Score: 2	 at Sat Sep 13 00:24:03 2025
+Username: lei	 Score: 2	 at Sat Sep 13 00:24:26 2025
+Username: lei	 Score: 2	 at Sat Sep 13 00:25:38 2025
+Username: lei	 Score: 1	 at Sat Sep 13 00:26:40 2025
+Username: lei	 Score: 2	 at Sat Sep 13 00:27:03 2025
+Username: lri	 Score: 2	 at Sat Sep 13 00:27:27 2025
+Username: lri	 Score: 2	 at Sat Sep 13 00:28:12 2025
+Username: lei	 Score: 2	 at Sat Sep 13 00:31:30 2025

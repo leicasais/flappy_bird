@@ -77,7 +77,7 @@ void init(column_t* pcol, bird_t *bird, menu_t *menu, screen_dim_t *screen_dim){
 
 }
 
-void init_tex(column_t* column, bird_t *bird, menu_t *menu, app_t *app, background_t *background, screen_dim_t *screen_dim){
+void init_tex(column_t* column, bird_t *bird, menu_t *menu, app_t *app, background_t *background, screen_dim_t *screen_dim, ExplotionAnim *e){
        //column textures
     for(int i=0; i<screen_dim->NUM_COL; i++){
         column[i].texture_down = loadTexture("../img/columns/Col.png", app);
@@ -96,6 +96,8 @@ void init_tex(column_t* column, bird_t *bird, menu_t *menu, app_t *app, backgrou
     (menu->skins_tex)[2]= loadTexture("../img/birds/Yellow_bird.png", app);
     (menu->skins_tex)[3]= loadTexture("../img/birds/Future_bird.png", app);
     (menu->skins_tex)[4]= loadTexture("../img/birds/Angry_bird.png", app);
+    explotion_init(e, app->renderer, "../img/birds/explotion", 30.0f, app);
+
 
     bird->texture= (menu->skins_tex)[0]; //monto cambia el inide fijo por menu->index_skin que se puede seleccionar en tu menu
     bird->tex_resurrection = loadTexture("../img/birds/Resurecting_bird.png", app);
@@ -115,6 +117,36 @@ void init_tex(column_t* column, bird_t *bird, menu_t *menu, app_t *app, backgrou
     app->score_tex = NULL;
     app->score_w = app->score_h = 0;
     app->score_color = (SDL_Color){ 20, 20, 20, 255 }; // gris oscuro
+}
+
+static SDL_Texture* safe_load(const char *path, app_t *app) {
+    SDL_Texture *t = loadTexture(path, app);
+    if (!t) fprintf(stderr, "Failed to load '%s'\n", path);
+    return t;
+}
+
+int explotion_init(ExplotionAnim *e, SDL_Renderer *r, const char *path_dir, float frame_time_ms, app_t *app){
+    if (!e || !path_dir) return 0;
+    memset(e, 0, sizeof(*e));
+
+    const int start_idx = 5;
+    const int end_idx   = 49;
+    const int count     = end_idx - start_idx + 1;
+
+    e->frames = (SDL_Texture**)calloc((size_t)count, sizeof(SDL_Texture*));
+    if (!e->frames) return 0;
+
+    e->count      = count;
+    e->frame_time = frame_time_ms > 0 ? frame_time_ms : 30.0f;
+
+    for (int i = 0; i < count; ++i) {
+        int idx = start_idx + i;
+        char path[512];
+        snprintf(path, sizeof(path), "%s/1_%d.png", path_dir, idx);
+
+        e->frames[i] = safe_load(path,app);
+    }
+    return 1;
 }
 
 void initSDL(app_t *app, screen_dim_t *screen_dim){
@@ -170,7 +202,18 @@ SDL_Texture* loadTexture(char *filename, app_t *app){
 }
 
 //exit fun
-void cleanupSDL(app_t *app, bird_t *bird, column_t *column, background_t *background, menu_t *menu, screen_dim_t *screen_dim){
+void explotion_destroy(ExplotionAnim *e)
+{
+    if (!e) return;
+    if (e->frames) {
+        for (int i = 0; i < e->count; ++i) {
+            if (e->frames[i]) SDL_DestroyTexture(e->frames[i]);
+        }
+        free(e->frames);
+    }
+    memset(e, 0, sizeof(*e));
+}
+void cleanupSDL(app_t *app, bird_t *bird, column_t *column, background_t *background, menu_t *menu, screen_dim_t *screen_dim, ExplotionAnim *e){
     // 1) Texturas y recursos dependientes del renderer
     if (app->score_tex) { 
         SDL_DestroyTexture(app->score_tex); 
@@ -220,7 +263,7 @@ void cleanupSDL(app_t *app, bird_t *bird, column_t *column, background_t *backgr
         SDL_DestroyTexture(menu->empty_heart_tex);
         menu->empty_heart_tex = NULL; 
     }
-
+    explotion_destroy(e);
 
     // 2) renderer y ventana
     if (app->renderer) { 

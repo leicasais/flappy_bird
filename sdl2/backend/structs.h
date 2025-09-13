@@ -103,6 +103,17 @@
         SDL_Texture * clouds;
     }background_t;
 
+    typedef struct {
+        SDL_Texture **frames;   // array of textures [count]
+        int count;              // number of frames
+        float frame_time;       // ms per frame (e.g. 30 ms)
+        int playing;            // 1 if animation is active
+        int cur;                // current frame index
+        float acc_ms;           // time accumulator to advance frames
+        int x, y;               // screen position (center)
+        int w, h;               // destination size (0 = use frame size)
+    } ExplotionAnim;
+
     typedef struct{
         int GAME_WIDTH;
         int GAME_HEIGHT;

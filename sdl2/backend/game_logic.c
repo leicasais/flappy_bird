@@ -56,9 +56,13 @@ void points(column_t* pcol, bird_t* pbird, menu_t* menu, screen_dim_t *screen_di
     }
 }
 
-void colition_update(menu_t* pmenu, camera_t* camera){     // Updates game statistics such as score and lives.
+void colition_update(menu_t* pmenu, camera_t* camera, ExplotionAnim *e, bird_t bird){     // Updates game statistics such as score and lives.
     pmenu->lives --;
     camera_start_shake(camera, /*duration_ms*/ 550.0f,/*amp_px*/ 5.0f, /*freq_hz*/ 19.0f);
+    int w = 0, h = 0;
+    SDL_QueryTexture((e->frames)[0], NULL, NULL, &w, &h);
+    explotion_start(e, bird.x_r-w*2, bird.y_bottom-h*2, bird.w ,bird.h);
+
     if(pmenu->lives < 1){
         menu_set_state(pmenu, GAME_OVER);
         history_log(pmenu);
@@ -66,6 +70,31 @@ void colition_update(menu_t* pmenu, camera_t* camera){     // Updates game stati
         score_save(pmenu);
     }
 }
+void explotion_start(ExplotionAnim *e, int x, int y, int width, int height){
+    if (!e || !e->frames || e->count == 0) return;
+    e->playing = 1;
+    e->cur = 0;
+    e->acc_ms = 0.0f;
+    e->x = x;
+    e->y = y;
+    e->w = width;
+    e->h = height;
+}
+
+void explotion_update(ExplotionAnim *e, float dt_ms){
+    if (!e || !e->playing) return;
+    e->acc_ms += dt_ms;
+    while (e->acc_ms >= e->frame_time) {
+        e->acc_ms -= e->frame_time;
+        e->cur++;
+        if (e->cur >= e->count) {
+            e->playing = 0;
+            e->cur = e->count - 1;
+            break;
+        }
+    }
+}
+
 // returns the offset per friame 
 void camera_update(camera_t *cam, int *offx, int *offy){
     if (!cam->shaking) { *offx = 0; *offy = 0; return; }
