@@ -60,10 +60,13 @@ void draw_col(column_t* pcol, app_t *app, screen_dim_t *screen_dim, int shake_x,
     }
 }
 
-
 void draw_background(background_t *background, app_t *app, screen_dim_t *screen_dim, int shake_x, int shake_y){
     SDL_Rect dest_tile = {.x = 0+ shake_x, .y= screen_dim->GAME_HEIGHT-screen_dim->TILE_HIGHT-1 + shake_y, .w= screen_dim->GAME_WIDTH, .h = screen_dim->TILE_HIGHT};
     SDL_RenderCopy(app->renderer, background->tile_tex, NULL, &dest_tile);
+
+    SDL_Rect dest_clouds = {.x = 0+ shake_x, .y= 0, .w= screen_dim->GAME_WIDTH, .h = screen_dim->GAME_HEIGHT};
+    SDL_RenderCopy(app->renderer, background->clouds, NULL, &dest_clouds);
+
 }
 
 

@@ -137,7 +137,7 @@ int main(void){
                     break;
 
                     case RUNING:
-                        if (event.key.keysym.sym == SDLK_SPACE){
+                        if (event.key.keysym.sym == SDLK_SPACE && !camera.shaking){
                             bird.vel_y = -8.0f; 
                         } 
                         else if (event.key.keysym.sym == SDLK_ESCAPE || event.key.keysym.sym == 'p' || event.key.keysym.sym == 'P'){
@@ -203,9 +203,11 @@ int main(void){
 
         // --- Update por estado ---
 
-        if (menu.state == RUNING){
-            col_mov(column, &screen_dim, &menu);
-            bird_fall(&bird, &screen_dim);
+        if (menu.state == RUNING ){
+            if(!camera.shaking ){
+                col_mov(column, &screen_dim, &menu);
+                bird_fall(&bird, &screen_dim);
+            }
             update_bird_animation(&bird);
             if(reboot_time==0){
                 points(column, &bird, &menu, &screen_dim);       //Adds a point if the bird has passed a column only if in game mode
@@ -228,8 +230,8 @@ int main(void){
 
         // --- Render ---
         prepareScene(&app);
-        draw_background(&background, &app, &screen_dim, shake_x, shake_y);
         camera_update(&camera, &shake_x, &shake_y);
+        draw_background(&background, &app, &screen_dim, shake_x, shake_y);
 
         if (menu.state == NAME_MENU) {
             render_name_menu(&app, &menu, screen_dim.GAME_WIDTH, screen_dim.GAME_HEIGHT);

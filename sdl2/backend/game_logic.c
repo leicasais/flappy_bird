@@ -67,12 +67,14 @@ void colition_update(menu_t* pmenu, camera_t* camera){     // Updates game stati
     }
 }
 // returns the offset per friame 
-void camera_update(const camera_t *cam, int *offx, int *offy){
+void camera_update(camera_t *cam, int *offx, int *offy){
     if (!cam->shaking) { *offx = 0; *offy = 0; return; }
 
     Uint32 now   = SDL_GetTicks();
     float   t    = (float)(now - cam->start_ms);       // ms desde inicio
-    if (t >= cam->duration) { *offx = 0; *offy = 0; return; }
+    if (t >= cam->duration){ 
+        cam->shaking = 0;
+        return; }
 
     // tiempo en segundos para trigonometría
     float ts   = t * 0.001f;

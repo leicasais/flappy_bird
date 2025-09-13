@@ -39,6 +39,9 @@
     #define HITBOX_Y 168
     #define NUM_SKINS 5
 
+    // --- Macros for the background ---
+
+
     // --- macros for the menus ---
     #define NUM_OPTIONS_MAIN       4   
     #define NUM_OPTIONS_SKIN       5   
@@ -75,7 +78,6 @@
     /*#########################################
                         Structs
     #########################################*/
-
     typedef struct {
         float x;          // por si tenés cámara “real” en X/Y
         float y;
@@ -85,6 +87,7 @@
         float amp;        // amplitud en píxeles
         float freq;       // Hz
     } camera_t;
+
 
     typedef struct{
         SDL_Renderer *renderer;
@@ -97,6 +100,7 @@
     
     typedef struct{
         SDL_Texture *tile_tex;
+        SDL_Texture * clouds;
     }background_t;
 
     typedef struct{
@@ -133,7 +137,7 @@
         float w;
         float gravity_y;
         float vel_y;
-        int scale;
+        float scale;
         SDL_Texture *texture;
         SDL_Texture *tex_resurrection;
         int current_frame;

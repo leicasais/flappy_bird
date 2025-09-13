@@ -74,6 +74,7 @@ void init(column_t* pcol, bird_t *bird, menu_t *menu, screen_dim_t *screen_dim){
     bird->y_top=y;
     bird->y_bottom=bird->y_top+(bird->h);
 
+
 }
 
 void init_tex(column_t* column, bird_t *bird, menu_t *menu, app_t *app, background_t *background, screen_dim_t *screen_dim){
@@ -86,6 +87,8 @@ void init_tex(column_t* column, bird_t *bird, menu_t *menu, app_t *app, backgrou
 
         //Bakground textures 
     background->tile_tex = loadTexture("../img/background/Tile.png", app);
+    background->clouds = loadTexture("../img/background/Fondo.png", app);
+
 
         //bird textures
     (menu->skins_tex)[0]= loadTexture("../img/birds/Purple_bird.png", app);
@@ -190,6 +193,10 @@ void cleanupSDL(app_t *app, bird_t *bird, column_t *column, background_t *backgr
     if (background->tile_tex) { 
         SDL_DestroyTexture(background->tile_tex); 
         background->tile_tex = NULL; 
+    }
+    if (background->clouds) { 
+        SDL_DestroyTexture(background->clouds); 
+        background->clouds = NULL; 
     }
     for (int i = 0; i < screen_dim->NUM_COL; i++){
         if (column[i].texture_down) { 
