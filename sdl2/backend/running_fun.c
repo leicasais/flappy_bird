@@ -64,13 +64,13 @@ void col_mov(column_t* pcol, screen_dim_t *screen_dim, menu_t *pmenu){
                 pcol[i].x   = screen_dim->GAME_WIDTH - 1;        // pegada al borde derecho
                 pcol[i].y   = rand_hole(screen_dim);
                 pcol[i].len = 1;                     // empieza “chiquita”, entra de a poco
-                pcol[i].trim = 0;  
+                pcol[i].trim = 0;
                 int n = pmenu->dificulty;                 // re-habilitar conteo de score
                 if ((rand() % 100) < n) {
-                    float vel = 0.4f + (float)(rand() % 61) / 100.0f; // 
+                    float vel = 0.4f + 0.05f * (float)n * ((float)(rand() % 61) / 100.0f); // 
                     pcol[i].col_speed_y = (rand()%2) ? vel : -vel;
                 }
-                break;
+                break; 
             }
         }
 

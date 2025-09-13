@@ -44,3 +44,10 @@ Username: lei	 Score: 25	 at Sat Sep 13 00:33:05 2025
 Username: lei	 Score: 19	 at Sat Sep 13 00:33:48 2025
 Username: lei	 Score: 15	 at Sat Sep 13 00:35:07 2025
 Username: lei	 Score: 23	 at Sat Sep 13 00:39:21 2025
+Username: fer	 Score: 0	 at Sat Sep 13 09:36:29 2025
+Username: fer	 Score: 2	 at Sat Sep 13 09:37:12 2025
+Username: Montotita	 Score: 9	 at Sat Sep 13 14:22:24 2025
+Username: leila	 Score: 2	 at Sat Sep 13 18:35:52 2025
+Username: lei	 Score: 73	 at Sat Sep 13 18:41:56 2025
+Username: lei	 Score: 13	 at Sat Sep 13 18:42:36 2025
+Username: lei	 Score: 15	 at Sat Sep 13 18:50:37 2025
