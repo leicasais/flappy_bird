@@ -1,7 +1,7 @@
 CMakeFiles/flappy_bird.dir/main.c.o: \
  /home/leila/Documents/COIL/flappy_bird/sdl2/main.c \
  /usr/include/stdc-predef.h \
- /home/leila/Documents/COIL/flappy_bird/sdl2/frontend/structs.h \
+ /home/leila/Documents/COIL/flappy_bird/sdl2/structs.h \
  /usr/include/stdio.h \
  /usr/include/x86_64-linux-gnu/bits/libc-header-start.h \
  /usr/include/features.h /usr/include/features-time64.h \

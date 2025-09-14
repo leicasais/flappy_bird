@@ -3,7 +3,7 @@
 #define STRUCTS_H
     
     /*#########################################
-                        Librerias
+                        Libs
     #########################################*/
 
     #include <stdio.h>
@@ -141,7 +141,7 @@
 
     typedef struct{
         float y_top;
-        float y_bottom; //CAMBIE TODO A FLOAT, GUARDA!!! REVISALO BIEN
+        float y_bottom; 
         float x_l;
         float x_r;
         float h;
