@@ -6,15 +6,15 @@
 static int menu_num_options(int state){
     switch (state){
         case MAIN_MENU:  
-            return NUM_OPTIONS_MAIN;      // 0: Jugar, 1:Elegir Skin, 2:Dificultad , 3: Salir
+            return NUM_OPTIONS_MAIN;      // 0: Play, 1: Select Skin, 2: Difficulty, 3: Exit
         case PAUSE:      
-            return NUM_OPTIONS_PAUSE;     // 0: Continuar, 1: Reiniciar, 2: Menu, 3: Salir
+            return NUM_OPTIONS_PAUSE;     // 0: Resume, 1: Restart, 2: Menu, 3: Exit
         case GAME_OVER:  
-            return NUM_OPTIONS_GAME_OVER; // 0: Reintentar, 1: Menus
+            return NUM_OPTIONS_GAME_OVER; // 0: Retry, 1: Menu
         case SKIN_MENU:
             return NUM_OPTIONS_SKIN;      // 0: 5 Skins
         case DIFICULTY_MENU:
-            return NUM_OPTIONS_DIFICULTY; // 0: 4 Dificultades
+            return NUM_OPTIONS_DIFICULTY; // 0: 4 Difficulties
         default:         
             return 0;
     }
@@ -25,13 +25,13 @@ void menu_init(menu_t *menu){
     menu->selected      = 0;
     menu->score         = 0;
     menu->lives         = 3;
-    menu->heart_h       = 256/4 ; //px
-    menu->heart_w       = 256/4; //px
+    menu->heart_h       = 256/4 ; // px
+    menu->heart_w       = 256/4;  // px
     menu->last_top_pos  = 0;
     menu->username[0]   = '\0';        
     menu->name_editing  = 1;      
     menu->dificulty = EASY;     
-    score_init(menu); // carga/normaliza highscores
+    score_init(menu); // loads/normalizes high scores
 }
 
 void menu_set_state(menu_t *menu, int state){
@@ -59,17 +59,17 @@ void menu_activate_selected(menu_t *menu, column_t *cols, bird_t *bird, app_t *a
     (void)app;
 
     switch (menu->state) {
-        case MAIN_MENU: // 0: Jugar, 1: Elegir Skin, 2:Dificultad , 3: Salir
+        case MAIN_MENU: // 0: Play, 1: Select Skin, 2: Difficulty, 3: Exit
             if (menu->selected == 0){
                 game_reset(cols, bird, menu, screen_dim);
                 menu_set_state(menu, BEGINING);
             } 
             else if (menu->selected == 1){
-                menu->selected = 0;                 // arranca seleccionando la 1ª skin
+                menu->selected = 0;                 // starts selecting the 1st skin
                 menu_set_state(menu, SKIN_MENU);
             } 
             else if (menu->selected == 2){
-                menu->selected = 0; // Arranca con la primer dificultad
+                menu->selected = 0; // starts with the first difficulty
                 menu_set_state(menu, DIFICULTY_MENU);
             }
             else {
@@ -77,7 +77,7 @@ void menu_activate_selected(menu_t *menu, column_t *cols, bird_t *bird, app_t *a
             }
         break;
 
-        case PAUSE:     // 0: Continuar, 1: Reiniciar, 2: Menu, 3: Salir
+        case PAUSE:     // 0: Resume, 1: Restart, 2: Menu, 3: Exit
             if (menu->selected == 0){
                 menu_set_state(menu, RUNING);
             } 
@@ -105,8 +105,8 @@ void menu_activate_selected(menu_t *menu, column_t *cols, bird_t *bird, app_t *a
         break;
 
         case SKIN_MENU: // 5 skins
-            set_bird_skin(bird, app, menu->selected);  // aplica skin elegida
-            menu->selected = 0;                         // vuelve con la 1ª opción del Main
+            set_bird_skin(bird, app, menu->selected);  // apply selected skin
+            menu->selected = 0;                         // return with the 1st option in Main
             menu_set_state(menu, MAIN_MENU);
         break;
 

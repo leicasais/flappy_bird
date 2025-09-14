@@ -7,7 +7,7 @@ char collision(column_t* pcol, bird_t* pbird, screen_dim_t *screen_dim){
     int foot_px= (1*8) / pbird->scale;
     for (int i = 0; i < screen_dim->NUM_COL; i++) {
         if (pcol[i].x == OUTSIDE){
-            continue; // skip unactive columns
+            continue; // Skip unactive columns
         }
         int col_left = pcol[i].x;
         int col_right = col_left + pcol[i].len;
@@ -18,7 +18,7 @@ char collision(column_t* pcol, bird_t* pbird, screen_dim_t *screen_dim){
             return 1;
         }
         else if ((pbird->x_r >= col_left) && (pbird->x_l <= col_right)) {
-            // check if the bird is outside of the hole
+            // Check if the bird is outside of the hole
             if ((pbird->y_bottom - foot_px) >= hole_bottom || (pbird->y_top + hair_px) <= hole_top) {
                 return 1;
             }
@@ -31,24 +31,24 @@ void points(column_t* pcol, bird_t* pbird, menu_t* menu, screen_dim_t *screen_di
     for (int i=0; i < screen_dim->NUM_COL; i++){
         if (pcol[i].len == 0){
             continue;
-        } // skips innactive columns
+        } // Skips innactive columns
         int col_right = pcol[i].x + pcol[i].len;
 
         //Adds a point when the bird passes the right corner of the column
-        if (!pcol[i].trim && (col_right < (int)pbird->x_l)) {
+        if (!pcol[i].trim && (col_right < (int)pbird->x_l)){
             pcol[i].trim = 1;
             if(pcol->col_speed >= SPEED_MAX/2){     //Aditional score: passing 1 col = 2 points
                 menu->score+=2;
             }
-            else{   //normal score: passing 1 col = 1 point
+            else{   //Normal score: passing 1 col = 1 point
                 menu->score++;
             }           
 
-            // inccrements the velocity of the columns each time the bird passes a col (it has a max speed)
+            // Inccrements the velocity of the columns each time the bird passes a col (it has a max speed)
             pcol->col_speed += SPEED_INC;
             SDL_Log("Dificult = %d", menu->dificulty);
             SDL_Log("SPEED = %.2f", pcol->col_speed);
-            if (pcol->col_speed > SPEED_MAX) {
+            if (pcol->col_speed > SPEED_MAX){
                 pcol->col_speed = SPEED_MAX;
             }
         }
@@ -56,13 +56,13 @@ void points(column_t* pcol, bird_t* pbird, menu_t* menu, screen_dim_t *screen_di
     }
 }
 
-void colition_update(menu_t* pmenu, camera_t* camera, ExplotionAnim *e, bird_t bird){     // Updates game statistics such as score and lives.
+void colition_update(menu_t* pmenu, camera_t* camera, ExplotionAnim *e, bird_t bird){     
+    // Updates game statistics such as score and lives
     pmenu->lives --;
     camera_start_shake(camera, /*duration_ms*/ 550.0f,/*amp_px*/ 5.0f, /*freq_hz*/ 19.0f);
     int w = 0, h = 0;
     SDL_QueryTexture((e->frames)[0], NULL, NULL, &w, &h);
     explotion_start(e, bird.x_r-w*2, bird.y_bottom-h*2, bird.w ,bird.h);
-
     if(pmenu->lives < 1){
         menu_set_state(pmenu, GAME_OVER);
         history_log(pmenu);
@@ -70,8 +70,11 @@ void colition_update(menu_t* pmenu, camera_t* camera, ExplotionAnim *e, bird_t b
         score_save(pmenu);
     }
 }
+
 void explotion_start(ExplotionAnim *e, int x, int y, int width, int height){
-    if (!e || !e->frames || e->count == 0) return;
+    if (!e || !e->frames || e->count == 0){
+        return;
+    }
     e->playing = 1;
     e->cur = 0;
     e->acc_ms = 0.0f;
@@ -82,12 +85,14 @@ void explotion_start(ExplotionAnim *e, int x, int y, int width, int height){
 }
 
 void explotion_update(ExplotionAnim *e, float dt_ms){
-    if (!e || !e->playing) return;
+    if (!e || !e->playing){
+        return;
+    }
     e->acc_ms += dt_ms;
-    while (e->acc_ms >= e->frame_time) {
+    while (e->acc_ms >= e->frame_time){
         e->acc_ms -= e->frame_time;
         e->cur++;
-        if (e->cur >= e->count) {
+        if (e->cur >= e->count){
             e->playing = 0;
             e->cur = e->count - 1;
             break;
@@ -95,28 +100,30 @@ void explotion_update(ExplotionAnim *e, float dt_ms){
     }
 }
 
-// returns the offset per friame 
+// Returns the offset per friame 
 void camera_update(camera_t *cam, int *offx, int *offy){
-    if (!cam->shaking) { *offx = 0; *offy = 0; return; }
-
-    Uint32 now   = SDL_GetTicks();
-    float   t    = (float)(now - cam->start_ms);       // ms desde inicio
+    if (!cam->shaking){ 
+        *offx = 0; 
+        *offy = 0; 
+        return; 
+    }
+    Uint32 now = SDL_GetTicks();
+    float t = (float)(now - cam->start_ms);       // elapsed ms since the shake started
     if (t >= cam->duration){ 
         cam->shaking = 0;
-        return; }
+        return; 
+    }
 
-    // tiempo en segundos para trigonometría
-    float ts   = t * 0.001f;
-    // oscilación: 2π f t
-    float w    = 2.0f * 3.14159265f * cam->freq * ts;
+    float ts   = t * 0.001f; // time in seconds for trigonometry
+    float w    = 2.0f * 3.14159265f * cam->freq * ts; // oscillation: 2π * f * t
 
-    // Podés variar ejes para que no sea 100% horizontal
     float dx = cam->amp * sinf(w);
-    float dy = 0.6f     * cam->amp * cosf(1.3f * w);        //oscilacion armonica: A*cos(W*t)
+    float dy = 0.6f     * cam->amp * cosf(1.3f * w);   // harmonic oscillation: A * cos(Ω * t)
 
     *offx = (int)lroundf(dx);
     *offy = (int)lroundf(dy);
 }
+
 void camera_start_shake(camera_t *cam, float duration_ms, float amp_px, float freq_hz){
     cam->shaking  = 1;
     cam->start_ms = SDL_GetTicks();
@@ -137,13 +144,13 @@ void history_log(menu_t* pmenu){
 }
 
 void score_init(menu_t *pmenu) {
-    // set the values in 0
+    // Set the values in 0
     for (int i = 0; i < MAX_SCORES; i++){
         pmenu->high_score[i] = 0;
     }
     FILE *f = fopen("scores.txt", "r");
     if (!f) {
-        // if it doestn exist, create it in values=0
+        // If it doestn exist, create it in values=0
         score_save(pmenu);
     }
     else{
@@ -155,7 +162,7 @@ void score_init(menu_t *pmenu) {
 }
 
 int score_update(menu_t *pmenu, int new_score) {
-    //find the right position for the final score (descending order)
+    //Find the right position for the final score (descending order)
     int pos = MAX_SCORES;
     for (int i = 0; i < MAX_SCORES && pos == MAX_SCORES; i++){
         if (new_score >= pmenu->high_score[i]){ 

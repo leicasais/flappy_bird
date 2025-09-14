@@ -2,8 +2,8 @@
 #include "running_fun.h"
 #include "menu.h"
 
-//Inicialisations and parameters functions
-void set_parameters(screen_dim_t *screen_dim){          //Redefine globals dependidng on the screen size 
+// Initializations and parameter functions
+void set_parameters(screen_dim_t *screen_dim){          // Redefine globals depending on the screen size 
     screen_dim-> HOLE_HEIGHT = (screen_dim->GAME_HEIGHT) / 3;       
     screen_dim->COL_WIDTH = screen_dim->GAME_WIDTH / 10;         
     screen_dim->SPACE = screen_dim->GAME_HEIGHT/3;             
@@ -12,56 +12,55 @@ void set_parameters(screen_dim_t *screen_dim){          //Redefine globals depen
 }
 
 void init_parameters(screen_dim_t *screen_dim){
-    //Screen init
+    // Screen init
     screen_dim->GAME_HEIGHT= 720;
     screen_dim->GAME_WIDTH= 1280;
     set_parameters(screen_dim);
 }
 
-int rand_y_pos(float bird_size, int heart_h,screen_dim_t *screen_dim){ //returns a random coord y for the begining of the hole  OBS-> min + rand() % (max - min + 1);      
-    const int margin_inf = 7;  // lo que quieras dejar libre arriba
+int rand_y_pos(float bird_size, int heart_h,screen_dim_t *screen_dim){ // returns a random Y for the beginning of the hole  NOTE -> min + rand() % (max - min + 1)      
+    const int margin_inf = 7;  // whatever you want to leave free at the top
     int minY = heart_h;
-    int maxY = (screen_dim->GAME_HEIGHT) - (screen_dim->TILE_HIGHT) - bird_size - margin_inf - 1; // límite correcto
+    int maxY = (screen_dim->GAME_HEIGHT) - (screen_dim->TILE_HIGHT) - bird_size - margin_inf - 1; // correct limit
 
     if (maxY < minY) {
-        // case the hole is imposible to put
+        // case where the hole cannot be placed
         maxY = minY;
     }
-    return minY + rand() % (maxY - minY + 1); // rango [minY, maxY]
+    return minY + rand() % (maxY - minY + 1); // range [minY, maxY]
 }
 
 void init(column_t* pcol, bird_t *bird, menu_t *menu, screen_dim_t *screen_dim){  
-//Column init
+    // Column init
     int aux_x=0; 
     int i;
     for(i=0; i<((screen_dim->GAME_WIDTH/(screen_dim->COL_WIDTH + screen_dim->SPACE)) -1);i++){
         aux_x+=screen_dim->SPACE+screen_dim->COL_WIDTH;  
-        pcol[i].x=aux_x;  //Sets the coordinate x of each point of the column
+        pcol[i].x=aux_x;  // Sets the X coordinate of each column
         pcol[i].y=rand_hole(screen_dim);
         pcol[i].len=screen_dim->COL_WIDTH;
         pcol[i].col_speed_y=0;
     }
-    if(screen_dim->GAME_WIDTH % (screen_dim->COL_WIDTH + screen_dim->SPACE)){//if GAME_WIDTH/(COL_WIDTH+SPACE) was supposed to be a float -> we have to put a 'weird case'
-        int space_left=screen_dim->GAME_WIDTH-(screen_dim->COL_WIDTH+screen_dim->SPACE)*(i+1);//The space left after saving the last column+space in the for
+    if(screen_dim->GAME_WIDTH % (screen_dim->COL_WIDTH + screen_dim->SPACE)){ // if GAME_WIDTH/(COL_WIDTH+SPACE) was supposed to be a float -> handle the "weird case"
+        int space_left=screen_dim->GAME_WIDTH-(screen_dim->COL_WIDTH+screen_dim->SPACE)*(i+1); // Space left after placing the last column+space in the loop
         pcol[i].x=aux_x+screen_dim->SPACE+screen_dim->COL_WIDTH;
         pcol[i].y=rand_hole(screen_dim);
         pcol[i].col_speed_y=0;
-        if(space_left<screen_dim->COL_WIDTH){ //case the last column of the screen is not shown fully 
+        if(space_left<screen_dim->COL_WIDTH){ // case where the last column on screen is not fully shown
             pcol[i].len=space_left;
         }
-        else{//Case the column is shown fully but there is not SPACE between the last column and the edge of the screen
+        else{ // Column is fully shown but there is no SPACE between the last column and the edge of the screen
             pcol[i].len=screen_dim->COL_WIDTH;
         }
         i++;
     }
-    for(int j=i;j<screen_dim->NUM_COL;j++){ //col outside the screen prepearing to enter
+    for(int j=i;j<screen_dim->NUM_COL;j++){ // columns outside the screen preparing to enter
         pcol[j].x=OUTSIDE;
         pcol[j].len=0;
     }
-    pcol->col_speed=BASE_SPEED;   // px por frame (dinámica)
+    pcol->col_speed=BASE_SPEED;   // px per frame (dynamic)
     
-
-    //Bird init
+    // Bird init
     bird->scale =3;
     bird->h =(HITBOX_Y)/(bird->scale);
     bird->w =(HITBOX_X)/(bird->scale);
@@ -70,27 +69,24 @@ void init(column_t* pcol, bird_t *bird, menu_t *menu, screen_dim_t *screen_dim){
     bird->x_r= bird->x_l+(bird->w);
 
     float y= rand_y_pos(bird->h, menu->heart_h, screen_dim);
-    bird->gravity_y = 0.4;//Despues esta opcion depende el menu pero por ahora lo dejo como si siempre estuviese en la tierra
+    bird->gravity_y = 0.4; // later this option depends on the menu, but for now assume it is always on the ground
     bird->y_top=y;
     bird->y_bottom=bird->y_top+(bird->h);
-
-
 }
 
 void init_tex(column_t* column, bird_t *bird, menu_t *menu, app_t *app, background_t *background, screen_dim_t *screen_dim, ExplotionAnim *e){
-       //column textures
+       // column textures
     for(int i=0; i<screen_dim->NUM_COL; i++){
         column[i].texture_down = loadTexture("../img/columns/Col.png", app);
         column[i].texture_up = loadTexture("../img/columns/Col.png", app);
         column[i].trim=0;
     }
 
-        //Bakground textures 
+    // Background textures 
     background->tile_tex = loadTexture("../img/background/Tile.png", app);
     background->clouds = loadTexture("../img/background/Fondo.png", app);
 
-
-        //bird textures
+    // Bird textures
     (menu->skins_tex)[0]= loadTexture("../img/birds/Purple_bird.png", app);
     (menu->skins_tex)[1]= loadTexture("../img/birds/Brain_bird.png", app);
     (menu->skins_tex)[2]= loadTexture("../img/birds/Yellow_bird.png", app);
@@ -98,29 +94,30 @@ void init_tex(column_t* column, bird_t *bird, menu_t *menu, app_t *app, backgrou
     (menu->skins_tex)[4]= loadTexture("../img/birds/Angry_bird.png", app);
     explotion_init(e, app->renderer, "../img/birds/explotion", 30.0f, app);
 
-
-    bird->texture= (menu->skins_tex)[0]; //monto cambia el inide fijo por menu->index_skin que se puede seleccionar en tu menu
+    bird->texture= (menu->skins_tex)[0]; // replace the fixed index with menu->index_skin, which can be selected in your menu
     bird->tex_resurrection = loadTexture("../img/birds/Resurecting_bird.png", app);
     bird->current_frame=0;
     bird->last_frame_time = SDL_GetTicks();
 
-        //hearts text initmenu->full_heart_tex = loadTexture("../img/simbols/Full_heart.png", app);
+    // Hearts textures init
     menu->full_heart_tex = loadTexture("../img/simbols/Full_heart.png", app);
     menu->empty_heart_tex = loadTexture("../img/simbols/Empty_heart.png", app);
 
-        //points letters init
-    app->font = TTF_OpenFont("../img/fonts/Jersey15-Regular.ttf", 26); // tamaño “físico” en px
-    if (!app->font) {
+    // Points font/texture init
+    app->font = TTF_OpenFont("../img/fonts/Jersey15-Regular.ttf", 26); // physical size in px
+    if (!app->font){
         SDL_Log("OpenFont FAIL: %s", TTF_GetError());
         exit(1);
     }
     app->score_tex = NULL;
     app->score_w = app->score_h = 0;
-    app->score_color = (SDL_Color){ 20, 20, 20, 255 }; // gris oscuro
+    app->score_color = (SDL_Color){ 20, 20, 20, 255 }; // dark gray
 }
 
 int explotion_init(ExplotionAnim *e, SDL_Renderer *r, const char *path_dir, float frame_time_ms, app_t *app){
-    if (!e || !path_dir) return 0;
+    if (!e || !path_dir){
+        return 0;
+    }
     memset(e, 0, sizeof(*e));
 
     const int start_idx = 5;
@@ -128,25 +125,25 @@ int explotion_init(ExplotionAnim *e, SDL_Renderer *r, const char *path_dir, floa
     const int count     = end_idx - start_idx + 1;
 
     e->frames = (SDL_Texture**)calloc((size_t)count, sizeof(SDL_Texture*));
-    if (!e->frames) return 0;
-
-    e->count      = count;
+    if (!e->frames){
+        return 0;
+    }
+    e->count = count;
     e->frame_time = frame_time_ms > 0 ? frame_time_ms : 30.0f;
 
-    for (int i = 0; i < count; ++i) {
+    for (int i = 0; i < count; ++i){
         int idx = start_idx + i;
         char path[512];
         snprintf(path, sizeof(path), "%s/1_%d.png", path_dir, idx);
-
         e->frames[i] = loadTexture(path,app);
     }
     return 1;
 }
 
 void initSDL(app_t *app, screen_dim_t *screen_dim){
-    //init windows
+    // init window
     int rendererFlags, windowFlags;
-    rendererFlags = SDL_RENDERER_ACCELERATED;   //tells SDL to use hardware acceleration for the renderer (faster graphics performance via GPU).
+    rendererFlags = SDL_RENDERER_ACCELERATED;   // tells SDL to use hardware acceleration for the renderer
     windowFlags = 0;
 
     if (SDL_Init(SDL_INIT_VIDEO) < 0){
@@ -154,30 +151,30 @@ void initSDL(app_t *app, screen_dim_t *screen_dim){
         exit(1);
     }
 
-    app->window = SDL_CreateWindow("Flappy bird - COIL project", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, screen_dim->GAME_WIDTH, screen_dim->GAME_HEIGHT, windowFlags);       //SDL_WINDOWPOS_UNDEFINED tells SDL to let the OS position the window wherever it likes
+    app->window = SDL_CreateWindow("Flappy bird - COIL project", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, screen_dim->GAME_WIDTH, screen_dim->GAME_HEIGHT, windowFlags);       // SDL_WINDOWPOS_UNDEFINED tells SDL to let the OS position the window wherever it likes
 
     if (!(app->window)){
         printf("Failed to open %d x %d window: %s\n", screen_dim->GAME_WIDTH, screen_dim->GAME_HEIGHT, SDL_GetError());
         exit(1);
     }
 
-    SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "linear");       //"linear" enables smoother scaling of images/textures (anti-aliasing), resize graphics and want them to look less pixelated
+    SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "linear");       // "linear" enables smoother scaling of images/textures (anti-aliasing), resize graphics and want them to look less pixelated
 
-    app->renderer = SDL_CreateRenderer(app->window, -1, rendererFlags);       //Attached to app.window, -1: SDL picks the best rendering driver
+    app->renderer = SDL_CreateRenderer(app->window, -1, rendererFlags);       // Attached to app.window, -1: SDL picks the best rendering driver
 
     if (!(app->renderer)){
         printf("Failed to create renderer: %s\n", SDL_GetError());
         exit(1);
     }
 
-    //init img      
-    int imgFlags = IMG_INIT_PNG | IMG_INIT_JPG;     //ctivates the ability to load .png and .jpg files
-    if ((IMG_Init(imgFlags) & imgFlags) != imgFlags) {
+    // init image module      
+    int imgFlags = IMG_INIT_PNG | IMG_INIT_JPG;     // activates loading of .png and .jpg files
+    if ((IMG_Init(imgFlags) & imgFlags)!= imgFlags){
         printf("Failed to init SDL_image: %s\n", IMG_GetError());
         exit(1);    
     }
-    //init txt
-    if (TTF_Init() != 0) {
+    // init text module
+    if (TTF_Init()!= 0){
         SDL_Log("TTF_Init FAIL: %s", TTF_GetError());
         exit(1);
     }
@@ -185,31 +182,35 @@ void initSDL(app_t *app, screen_dim_t *screen_dim){
 }
 
 SDL_Texture* loadTexture(char *filename, app_t *app){
-    SDL_Texture *texture;               //A texture in SDL is an image loaded into GPU memory that can be drawn on the screen using SDL_RenderCopy()
-    SDL_LogMessage(SDL_LOG_CATEGORY_APPLICATION, SDL_LOG_PRIORITY_INFO, "Loading %s", filename);        //for debugging purposes, to let you know which file is being loaded
-    texture = IMG_LoadTexture(app->renderer, filename);      // loads the image file (JPG, PNG, etc.) from filename.It converts it into a SDL_Texture using your app.renderer.
+    SDL_Texture *texture;               // A texture in SDL is an image loaded into GPU memory that can be drawn on the screen using SDL_RenderCopy()
+    SDL_LogMessage(SDL_LOG_CATEGORY_APPLICATION, SDL_LOG_PRIORITY_INFO, "Loading %s", filename);        // for debugging purposes, to let you know which file is being loaded
+    texture = IMG_LoadTexture(app->renderer, filename);      // loads the image file (JPG, PNG, etc.) from filename and converts it into an SDL_Texture using app->renderer
     
-    if (SDL_SetTextureBlendMode(texture, SDL_BLENDMODE_BLEND) != 0) {   // mode so the game doent have a “blur” in pixel art:
+    if (SDL_SetTextureBlendMode(texture, SDL_BLENDMODE_BLEND) != 0) {   // set blend mode so the game doesn't have a “blur” in pixel art
         SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "SetBlend FAIL %s: %s", filename, SDL_GetError());
     }
     return texture;
 }
 
-//exit fun
-void explotion_destroy(ExplotionAnim *e)
-{
-    if (!e) return;
-    if (e->frames) {
-        for (int i = 0; i < e->count; ++i) {
-            if (e->frames[i]) SDL_DestroyTexture(e->frames[i]);
+// exit functions
+void explotion_destroy(ExplotionAnim *e){
+    if (!e){
+        return;
+    }
+    if (e->frames){
+        for (int i = 0; i < e->count; ++i){
+            if (e->frames[i]){
+                SDL_DestroyTexture(e->frames[i]);
+            }
         }
         free(e->frames);
     }
     memset(e, 0, sizeof(*e));
 }
+
 void cleanupSDL(app_t *app, bird_t *bird, column_t *column, background_t *background, menu_t *menu, screen_dim_t *screen_dim, ExplotionAnim *e){
-    // 1) Texturas y recursos dependientes del renderer
-    if (app->score_tex) { 
+    // 1) Textures and resources that depend on the renderer
+    if (app->score_tex){ 
         SDL_DestroyTexture(app->score_tex); 
         app->score_tex = NULL;
     }
@@ -219,33 +220,33 @@ void cleanupSDL(app_t *app, bird_t *bird, column_t *column, background_t *backgr
             (menu->skins_tex)[i] = NULL;
         }
     }
-    if (bird->texture) { 
+    if (bird->texture){ 
         SDL_DestroyTexture(bird->texture); 
         bird->texture = NULL; 
     }
-    if (bird->tex_resurrection) { 
+    if (bird->tex_resurrection){ 
         SDL_DestroyTexture(bird->tex_resurrection); 
         bird->tex_resurrection = NULL; 
     }
-    if (background->tile_tex) { 
+    if (background->tile_tex){ 
         SDL_DestroyTexture(background->tile_tex); 
         background->tile_tex = NULL; 
     }
-    if (background->clouds) { 
+    if (background->clouds){ 
         SDL_DestroyTexture(background->clouds); 
         background->clouds = NULL; 
     }
     for (int i = 0; i < screen_dim->NUM_COL; i++){
-        if (column[i].texture_down) { 
+        if (column[i].texture_down){ 
             SDL_DestroyTexture(column[i].texture_down); 
             column[i].texture_down = NULL; 
         }
-        if (column[i].texture_up) { 
+        if (column[i].texture_up){ 
             SDL_DestroyTexture(column[i].texture_up);   
-            column[i].texture_up   = NULL; 
+            column[i].texture_up = NULL; 
         }
     }
-    if (app->font) { 
+    if (app->font){ 
         TTF_CloseFont(app->font); 
         app->font = NULL; 
     }
@@ -259,17 +260,17 @@ void cleanupSDL(app_t *app, bird_t *bird, column_t *column, background_t *backgr
     }
     explotion_destroy(e);
 
-    // 2) renderer y ventana
-    if (app->renderer) { 
+    // 2) renderer and window
+    if (app->renderer){ 
         SDL_DestroyRenderer(app->renderer); 
         app->renderer = NULL; 
     }
-    if (app->window) { 
+    if (app->window){ 
         SDL_DestroyWindow(app->window);     
         app->window   = NULL; 
     }
 
-    // 3) Cierres de libs
+    // 3) library shutdowns
     TTF_Quit();
     IMG_Quit();
     SDL_Quit();
@@ -277,7 +278,7 @@ void cleanupSDL(app_t *app, bird_t *bird, column_t *column, background_t *backgr
 
 void set_bird_skin(bird_t *bird, app_t *app, int idx)
 {
-    // Paths de las 5 skins
+    // Paths for the 5 skins
     static const char *SKINS[5] = {
         "../img/birds/Angry_bird.png",
         "../img/birds/Brain_bird.png",
@@ -290,14 +291,11 @@ void set_bird_skin(bird_t *bird, app_t *app, int idx)
         return;
     }
     SDL_Texture *newtex = loadTexture((char*)SKINS[idx], app);
-    if (!newtex) {
+    if (!newtex){
         return;
     }
-
-    if (bird->texture) {
+    if (bird->texture){
         SDL_DestroyTexture(bird->texture);
     }
     bird->texture = newtex;
 }
-
-

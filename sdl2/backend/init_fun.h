@@ -14,7 +14,6 @@
     void initSDL(app_t *app, screen_dim_t *screen_dim);
     SDL_Texture *loadTexture(char *filename, app_t *app);
     void cleanupSDL(app_t *app, bird_t *bird, column_t *column, background_t *background, menu_t *menu, screen_dim_t *screen_dim, ExplotionAnim *e);
-
     void set_bird_skin(bird_t *bird, app_t *app, int idx);
 
 #endif

@@ -27,7 +27,7 @@ int main(void){
 
     menu_init(&menu); 
 
-    // Objetos y texturas (columnas, pájaro, background, fuente para HUD)
+    // Objects and textures (columns, bird, background, HUD font)
     init(column, &bird, &menu, &screen_dim);            // update the initial conditions of the game
     init_tex(column, &bird, &menu, &app, &background, &screen_dim, &e);        //charges the textures
 
@@ -35,7 +35,7 @@ int main(void){
     int running = 1;
     int reboot_time=0;
     int shake_x, shake_y;
-    float dt_ms = 20;/* elapsed milliseconds for this frame */
+    float dt_ms = 20;   /* elapsed milliseconds for this frame */
     while (running){
         SDL_Event event;
         while (SDL_PollEvent(&event)){
@@ -43,13 +43,13 @@ int main(void){
                 running = 0; 
                 break; 
             }
-            if (event.type == SDL_TEXTINPUT) {
-                if (menu.state == NAME_MENU && menu.name_editing) {
-                    for (const char *p = event.text.text; *p; ++p) {
+            if (event.type == SDL_TEXTINPUT){
+                if (menu.state == NAME_MENU && menu.name_editing){
+                    for (const char *p = event.text.text; *p; ++p){
                         unsigned char c = (unsigned char)*p;
-                        if (c >= ' ' && c <= '~') {                // imprimibles
+                        if (c >= ' ' && c <= '~'){                // printable characters
                             size_t len = strlen(menu.username);
-                            if (len < USERNAME_MAX) {
+                            if (len < USERNAME_MAX){
                                 menu.username[len++]   = (char)c;
                                 menu.username[len] = '\0';
                             }
@@ -71,19 +71,19 @@ int main(void){
                     break;
 
                     case NAME_MENU:
-                        if (event.key.keysym.sym == SDLK_BACKSPACE) {
+                        if (event.key.keysym.sym == SDLK_BACKSPACE){
                             size_t len = strlen(menu.username);
-                            if (len > 0) {
+                            if (len > 0){
                                 menu.username[len-1] = '\0';
                             }
                         } 
-                        else if (event.key.keysym.sym == SDLK_RETURN || event.key.keysym.sym == SDLK_KP_ENTER) {
-                            if (menu.username[0]) {              
+                        else if (event.key.keysym.sym == SDLK_RETURN || event.key.keysym.sym == SDLK_KP_ENTER){
+                            if (menu.username[0]){              
                                 menu.name_editing = 0;
                                 menu_set_state(&menu, MAIN_MENU);
                             }
                         } 
-                        else if (event.key.keysym.sym == SDLK_ESCAPE) {
+                        else if (event.key.keysym.sym == SDLK_ESCAPE){
                             menu_set_state(&menu, EXIT);
                             running = 0;
                         }
@@ -97,7 +97,7 @@ int main(void){
                             menu_next_option(&menu);
                         }
                         else if (event.key.keysym.sym == SDLK_RETURN || event.key.keysym.sym == SDLK_KP_ENTER){
-                            // Play o Salir
+                            // Play or Exit
                             menu_activate_selected(&menu, column, &bird, &app, &screen_dim);
                             if (menu.state == EXIT){
                                 running = 0;
@@ -109,32 +109,32 @@ int main(void){
                     break;
 
                     case SKIN_MENU:
-                        if (event.key.keysym.sym == SDLK_UP) {
+                        if (event.key.keysym.sym == SDLK_UP){
                             menu_prev_option(&menu);
                         }
-                        else if (event.key.keysym.sym == SDLK_DOWN) {
+                        else if (event.key.keysym.sym == SDLK_DOWN){
                             menu_next_option(&menu);
                         }
-                        else if (event.key.keysym.sym == SDLK_RETURN ||event.key.keysym.sym == SDLK_KP_ENTER) {
+                        else if (event.key.keysym.sym == SDLK_RETURN ||event.key.keysym.sym == SDLK_KP_ENTER){
                             menu_activate_selected(&menu, column, &bird, &app, &screen_dim);   // aplica skin y vuelve al Main
                         }
-                        else if (event.key.keysym.sym == SDLK_ESCAPE) {
-                            menu_set_state(&menu, MAIN_MENU);                      // cancelar y volver
+                        else if (event.key.keysym.sym == SDLK_ESCAPE){
+                            menu_set_state(&menu, MAIN_MENU);                
                         }
                     break;
 
                     case DIFICULTY_MENU:
-                        if (event.key.keysym.sym == SDLK_UP) {
+                        if (event.key.keysym.sym == SDLK_UP){
                             menu_prev_option(&menu);
                         }
-                        else if (event.key.keysym.sym == SDLK_DOWN) {
+                        else if (event.key.keysym.sym == SDLK_DOWN){
                             menu_next_option(&menu);
                         }
-                        else if (event.key.keysym.sym == SDLK_RETURN || event.key.keysym.sym == SDLK_KP_ENTER) {
+                        else if (event.key.keysym.sym == SDLK_RETURN || event.key.keysym.sym == SDLK_KP_ENTER){
                             menu_activate_selected(&menu, column, &bird, &app, &screen_dim);
                         }
-                        else if (event.key.keysym.sym == SDLK_ESCAPE) {
-                            menu_set_state(&menu, MAIN_MENU);                      // cancelar y volver
+                        else if (event.key.keysym.sym == SDLK_ESCAPE){
+                            menu_set_state(&menu, MAIN_MENU);                   
                         }
                     break;
 
@@ -148,15 +148,15 @@ int main(void){
                     break;
 
                     case PAUSE:
-                        if (event.key.keysym.sym == SDLK_UP) {
+                        if (event.key.keysym.sym == SDLK_UP){
                             menu_prev_option(&menu);
                         }
-                        else if (event.key.keysym.sym == SDLK_DOWN) {
+                        else if (event.key.keysym.sym == SDLK_DOWN){
                             menu_next_option(&menu);
                         }
-                        else if (event.key.keysym.sym == SDLK_RETURN || event.key.keysym.sym == SDLK_KP_ENTER) {
+                        else if (event.key.keysym.sym == SDLK_RETURN || event.key.keysym.sym == SDLK_KP_ENTER){
                             menu_activate_selected(&menu, column, &bird, &app, &screen_dim);
-                            if (menu.state == EXIT) {
+                            if (menu.state == EXIT){
                                 running = 0;
                             }
                             if(menu.state == BEGINING){     //if restart is selected
@@ -165,28 +165,27 @@ int main(void){
                             }
                         }
                         else if (event.key.keysym.sym == SDLK_ESCAPE) {
-                            menu_set_state(&menu, RUNING);   // Esc reanuda sin elegir
+                            menu_set_state(&menu, RUNING);   // Esc resumes without choosing
                         }
                     break;
-
 
                     case GAME_OVER:
                         reboot_time=0;
                         bird.vel_y=0;
-                        if (event.key.keysym.sym == SDLK_UP) {         
+                        if (event.key.keysym.sym == SDLK_UP){         
                             menu_prev_option(&menu);
                         }
-                        else if (event.key.keysym.sym == SDLK_DOWN) { 
+                        else if (event.key.keysym.sym == SDLK_DOWN){ 
                             menu_next_option(&menu);
                         }
-                        else if (event.key.keysym.sym == SDLK_RETURN ||event.key.keysym.sym == SDLK_KP_ENTER) {
+                        else if (event.key.keysym.sym == SDLK_RETURN ||event.key.keysym.sym == SDLK_KP_ENTER){
                             menu_activate_selected(&menu, column, &bird, &app, &screen_dim);
-                            if (menu.state == EXIT) {
+                            if (menu.state == EXIT){
                                 running = 0;
                             }
                 
                         } 
-                        else if (event.key.keysym.sym == SDLK_ESCAPE) {
+                        else if (event.key.keysym.sym == SDLK_ESCAPE){
                             menu_set_state(&menu, EXIT);
                             running = 0;
                         }
@@ -203,9 +202,9 @@ int main(void){
         }
 
 
-        // --- Update por estado ---
+        // --- Update by state ---
 
-        if (menu.state == RUNING ){
+        if (menu.state == RUNING){
             if(!camera.shaking ){
                 col_mov(column, &screen_dim, &menu);
                 bird_fall(&bird, &screen_dim);
@@ -214,9 +213,8 @@ int main(void){
             if(reboot_time==0){
                 points(column, &bird, &menu, &screen_dim);       //Adds a point if the bird has passed a column only if in game mode
             }
-                
-            if (collision(column, &bird, &screen_dim) && !reboot_time){
-                colition_update(&menu, &camera, &e, bird);//counts the collition only if the game isnt in reboot mode
+            if(collision(column, &bird, &screen_dim) && !reboot_time){
+                colition_update(&menu, &camera, &e, bird);      //counts the collition only if the game isnt in reboot mode
                 if(menu.state != GAME_OVER){
                     reboot_time=1;
                 }
@@ -237,21 +235,20 @@ int main(void){
         draw_background(&background, &app, &screen_dim, shake_x, shake_y);
         draw_col(column, &app, &screen_dim, shake_x, shake_y);
         
-
-        if (menu.state == NAME_MENU) {
+        if (menu.state == NAME_MENU){
             render_name_menu(&app, &menu, screen_dim.GAME_WIDTH, screen_dim.GAME_HEIGHT);
         }
-        else if (menu.state == MAIN_MENU) {
-            render_main_menu(&app, &menu, screen_dim.GAME_WIDTH, screen_dim.GAME_HEIGHT); // "FLAPPY" + Play/Salir
+        else if (menu.state == MAIN_MENU){
+            render_main_menu(&app, &menu, screen_dim.GAME_WIDTH, screen_dim.GAME_HEIGHT); 
             reboot_time=0;      
         } 
-        else if (menu.state == SKIN_MENU) {
+        else if (menu.state == SKIN_MENU){
             render_skin_menu(&app, &menu, screen_dim.GAME_WIDTH, screen_dim.GAME_HEIGHT, shake_x, shake_y);
         }
         else if(menu.state == DIFICULTY_MENU){
             render_dificulty_menu(&app, &menu, screen_dim.GAME_WIDTH, screen_dim.GAME_HEIGHT);
         }
-        else if (menu.state == RUNING || menu.state == BEGINING) {
+        else if (menu.state == RUNING || menu.state == BEGINING){
             if(!reboot_time){
                 draw_bird(&bird, &app, shake_x, shake_y);
                 draw_hearts(&app, &menu, shake_x, shake_y);
@@ -262,19 +259,19 @@ int main(void){
             render_game_hud(&app, &menu, &screen_dim, shake_x, shake_y);
             
         }
-        else if (menu.state == PAUSE) {
+        else if (menu.state == PAUSE){
             draw_col(column, &app, &screen_dim, shake_x, shake_y);
             if(!reboot_time){
                 draw_bird(&bird, &app, shake_x, shake_y);
                 draw_hearts(&app, &menu, shake_x, shake_y);
             } 
-            else {
+            else{
                 display_resurecting(&bird, &menu, &app, shake_x, shake_y);
             }
             render_game_hud(&app, &menu, &screen_dim, shake_x, shake_y);
             render_pause_menu(&app, &menu, screen_dim.GAME_WIDTH, screen_dim.GAME_HEIGHT);
         }
-        else if (menu.state == GAME_OVER) {
+        else if (menu.state == GAME_OVER){
             draw_col(column, &app, &screen_dim, shake_x, shake_y);
             draw_bird(&bird, &app, shake_x, shake_y);
             render_game_over(&app, &menu, screen_dim.GAME_WIDTH, screen_dim.GAME_HEIGHT);
