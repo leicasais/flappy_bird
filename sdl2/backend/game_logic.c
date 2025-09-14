@@ -37,8 +37,18 @@ void points(column_t* pcol, bird_t* pbird, menu_t* menu, screen_dim_t *screen_di
         //Adds a point when the bird passes the right corner of the column
         if (!pcol[i].trim && (col_right < (int)pbird->x_l)){
             pcol[i].trim = 1;
-            if(pcol->col_speed >= SPEED_MAX/2){     //Aditional score: passing 1 col = 2 points
-                menu->score+=2;
+
+            //Score method
+            if(pcol->col_speed >= SPEED_MAX/2){
+                if(menu->dificulty == MEDIUM){
+                    menu->score+=2;
+                }
+                else if(menu->dificulty == EXTREME){
+                    menu->score+=3;
+                }
+                else if(menu->dificulty == IMPOSSIBLE){
+                    menu->score+=4;
+                }
             }
             else{   //Normal score: passing 1 col = 1 point
                 menu->score++;
@@ -100,7 +110,7 @@ void explotion_update(ExplotionAnim *e, float dt_ms){
     }
 }
 
-// Returns the offset per friame 
+// Returns the offset per frame 
 void camera_update(camera_t *cam, int *offx, int *offy){
     if (!cam->shaking){ 
         *offx = 0; 

@@ -8,14 +8,6 @@ set(CMAKE_C_STANDARD 11)
 include_directories(
     frontend
     backend
-    #structs
-    #game_logic
-    #init_fun
-    #menu
-    #running_fun
-    #front_main_game
-    #front_menu
-    #render_helpers
 )
 
 # SDL2
